@@ -83,7 +83,7 @@ public class Play {
 			game.end();
 
 		} finally {
-			// Release resources
+			// Release resources..
 			window.dispose();
 		}
 	}
