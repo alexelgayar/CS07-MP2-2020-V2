@@ -22,7 +22,6 @@ public class Village extends SimpleArea {
         //registerActor(new Background(this)) ;
 		registerActor(new SimpleGhost(new Vector(20, 10), "ghost.2"));
         }
-	
-	
-    
+
+
 }

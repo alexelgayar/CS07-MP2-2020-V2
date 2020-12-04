@@ -1,5 +1,7 @@
 package ch.epfl.cs107.play.game.tutosSolution.area;
 
+
+
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.io.ResourcePath;
 import ch.epfl.cs107.play.game.tutosSolution.Tuto1;
