@@ -3,9 +3,11 @@ package ch.epfl.cs107.play.game.superpacman.area;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.AreaBehavior;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
+import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.superpacman.SuperPacman;
 import ch.epfl.cs107.play.game.superpacman.actor.Wall;
 import ch.epfl.cs107.play.game.tutosSolution.Tuto2Behavior;
+import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Window;
 
 public class SuperPacmanBehavior extends AreaBehavior {
@@ -61,8 +63,15 @@ public class SuperPacmanBehavior extends AreaBehavior {
         for(int y = 0; y< getHeight(); y++){
             for(int x = 0; x< getWidth(); x++){
                 if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.WALL){
-                    boolean[][] neighboo
-                    area.registerActor(new Wall(area, , ));
+                    boolean[][] neighbourhood = new boolean[3][3];
+                    for(int h = 0; h<2 ; h++) {
+                        for (int w = 0; w < 2; w++) {
+                            if (((SuperPacmanCell) getCell(x + w - 1, y + h - 1)).type == SuperPacmanCellType.WALL) {
+                                neighbourhood[x + w - 1][y + h - 1] = true;
+                            }
+                        }
+                    }
+                    area.registerActor(new Wall(area, new DiscreteCoordinates(x,y), neighbourhood));
                 }
 
 
@@ -70,7 +79,6 @@ public class SuperPacmanBehavior extends AreaBehavior {
 
        }
 
-        area.registerActor(Actor a);
 
 
 
@@ -84,6 +92,21 @@ public class SuperPacmanBehavior extends AreaBehavior {
         SuperPacmanCell(int x, int y, SuperPacmanCellType type){
             super(x,y);
             this.type = type;
+
+        }
+
+        @Override
+        public boolean isCellInteractable() {
+            return true;
+        }
+
+        @Override
+        public boolean isViewInteractable() {
+            return true;
+        }
+
+        @Override
+        public void acceptInteraction(AreaInteractionVisitor v) {
 
         }
 

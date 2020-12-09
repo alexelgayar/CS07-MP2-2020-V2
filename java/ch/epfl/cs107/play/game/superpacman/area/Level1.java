@@ -8,6 +8,6 @@ public class Level1 extends SuperPacmanArea {
     }
 
     public void createArea(){
-
+        super.createArea();
     }
 }
