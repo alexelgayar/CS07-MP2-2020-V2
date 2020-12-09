@@ -4,6 +4,7 @@ import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.AreaBehavior;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.superpacman.SuperPacman;
+import ch.epfl.cs107.play.game.superpacman.actor.Wall;
 import ch.epfl.cs107.play.game.tutosSolution.Tuto2Behavior;
 import ch.epfl.cs107.play.window.Window;
 
@@ -34,10 +35,12 @@ public class SuperPacmanBehavior extends AreaBehavior {
                 if (ict.type == type)
                     return ict;
             }
+            return NONE;
 
         }
 
     }
+
 
     public SuperPacmanBehavior(Window window, String name) {
         super(window, name);
@@ -51,7 +54,21 @@ public class SuperPacmanBehavior extends AreaBehavior {
         }
     }
 
+    private Wall wall;
+
    protected void registerActors(Area area){
+
+        for(int y = 0; y< getHeight(); y++){
+            for(int x = 0; x< getWidth(); x++){
+                if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.WALL){
+                    boolean[][] neighboo
+                    area.registerActor(new Wall(area, , ));
+                }
+
+
+            }
+
+       }
 
         area.registerActor(Actor a);
 
