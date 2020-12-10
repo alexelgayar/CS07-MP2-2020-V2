@@ -7,10 +7,7 @@ public class Level0 extends SuperPacmanArea{
         return "superpacman/Level0";
     }
 
-
-
     public void createArea(){
         super.createArea();
-
     }
 }

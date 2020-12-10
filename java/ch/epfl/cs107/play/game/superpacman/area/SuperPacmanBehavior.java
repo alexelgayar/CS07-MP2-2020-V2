@@ -73,8 +73,6 @@ public class SuperPacmanBehavior extends AreaBehavior {
                     }
                     area.registerActor(new Wall(area, new DiscreteCoordinates(x,y), neighbourhood));
                 }
-
-
             }
 
        }
