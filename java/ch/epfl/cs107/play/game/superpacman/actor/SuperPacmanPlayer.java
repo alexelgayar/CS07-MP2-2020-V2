@@ -32,6 +32,7 @@ public class SuperPacmanPlayer extends Player {
         super(area, orientation, coordinates);
         this.hp=5;
         sprite = new Sprite("superpacman/bonus", 1.f, 1.f, this );
+        System.out.println("Constructing pacman player");
     }
 
     public boolean isWeak(){return (hp <= 0.f); }

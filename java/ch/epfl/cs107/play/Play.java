@@ -49,7 +49,7 @@ public class Play {
 			if (game.begin(window, fileSystem)) {
 				//recorder.start();
 				//replayer.start("record1.xml");
-
+				System.out.println("Game has begun");
 				// Use system clock to keep track of time progression
                 long currentTime = System.nanoTime();
 				long lastTime;

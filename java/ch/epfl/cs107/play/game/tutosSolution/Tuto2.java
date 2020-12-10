@@ -3,6 +3,9 @@ package ch.epfl.cs107.play.game.tutosSolution;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.AreaGame;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
+import ch.epfl.cs107.play.game.superpacman.actor.SuperPacmanPlayer;
+import ch.epfl.cs107.play.game.superpacman.area.Level1;
+import ch.epfl.cs107.play.game.superpacman.area.Level2;
 import ch.epfl.cs107.play.game.tutosSolution.actor.GhostPlayer;
 import ch.epfl.cs107.play.game.tutosSolution.area.tuto2.Ferme;
 import ch.epfl.cs107.play.game.tutosSolution.area.tuto2.Village;
@@ -16,9 +19,10 @@ public class Tuto2 extends AreaGame {
 
 
 	private GhostPlayer player;
-	private final String[] areas = {"zelda/Ferme", "zelda/Village"};
+	private SuperPacmanPlayer pacman;
+	private final String[] areas = {"zelda/Route", "zelda/Ferme"};
 	private final DiscreteCoordinates[] startingPositions = {new DiscreteCoordinates(2,10), 
-															 new DiscreteCoordinates(5,15)};
+															 new DiscreteCoordinates(4,10)};
 
 	private int areaIndex;
 	/**
@@ -27,7 +31,7 @@ public class Tuto2 extends AreaGame {
 	private void createAreas(){
 
 		addArea(new Ferme());
-		addArea(new Village());
+		addArea(new Level2());
 
 	}
 
@@ -41,6 +45,8 @@ public class Tuto2 extends AreaGame {
 			areaIndex = 0;
 			Area area = setCurrentArea(areas[areaIndex], true);
 			player = new GhostPlayer(area, Orientation.DOWN, startingPositions[areaIndex],"ghost.1");
+			pacman = new SuperPacmanPlayer(getCurrentArea(), Orientation.RIGHT, new DiscreteCoordinates(10,1));
+
 			area.registerActor(player);
 			area.setViewCandidate(player);
 			return true;

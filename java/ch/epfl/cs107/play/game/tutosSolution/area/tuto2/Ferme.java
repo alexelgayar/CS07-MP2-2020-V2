@@ -11,7 +11,7 @@ public class Ferme extends Tuto2Area {
 	
 	@Override
 	public String getTitle() {
-		return "zelda/Ferme";
+		return "zelda/Route";
 	}
 
 	protected void createArea() {

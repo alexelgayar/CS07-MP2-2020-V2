@@ -28,7 +28,6 @@ public class SuperPacmanBehavior extends AreaBehavior {
         final int type;
 
         SuperPacmanCellType(int type) {
-
             this.type = type;
         }
 
@@ -59,7 +58,7 @@ public class SuperPacmanBehavior extends AreaBehavior {
     private Wall wall;
 
    protected void registerActors(Area area){
-
+        System.out.println("Registering the Level:" + area);
         for(int y = 0; y< getHeight(); y++){
             for(int x = 0; x< getWidth(); x++){
                 if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.WALL){
@@ -74,12 +73,7 @@ public class SuperPacmanBehavior extends AreaBehavior {
                     area.registerActor(new Wall(area, new DiscreteCoordinates(x,y), neighbourhood));
                 }
             }
-
        }
-
-
-
-
     }
 
     public class SuperPacmanCell extends AreaBehavior.Cell {
