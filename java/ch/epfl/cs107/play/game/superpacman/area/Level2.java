@@ -15,5 +15,7 @@ public class Level2 extends SuperPacmanArea {
     @Override
     protected void createArea() {
         super.createArea();
+        registerActor(new Background(this));
+
     }
 }

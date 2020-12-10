@@ -5,8 +5,10 @@ import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
+import ch.epfl.cs107.play.game.rpg.actor.Door;
 import ch.epfl.cs107.play.game.rpg.actor.Player;
 import ch.epfl.cs107.play.game.superpacman.SuperPacman;
+import ch.epfl.cs107.play.game.superpacman.handler.SuperPacmanInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
@@ -39,23 +41,30 @@ public class SuperPacmanPlayer extends Player {
 
     public void strengthen(){ hp = 5; }
 
+    Orientation desiredOrientation;
+
     @Override
     public void update(float deltaTime) {
         Keyboard keyboard = getOwnerArea().getKeyboard();
-        moveOrientate(Orientation.LEFT, keyboard.get(Keyboard.LEFT));
-        moveOrientate(Orientation.UP, keyboard.get(Keyboard.UP));
-        moveOrientate(Orientation.RIGHT, keyboard.get(Keyboard.RIGHT));
-        moveOrientate(Orientation.DOWN, keyboard.get(Keyboard.DOWN));
+
+        if(keyboard.get(Keyboard.LEFT).isDown())
+                desiredOrientation = Orientation.LEFT;
+        if(keyboard.get(Keyboard.RIGHT).isDown())
+            desiredOrientation = Orientation.RIGHT;
+        if(keyboard.get(Keyboard.DOWN).isDown())
+            desiredOrientation = Orientation.DOWN;
+        if(keyboard.get(Keyboard.UP).isDown())
+            desiredOrientation = Orientation.UP;
+        if(isDisplacementOccurs() &&
+                getOwnerArea().canEnterAreaCells(this, Collections.singletonList(getCurrentMainCellCoordinates() .jump(desiredOrientation.toVector())))){
+            orientate(desiredOrientation);
+            move(SPEED);
+        }
+
         super.update(deltaTime);
     }
 
-    private void moveOrientate(Orientation orientation, Button b){
 
-        if(b.isDown()) {
-            if(getOrientation() == orientation) move(SPEED);
-            else orientate(orientation);
-        }
-    }
     /**
      * Leave an area by unregister this player
      */
@@ -84,22 +93,22 @@ public class SuperPacmanPlayer extends Player {
 
     @Override
     public boolean takeCellSpace() {
-        return true;
-    }
-
-    @Override
-    public boolean isCellInteractable() {
-        return true;
-    }
-
-    @Override
-    public boolean isViewInteractable() {
         return false;
     }
 
     @Override
-    public void acceptInteraction(AreaInteractionVisitor v) {
+    public boolean isCellInteractable() {
+        return false;
+    }
 
+    @Override
+    public boolean isViewInteractable() {
+        return true;
+    }
+
+    @Override
+    public void acceptInteraction(AreaInteractionVisitor v) {
+        ((SuperPacmanInteractionVisitor)v).interactWith(this);
     }
 
     @Override
@@ -109,7 +118,7 @@ public class SuperPacmanPlayer extends Player {
 
     @Override
     public boolean wantsCellInteraction() {
-        return false;
+        return true;
     }
 
     @Override
@@ -120,5 +129,12 @@ public class SuperPacmanPlayer extends Player {
     @Override
     public void interactWith(Interactable other) {
 
+    }
+
+    private class SuperPacmanPlayerHandler implements SuperPacmanInteractionVisitor {
+        @Override
+        public void interactWith(Door door) {
+            setIsPassingADoor(door);
+        }
     }
 }

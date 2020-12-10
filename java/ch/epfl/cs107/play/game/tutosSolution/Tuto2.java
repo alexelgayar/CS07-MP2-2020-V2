@@ -45,7 +45,7 @@ public class Tuto2 extends AreaGame {
 			areaIndex = 0;
 			Area area = setCurrentArea(areas[areaIndex], true);
 			player = new GhostPlayer(area, Orientation.DOWN, startingPositions[areaIndex],"ghost.1");
-			pacman = new SuperPacmanPlayer(getCurrentArea(), Orientation.RIGHT, new DiscreteCoordinates(10,1));
+			//pacman = new SuperPacmanPlayer(getCurrentArea(), Orientation.RIGHT, new DiscreteCoordinates(10,1));
 
 			area.registerActor(player);
 			area.setViewCandidate(player);

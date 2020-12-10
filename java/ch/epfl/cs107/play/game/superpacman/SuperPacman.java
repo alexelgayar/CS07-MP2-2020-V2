@@ -41,16 +41,17 @@ public class SuperPacman  extends RPG {
 
     @Override
     public boolean begin(Window window, FileSystem fileSystem) {
-        System.out.println("Testing begin of SuperPacman");
         if (super.begin(window, fileSystem)) {
-            System.out.println("Testing window start of SuperPacman");
             createAreas();
             areaIndex = 0;
+
             Area area = setCurrentArea(areas[areaIndex], true);
-            System.out.println("Current area: " + area); //Check that the player is added to area
-            System.out.println("Current area via getCurrentArea: " + getCurrentArea());
-            PLAYER_SPAWN_POSITION = startingPositions[areaIndex];
-            System.out.println("Player Spawn Position" + PLAYER_SPAWN_POSITION);
+            //PLAYER_SPAWN_POSITION = startingPositions[areaIndex];
+            player= new SuperPacmanPlayer(area, Orientation.RIGHT, startingPositions[areaIndex]);
+            area.registerActor(player);
+            area.setViewCandidate(player);
+
+
             initPlayer(player);
             return true;
         }

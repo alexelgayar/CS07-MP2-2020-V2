@@ -30,9 +30,7 @@ public abstract class SuperPacmanArea extends Area {
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
             // Set the behavior map
-            System.out.println("Creating behaviour");
             behavior = new SuperPacmanBehavior(window, getTitle());
-            System.out.println("Post created area");
             setBehavior(behavior);
             createArea();
             return true;
