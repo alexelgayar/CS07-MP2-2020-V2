@@ -10,6 +10,7 @@ import ch.epfl.cs107.play.game.rpg.actor.Door;
 import ch.epfl.cs107.play.game.rpg.actor.Player;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.game.superpacman.SuperPacman;
+import ch.epfl.cs107.play.game.superpacman.SuperPacmanStatusGUI;
 import ch.epfl.cs107.play.game.superpacman.handler.SuperPacmanInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Button;
@@ -20,9 +21,10 @@ import java.util.Collections;
 import java.util.List;
 
 public class SuperPacmanPlayer extends Player {
-    private float hp;
+    private int hp;
+    private int score;
     private Sprite sprite;
-
+    private SuperPacmanStatusGUI gui;
     //Movement speed of player, duration in frame number
     private final static int SPEED = 5;
 
@@ -35,22 +37,33 @@ public class SuperPacmanPlayer extends Player {
 
     private SuperPacmanPlayerHandler handler;
 
+    public int getScore(){
+        return this.score;
+    }
+
+    public int getHp(){
+        return this.hp;
+    }
+
     @Override
     public void draw(Canvas canvas) {
         animation.draw(canvas);
+        gui.draw(canvas);
     }
 
     public SuperPacmanPlayer(Area area, Orientation orientation, DiscreteCoordinates coordinates){
         super(area, orientation, coordinates);
         handler = new SuperPacmanPlayerHandler();
         this.hp=3;
+        this.score=0;
+        gui = new SuperPacmanStatusGUI(this);
 
        // resetMotion();
     }
 
-    public boolean isWeak(){return (hp <= 0.f); }
+    public boolean isWeak(){return (hp <= 0); }
 
-    public void strengthen(){ hp = 5; }
+    public void strengthen(){ hp = 3; }
 
    private Orientation desiredOrientation = Orientation.RIGHT;
 
@@ -80,18 +93,10 @@ public class SuperPacmanPlayer extends Player {
                if(getOwnerArea().canEnterAreaCells(this, Collections.singletonList(getCurrentMainCellCoordinates() .jump(desiredOrientation.toVector()))))
             {
                 orientate(desiredOrientation);
-
-
             }
             move(SPEED);
-
-
         }
-
-
-
         super.update(deltaTime);
-
 
     }
 
