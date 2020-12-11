@@ -63,10 +63,10 @@ public class SuperPacmanBehavior extends AreaBehavior {
             for(int x = 0; x< getWidth(); x++){
                 if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.WALL){
                     boolean[][] neighbourhood = new boolean[3][3];
-                    for(int h = -1; h <= 1 ; ++h) {
-                        for (int w = -1; w <= 1; ++w) {
-                            if ((x + w) > 0 && (x + w) < getWidth() && (y+h) > 0 && (y+h) < getHeight() && ((SuperPacmanCell) getCell(x + w , y + h )).type == SuperPacmanCellType.WALL) {
-                                neighbourhood[w + 1][h + 1] = true;
+                    for(int h = -1; h < 2 ; ++h) {
+                        for (int w = -1; w < 2; ++w) {
+                            if ((x + w ) >= 0 && (x + w ) < getWidth() && (y+h) >= 0 && (y+h) < getHeight() && ((SuperPacmanCell) getCell(x + w , y + h )).type == SuperPacmanCellType.WALL) {
+                                neighbourhood[w + 1 ][1 - h] = true;
                             }
                         }
                     }

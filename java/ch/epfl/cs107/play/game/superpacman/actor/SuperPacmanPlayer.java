@@ -34,33 +34,35 @@ public class SuperPacmanPlayer extends Player {
         super(area, orientation, coordinates);
         this.hp=5;
         sprite = new Sprite("superpacman/bonus", 1.f, 1.f, this );
-        System.out.println("Constructing pacman player");
+        resetMotion();
     }
 
     public boolean isWeak(){return (hp <= 0.f); }
 
     public void strengthen(){ hp = 5; }
 
-    Orientation desiredOrientation;
+   private Orientation desiredOrientation = Orientation.RIGHT;
 
     @Override
     public void update(float deltaTime) {
-        super.update(deltaTime);
+
         Keyboard keyboard = getOwnerArea().getKeyboard();
 
         if(keyboard.get(Keyboard.LEFT).isDown())
-                desiredOrientation = Orientation.LEFT;
+            desiredOrientation = Orientation.LEFT;
         if(keyboard.get(Keyboard.RIGHT).isDown())
             desiredOrientation = Orientation.RIGHT;
         if(keyboard.get(Keyboard.DOWN).isDown())
             desiredOrientation = Orientation.DOWN;
         if(keyboard.get(Keyboard.UP).isDown())
             desiredOrientation = Orientation.UP;
-        if(isDisplacementOccurs() &&
+        if(!isDisplacementOccurs() &&
                 getOwnerArea().canEnterAreaCells(this, Collections.singletonList(getCurrentMainCellCoordinates() .jump(desiredOrientation.toVector())))){
             orientate(desiredOrientation);
             move(SPEED);
         }
+
+        super.update(deltaTime);
 
 
     }
