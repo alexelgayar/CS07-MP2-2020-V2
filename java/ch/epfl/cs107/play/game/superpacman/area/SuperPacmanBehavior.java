@@ -106,6 +106,8 @@ public class SuperPacmanBehavior extends AreaBehavior {
             return !hasNonTraversableContent();
         }
 
+
+
         public boolean canLeave(Interactable entity){
             return true; //to change
         }

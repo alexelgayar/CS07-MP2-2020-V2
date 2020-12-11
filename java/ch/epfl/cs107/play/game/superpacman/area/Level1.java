@@ -11,6 +11,8 @@ import ch.epfl.cs107.play.window.Window;
 
 public class Level1 extends SuperPacmanArea {
 
+
+
     @Override
     public String getTitle() {
         return "superpacman/Level1";
@@ -19,8 +21,8 @@ public class Level1 extends SuperPacmanArea {
     @Override
     protected void createArea() {
         super.createArea();
-        registerActor(new Background(this));
-        registerActor(new Door("superpacman/Level2", new DiscreteCoordinates(15,29), Logic.TRUE, this, Orientation.DOWN, new DiscreteCoordinates(14,0)));
+       // registerActor(new Background(this));
+        registerActor(new Door("superpacman/Level2", new DiscreteCoordinates(15,29), Logic.TRUE, this, Orientation.DOWN, new DiscreteCoordinates(14,0), new DiscreteCoordinates(15, 0)));
 
     }
 

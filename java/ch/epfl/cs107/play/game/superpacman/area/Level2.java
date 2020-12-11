@@ -7,6 +7,7 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 
 public class Level2 extends SuperPacmanArea {
 
+
     @Override
     public String getTitle() {
         return "superpacman/Level2";
@@ -15,7 +16,7 @@ public class Level2 extends SuperPacmanArea {
     @Override
     protected void createArea() {
         super.createArea();
-        registerActor(new Background(this));
+      //  registerActor(new Background(this));
 
     }
 }

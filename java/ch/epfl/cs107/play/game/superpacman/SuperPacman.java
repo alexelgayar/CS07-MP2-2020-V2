@@ -16,7 +16,7 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Window;
 
 public class SuperPacman  extends RPG {
-    public final static float CAMERA_SCALE_FACTOR = 15.f;
+    public final static float CAMERA_SCALE_FACTOR = 16.f;
     public final static float STEP = 0.05f;
 
     private DiscreteCoordinates PLAYER_SPAWN_POSITION;
@@ -47,9 +47,8 @@ public class SuperPacman  extends RPG {
 
             Area area = setCurrentArea(areas[areaIndex], true);
             //PLAYER_SPAWN_POSITION = startingPositions[areaIndex];
-            player= new SuperPacmanPlayer(area, Orientation.RIGHT, startingPositions[areaIndex]);
-            area.registerActor(player);
-            area.setViewCandidate(player);
+            player= new SuperPacmanPlayer(area, Orientation.RIGHT, Level0.PLAYER_SPAWN_POSITION);
+
 
 
           super.initPlayer(player);
@@ -78,15 +77,4 @@ public class SuperPacman  extends RPG {
         return super.getPlayer();
     }
 
-    //@Override
-
-    /*protected void initPlayer(Player player) {
-        super.initPlayer(player);
-        getCurrentArea().registerActor(player);
-        player = new SuperPacmanPlayer(getCurrentArea(), Orientation.RIGHT, PLAYER_SPAWN_POSITION);
-        System.out.println("Initiatilising player through initPlayer: " + player);
-
-    }
-
-     */
 }

@@ -1,12 +1,14 @@
 package ch.epfl.cs107.play.game.superpacman.actor;
 
 import ch.epfl.cs107.play.game.areagame.Area;
+import ch.epfl.cs107.play.game.areagame.actor.Animation;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.Door;
 import ch.epfl.cs107.play.game.rpg.actor.Player;
+import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.game.superpacman.SuperPacman;
 import ch.epfl.cs107.play.game.superpacman.handler.SuperPacmanInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -22,19 +24,28 @@ public class SuperPacmanPlayer extends Player {
     private Sprite sprite;
 
     //Movement speed of player, duration in frame number
-    private final static int SPEED = 6;
+    private final static int SPEED = 5;
 
+    Sprite[][] sprites = RPGSprite.extractSprites("superpacman/pacman", 4, 1, 1,
+            this, 64, 64, new Orientation[] {Orientation.DOWN, Orientation.LEFT, Orientation.UP, Orientation.RIGHT});
+
+    Animation[] animations = Animation.createAnimations(3, sprites);
+
+    Animation animation = animations[3];
+
+    private SuperPacmanPlayerHandler handler;
 
     @Override
     public void draw(Canvas canvas) {
-        sprite.draw(canvas);
+        animation.draw(canvas);
     }
 
     public SuperPacmanPlayer(Area area, Orientation orientation, DiscreteCoordinates coordinates){
         super(area, orientation, coordinates);
-        this.hp=5;
-        sprite = new Sprite("superpacman/bonus", 1.f, 1.f, this );
-        resetMotion();
+        handler = new SuperPacmanPlayerHandler();
+        this.hp=3;
+
+       // resetMotion();
     }
 
     public boolean isWeak(){return (hp <= 0.f); }
@@ -43,24 +54,41 @@ public class SuperPacmanPlayer extends Player {
 
    private Orientation desiredOrientation = Orientation.RIGHT;
 
+    private void getOrientation(Button b, Orientation orientation){
+
+        if(b.isDown()){
+            desiredOrientation = orientation;
+        }
+    }
+
     @Override
     public void update(float deltaTime) {
 
         Keyboard keyboard = getOwnerArea().getKeyboard();
 
-        if(keyboard.get(Keyboard.LEFT).isDown())
-            desiredOrientation = Orientation.LEFT;
-        if(keyboard.get(Keyboard.RIGHT).isDown())
-            desiredOrientation = Orientation.RIGHT;
-        if(keyboard.get(Keyboard.DOWN).isDown())
-            desiredOrientation = Orientation.DOWN;
-        if(keyboard.get(Keyboard.UP).isDown())
-            desiredOrientation = Orientation.UP;
-        if(!isDisplacementOccurs() &&
-                getOwnerArea().canEnterAreaCells(this, Collections.singletonList(getCurrentMainCellCoordinates() .jump(desiredOrientation.toVector())))){
-            orientate(desiredOrientation);
-            move(SPEED);
+        getOrientation(keyboard.get(Keyboard.LEFT), Orientation.LEFT);
+        getOrientation(keyboard.get(Keyboard.RIGHT), Orientation.RIGHT);
+        getOrientation(keyboard.get(Keyboard.UP), Orientation.UP);
+        getOrientation(keyboard.get(Keyboard.DOWN), Orientation.DOWN);
+
+        if(isDisplacementOccurs()){
+            animation = animations[getOrientation().ordinal()];
+            animation.update(deltaTime);
         }
+
+        if(!isDisplacementOccurs()){
+               if(getOwnerArea().canEnterAreaCells(this, Collections.singletonList(getCurrentMainCellCoordinates() .jump(desiredOrientation.toVector()))))
+            {
+                orientate(desiredOrientation);
+
+
+            }
+            move(SPEED);
+
+
+        }
+
+
 
         super.update(deltaTime);
 
@@ -75,18 +103,8 @@ public class SuperPacmanPlayer extends Player {
         getOwnerArea().unregisterActor(this);
     }
 
-    /**
-     *
-     * @param area (Area): initial area, not null
-     * @param position (DiscreteCoordinates): initial position, not null
-     */
-    public void enterArea(Area area, DiscreteCoordinates position){
-        area.registerActor(this);
-        area.setViewCandidate(this);
-        setOwnerArea(area);
-        setCurrentPosition(position.toVector());
-        resetMotion();
-    }
+
+
 
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
@@ -131,6 +149,9 @@ public class SuperPacmanPlayer extends Player {
 
     @Override
     public void interactWith(Interactable other) {
+
+        other.acceptInteraction(handler);
+
 
     }
 

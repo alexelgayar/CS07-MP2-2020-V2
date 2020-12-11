@@ -11,6 +11,8 @@ import ch.epfl.cs107.play.window.Window;
 
 public class Level0 extends SuperPacmanArea{
 
+public final static DiscreteCoordinates PLAYER_SPAWN_POSITION = new DiscreteCoordinates(10, 1);
+
     @Override
     public String getTitle() {
         return "superpacman/Level0";
@@ -20,7 +22,7 @@ public class Level0 extends SuperPacmanArea{
     protected void createArea() {
         super.createArea();
         //registerActor(new Background(this));
-        registerActor(new Door("superpacman/Level1", new DiscreteCoordinates(15,6), Logic.TRUE, this, Orientation.UP, new DiscreteCoordinates(5,9)));
+        registerActor(new Door("superpacman/Level1", new DiscreteCoordinates(15,6), Logic.TRUE, this, Orientation.UP, new DiscreteCoordinates(5,9),new DiscreteCoordinates(6,9) ));
 
     }
 
