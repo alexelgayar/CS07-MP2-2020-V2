@@ -66,7 +66,7 @@ public class SuperPacmanBehavior extends AreaBehavior {
                     for(int h = -1; h <= 1 ; ++h) {
                         for (int w = -1; w <= 1; ++w) {
                             if ((x + w) > 0 && (x + w) < getWidth() && (y+h) > 0 && (y+h) < getHeight() && ((SuperPacmanCell) getCell(x + w , y + h )).type == SuperPacmanCellType.WALL) {
-                                neighbourhood[w + 1][y + 1] = true;
+                                neighbourhood[w + 1][h + 1] = true;
                             }
                         }
                     }
@@ -103,8 +103,7 @@ public class SuperPacmanBehavior extends AreaBehavior {
         }
 
         public boolean canEnter(Interactable entity){
-            if(entity.takeCellSpace() == false){ return true; }
-            else return false;
+            return !hasNonTraversableContent();
         }
 
         public boolean canLeave(Interactable entity){

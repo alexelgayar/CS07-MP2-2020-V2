@@ -19,10 +19,13 @@ public class Level0 extends SuperPacmanArea{
     @Override
     protected void createArea() {
         super.createArea();
-        registerActor(new Background(this));
+        //registerActor(new Background(this));
         registerActor(new Door("superpacman/Level1", new DiscreteCoordinates(15,6), Logic.TRUE, this, Orientation.UP, new DiscreteCoordinates(5,9)));
 
     }
 
-
+    @Override
+    public boolean begin(Window window, FileSystem fileSystem) {
+        return super.begin(window, fileSystem);
+    }
 }

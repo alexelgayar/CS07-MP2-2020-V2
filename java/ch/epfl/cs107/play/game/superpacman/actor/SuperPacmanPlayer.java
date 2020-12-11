@@ -45,6 +45,7 @@ public class SuperPacmanPlayer extends Player {
 
     @Override
     public void update(float deltaTime) {
+        super.update(deltaTime);
         Keyboard keyboard = getOwnerArea().getKeyboard();
 
         if(keyboard.get(Keyboard.LEFT).isDown())
@@ -61,7 +62,7 @@ public class SuperPacmanPlayer extends Player {
             move(SPEED);
         }
 
-        super.update(deltaTime);
+
     }
 
 

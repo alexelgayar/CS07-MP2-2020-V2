@@ -52,7 +52,7 @@ public class SuperPacman  extends RPG {
             area.setViewCandidate(player);
 
 
-            initPlayer(player);
+          super.initPlayer(player);
             return true;
         }
         return false;
@@ -78,11 +78,15 @@ public class SuperPacman  extends RPG {
         return super.getPlayer();
     }
 
-    @Override
-    protected void initPlayer(Player player) {
+    //@Override
+
+    /*protected void initPlayer(Player player) {
+        super.initPlayer(player);
         getCurrentArea().registerActor(player);
         player = new SuperPacmanPlayer(getCurrentArea(), Orientation.RIGHT, PLAYER_SPAWN_POSITION);
         System.out.println("Initiatilising player through initPlayer: " + player);
-        super.initPlayer(player);
+
     }
+
+     */
 }
