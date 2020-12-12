@@ -3,8 +3,12 @@ package ch.epfl.cs107.play.game.superpacman.area;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.AreaBehavior;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
+import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.superpacman.SuperPacman;
+import ch.epfl.cs107.play.game.superpacman.actor.Bonus;
+import ch.epfl.cs107.play.game.superpacman.actor.Cherry;
+import ch.epfl.cs107.play.game.superpacman.actor.Diamond;
 import ch.epfl.cs107.play.game.superpacman.actor.Wall;
 import ch.epfl.cs107.play.game.tutosSolution.Tuto2Behavior;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -58,7 +62,6 @@ public class SuperPacmanBehavior extends AreaBehavior {
     private Wall wall;
 
    protected void registerActors(Area area){
-        System.out.println("Registering the Level:" + area);
         for(int y = 0; y< getHeight(); y++){
             for(int x = 0; x< getWidth(); x++){
                 if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.WALL){
@@ -72,6 +75,16 @@ public class SuperPacmanBehavior extends AreaBehavior {
                     }
                     area.registerActor(new Wall(area, new DiscreteCoordinates(x,y), neighbourhood));
                 }
+                if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.FREE_WITH_DIAMOND){
+                    area.registerActor(new Diamond(area, Orientation.UP, new DiscreteCoordinates(x,y)));
+                }
+                if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.FREE_WITH_CHERRY) {
+                    area.registerActor(new Cherry(area, Orientation.UP, new DiscreteCoordinates(x, y)));
+                }
+                if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.FREE_WITH_BONUS) {
+                    area.registerActor(new Bonus(area, Orientation.UP, new DiscreteCoordinates(x, y)));
+                }
+
             }
        }
     }

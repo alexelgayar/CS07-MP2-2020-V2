@@ -41,7 +41,7 @@ public SuperPacmanStatusGUI(SuperPacmanPlayer player){
             else couleur= 64;
 
             life[j]= new ImageGraphics(ResourcePath.getSprite("superpacman/lifeDisplay"), 1.f, 1.f, new RegionOfInterest(couleur, 0, 64, 64),
-                    anchor.add(new Vector( j, height - 1.375f)), 1, 1005);
+                    anchor.add(new Vector(0.5f + j, height - 1.375f)), 1, 1005);
 
             life[j].draw(canvas);
         }

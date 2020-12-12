@@ -1,10 +1,7 @@
 package ch.epfl.cs107.play.game.superpacman.actor;
 
 import ch.epfl.cs107.play.game.areagame.Area;
-import ch.epfl.cs107.play.game.areagame.actor.Animation;
-import ch.epfl.cs107.play.game.areagame.actor.Interactable;
-import ch.epfl.cs107.play.game.areagame.actor.Orientation;
-import ch.epfl.cs107.play.game.areagame.actor.Sprite;
+import ch.epfl.cs107.play.game.areagame.actor.*;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.Door;
 import ch.epfl.cs107.play.game.rpg.actor.Player;
@@ -161,9 +158,28 @@ public class SuperPacmanPlayer extends Player {
     }
 
     private class SuperPacmanPlayerHandler implements SuperPacmanInteractionVisitor {
+
         @Override
         public void interactWith(Door door) {
             setIsPassingADoor(door);
         }
+        public void interactWith(Cherry cherry){
+            cherry.collect();
+            score += 200;
+        }
+
+        public void interactWith(Diamond diamond){
+            diamond.collect();
+            score += 10;
+        }
+
+        public void interactWith(Bonus bonus){
+            bonus.collect();
+
+        }
     }
+
+
+
+
 }
