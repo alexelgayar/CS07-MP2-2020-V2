@@ -8,14 +8,18 @@ import ch.epfl.cs107.play.game.rpg.actor.Player;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.game.superpacman.SuperPacman;
 import ch.epfl.cs107.play.game.superpacman.SuperPacmanStatusGUI;
+import ch.epfl.cs107.play.game.superpacman.area.Level1;
+import ch.epfl.cs107.play.game.superpacman.area.SuperPacmanBehavior;
 import ch.epfl.cs107.play.game.superpacman.handler.SuperPacmanInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.signal.logic.Logic;
 import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
 
 public class SuperPacmanPlayer extends Player {
     private int hp;
@@ -28,7 +32,7 @@ public class SuperPacmanPlayer extends Player {
     Sprite[][] sprites = RPGSprite.extractSprites("superpacman/pacman", 4, 1, 1,
             this, 64, 64, new Orientation[] {Orientation.DOWN, Orientation.LEFT, Orientation.UP, Orientation.RIGHT});
 
-    Animation[] animations = Animation.createAnimations(3, sprites);
+    Animation[] animations = Animation.createAnimations(2, sprites);
 
     Animation animation = animations[3];
 
@@ -93,6 +97,8 @@ public class SuperPacmanPlayer extends Player {
             }
             move(SPEED);
         }
+
+
         super.update(deltaTime);
 
     }
@@ -157,24 +163,37 @@ public class SuperPacmanPlayer extends Player {
 
     }
 
+
     private class SuperPacmanPlayerHandler implements SuperPacmanInteractionVisitor {
 
-        @Override
-        public void interactWith(Door door) {
-            setIsPassingADoor(door);
-        }
-        public void interactWith(Cherry cherry){
-            cherry.collect();
-            score += 200;
-        }
+        private int collectDiamonds = 0;
+        SuperPacmanBehavior behavior;
+        private boolean allDiasColleted = false;
+
 
         public void interactWith(Diamond diamond){
             diamond.collect();
             score += 10;
+
+            if(getOwnerArea().getTitle().equals("superpacman/Level1")) {
+                collectDiamonds += 1;
+            }
+
+            if(collectDiamonds == 406){ // 406 diamonds in level 1
+                allDiasColleted = true;
+
+            }
+
         }
 
         public void interactWith(Bonus bonus){
             bonus.collect();
+
+        }
+
+        public void interactWith(Key key){
+            key.collect();
+            key.isCollected = true;
 
         }
     }

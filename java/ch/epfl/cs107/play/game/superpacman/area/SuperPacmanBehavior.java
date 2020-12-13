@@ -60,8 +60,10 @@ public class SuperPacmanBehavior extends AreaBehavior {
     }
 
     private Wall wall;
+   private  int diamondCounter= 0;
 
-   protected void registerActors(Area area){
+
+    protected void registerActors(Area area){
         for(int y = 0; y< getHeight(); y++){
             for(int x = 0; x< getWidth(); x++){
                 if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.WALL){
@@ -77,6 +79,11 @@ public class SuperPacmanBehavior extends AreaBehavior {
                 }
                 if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.FREE_WITH_DIAMOND){
                     area.registerActor(new Diamond(area, Orientation.UP, new DiscreteCoordinates(x,y)));
+
+                    if(area.getTitle().equals("superpacman/Level1")) {
+                        diamondCounter += 1;
+                    }
+
                 }
                 if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.FREE_WITH_CHERRY) {
                     area.registerActor(new Cherry(area, Orientation.UP, new DiscreteCoordinates(x, y)));

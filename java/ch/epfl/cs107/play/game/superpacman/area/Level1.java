@@ -4,12 +4,16 @@ import ch.epfl.cs107.play.game.areagame.actor.Background;
 import ch.epfl.cs107.play.game.areagame.actor.Foreground;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.rpg.actor.Door;
+import ch.epfl.cs107.play.game.superpacman.actor.Gate;
+import ch.epfl.cs107.play.game.superpacman.actor.Key;
+import ch.epfl.cs107.play.game.superpacman.actor.SuperPacmanPlayer;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.signal.logic.Logic;
 import ch.epfl.cs107.play.window.Window;
 
 public class Level1 extends SuperPacmanArea {
+
 
 
 
@@ -23,6 +27,10 @@ public class Level1 extends SuperPacmanArea {
         super.createArea();
        // registerActor(new Background(this));
         registerActor(new Door("superpacman/Level2", new DiscreteCoordinates(15,29), Logic.TRUE, this, Orientation.DOWN, new DiscreteCoordinates(14,0), new DiscreteCoordinates(15, 0)));
+
+     //registerActor(new Gate(this, Orientation.RIGHT, diamonds, new DiscreteCoordinates(14,13)));
+      // registerActor(new Gate(this, Orientation.RIGHT, diamonds, new DiscreteCoordinates(15,13)));
+
 
     }
 
