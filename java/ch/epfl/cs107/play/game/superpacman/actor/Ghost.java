@@ -7,6 +7,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
+import ch.epfl.cs107.play.game.superpacman.handler.SuperPacmanInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Canvas;
 
@@ -18,10 +19,10 @@ public class Ghost extends MovableAreaEntity {
     //        this, 64, 64, new Orientation[] {Orientation.UP, Orientation.RIGHT, Orientation.DOWN, Orientation.LEFT});
 
 
-    Sprite[] sprites = RPGSprite.extractSprites("superpacman/ghost.afraid", 2, 1, 1,
+    Sprite[] afraidSprites = RPGSprite.extractSprites("superpacman/ghost.afraid", 2, 1, 1,
             this, 64, 64);
 
-    Animation animation;
+    Animation afraidAnimation;
 
     /**
      * Default MovableAreaEntity constructor
@@ -33,7 +34,7 @@ public class Ghost extends MovableAreaEntity {
     public Ghost(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
 
-        animation = new Animation(2, sprites);
+        afraidAnimation = new Animation(2, afraidSprites);
     }
 
 
@@ -43,13 +44,13 @@ public class Ghost extends MovableAreaEntity {
 
     @Override
     public void draw(Canvas canvas) {
-        animation.draw(canvas);
+        afraidAnimation.draw(canvas);
     }
 
     @Override
     public void update(float deltaTime){
         super.update(deltaTime);
-        animation.update(deltaTime);
+        afraidAnimation.update(deltaTime);
     }
 
     @Override
@@ -64,7 +65,7 @@ public class Ghost extends MovableAreaEntity {
 
     @Override
     public boolean isCellInteractable() {
-        return false;
+        return true;
     }
 
     @Override
@@ -72,9 +73,10 @@ public class Ghost extends MovableAreaEntity {
         return false;
     }
 
+    //Handle Interaction with Pacman
     @Override
     public void acceptInteraction(AreaInteractionVisitor v) {
-
+        ((SuperPacmanInteractionVisitor)v).interactWith(this);
     }
 
 
