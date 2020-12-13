@@ -180,6 +180,7 @@ public class SuperPacmanPlayer extends Player {
 
        public void interactWith(Cherry cherry){
             cherry.collect();
+            score += 200;
         }
 
         public void interactWith(Diamond diamond){
