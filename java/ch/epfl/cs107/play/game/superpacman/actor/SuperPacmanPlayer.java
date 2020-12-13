@@ -9,6 +9,7 @@ import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.game.superpacman.SuperPacman;
 import ch.epfl.cs107.play.game.superpacman.SuperPacmanStatusGUI;
 import ch.epfl.cs107.play.game.superpacman.area.Level1;
+import ch.epfl.cs107.play.game.superpacman.area.SuperPacmanArea;
 import ch.epfl.cs107.play.game.superpacman.area.SuperPacmanBehavior;
 import ch.epfl.cs107.play.game.superpacman.handler.SuperPacmanInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
@@ -166,23 +167,12 @@ public class SuperPacmanPlayer extends Player {
 
     private class SuperPacmanPlayerHandler implements SuperPacmanInteractionVisitor {
 
-        private int collectDiamonds = 0;
-        SuperPacmanBehavior behavior;
-        private boolean allDiasColleted = false;
-
 
         public void interactWith(Diamond diamond){
             diamond.collect();
             score += 10;
 
-            if(getOwnerArea().getTitle().equals("superpacman/Level1")) {
-                collectDiamonds += 1;
-            }
-
-            if(collectDiamonds == 406){ // 406 diamonds in level 1
-                allDiasColleted = true;
-
-            }
+            ((SuperPacmanArea)getOwnerArea()).countDiamonds();
 
         }
 

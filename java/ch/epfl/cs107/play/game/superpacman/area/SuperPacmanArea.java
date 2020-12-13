@@ -6,9 +6,10 @@ import ch.epfl.cs107.play.game.tutosSolution.Tuto2;
 import ch.epfl.cs107.play.game.tutosSolution.Tuto2Behavior;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.signal.logic.Logic;
 import ch.epfl.cs107.play.window.Window;
 
-public abstract class SuperPacmanArea extends Area {
+public abstract class SuperPacmanArea extends Area implements Logic {
 
     private SuperPacmanBehavior behavior;
 
@@ -38,5 +39,24 @@ public abstract class SuperPacmanArea extends Area {
         return false;
     }
 
+    private int nbrDiamonds= 0;
 
+    public void countDiamonds(){
+        nbrDiamonds ++;
+    }
+
+    @Override
+    public boolean isOff() {
+        return false;
+    }
+
+    @Override
+    public boolean isOn() {
+        return nbrDiamonds == 406;
+    }
+
+    @Override
+    public float getIntensity() {
+        return 0;
+    }
 }
