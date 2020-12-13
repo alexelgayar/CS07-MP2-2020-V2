@@ -16,7 +16,7 @@ import static java.awt.Color.YELLOW;
 public class SuperPacmanStatusGUI implements Graphics {
 
 private SuperPacmanPlayer player;
-private int ptnMax = 5;
+private int hpMax = 5;
 private int couleur;
 
 public SuperPacmanStatusGUI(SuperPacmanPlayer player){
@@ -32,9 +32,9 @@ public SuperPacmanStatusGUI(SuperPacmanPlayer player){
         Vector anchor = canvas.getTransform().getOrigin().sub(new Vector(width/2, height/2));
 
       //  if(player.getHp())
-        ImageGraphics[] life = new ImageGraphics[5];
+        ImageGraphics[] life = new ImageGraphics[hpMax];
 
-        for(int j = 0; j < ptnMax; ++j){
+        for(int j = 0; j < hpMax; ++j){
 
             if(player.getHp() > j)
                 couleur= 0;
@@ -45,7 +45,7 @@ public SuperPacmanStatusGUI(SuperPacmanPlayer player){
 
             life[j].draw(canvas);
         }
-        TextGraphics score = new TextGraphics("Score: " + player.getScore() , 0.75f, Color.YELLOW, Color.BLACK, 0.09f , true , false , anchor.add(new Vector(ptnMax + 1, height - 1.100f)));
+        TextGraphics score = new TextGraphics("Score: " + player.getScore() , 0.75f, Color.YELLOW, Color.BLACK, 0.09f , true , false , anchor.add(new Vector(hpMax + 1, height - 1.100f)));
         score.draw(canvas);
 
 

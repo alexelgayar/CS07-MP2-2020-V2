@@ -18,7 +18,14 @@ public final class And extends LogicGate {
         this.signal2 = signal2;
     }
 
-    /// And extends logicGate
+    @Override
+    public boolean isOn() {
+        return signal1.isOn() && signal2.isOn();
+    }
+
+/// And extends logicGate
+
+
 
     @Override
     public float getIntensity() {

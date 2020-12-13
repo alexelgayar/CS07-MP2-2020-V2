@@ -7,7 +7,7 @@ package ch.epfl.cs107.play.signal.logic;
 public abstract class LogicGate implements Logic {
 
     /**@return (boolean): true if the signal is considered as on*/
-    public final boolean isOn(){
+    public boolean isOn(){
         return Math.abs(getIntensity() - 1.0f) < EPSILON;
     }
 

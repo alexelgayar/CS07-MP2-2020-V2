@@ -77,8 +77,9 @@ public class SuperPacmanBehavior extends AreaBehavior {
                 if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.FREE_WITH_DIAMOND){
                     area.registerActor(new Diamond(area, Orientation.UP, new DiscreteCoordinates(x,y)));
 
-                    if(area.getTitle().equals("superpacman/Level1")) {
+                    if(area.getTitle().equals("superpacman/Level2")) {
                         diamondCounter += 1;
+                        System.out.println(diamondCounter);
                     }
 
                 }
@@ -137,3 +138,5 @@ public class SuperPacmanBehavior extends AreaBehavior {
 
     }
 }
+
+

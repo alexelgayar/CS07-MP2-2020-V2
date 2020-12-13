@@ -15,6 +15,8 @@ public class Level0 extends SuperPacmanArea{
 
 public final static DiscreteCoordinates PLAYER_SPAWN_POSITION = new DiscreteCoordinates(10, 1);
 
+
+
     private Key key1;
 
     @Override

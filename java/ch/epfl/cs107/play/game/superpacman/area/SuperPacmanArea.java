@@ -39,11 +39,9 @@ public abstract class SuperPacmanArea extends Area implements Logic {
         return false;
     }
 
-    private int nbrDiamonds= 0;
+  public void countDiamonds(){
 
-    public void countDiamonds(){
-        nbrDiamonds ++;
-    }
+   }
 
     @Override
     public boolean isOff() {
@@ -52,7 +50,7 @@ public abstract class SuperPacmanArea extends Area implements Logic {
 
     @Override
     public boolean isOn() {
-        return (nbrDiamonds == 406);
+        return false;
     }
 
     @Override
