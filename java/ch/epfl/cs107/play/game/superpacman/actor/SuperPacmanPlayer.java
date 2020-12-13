@@ -25,11 +25,13 @@ import java.util.logging.Level;
 public class SuperPacmanPlayer extends Player {
     private int hp;
     private int score;
+    private float invulnerabilityTimer;
+
     private Sprite sprite;
     private SuperPacmanStatusGUI gui;
     //Movement speed of player, duration in frame number
     private final static int SPEED = 5;
-
+    private final float INVULNERABLE_TIME = 10.f;
     Sprite[][] sprites = RPGSprite.extractSprites("superpacman/pacman", 4, 1, 1,
             this, 64, 64, new Orientation[] {Orientation.DOWN, Orientation.LEFT, Orientation.UP, Orientation.RIGHT});
 
@@ -46,6 +48,10 @@ public class SuperPacmanPlayer extends Player {
     public int getHp(){
         return this.hp;
     }
+
+    public float getInvulnerabilityTimer(){ return this.invulnerabilityTimer; }
+
+    public void setInvulnerabilityTimer(){ this.invulnerabilityTimer = INVULNERABLE_TIME;}
 
     @Override
     public void draw(Canvas canvas) {
