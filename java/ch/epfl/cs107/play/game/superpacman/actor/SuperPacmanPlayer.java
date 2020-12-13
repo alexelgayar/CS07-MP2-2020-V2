@@ -90,6 +90,7 @@ public class SuperPacmanPlayer extends Player {
             animation = animations[getOrientation().ordinal()];
             animation.update(deltaTime);
         }
+        else{animation.reset();}
 
         if(!isDisplacementOccurs()){
                if(getOwnerArea().canEnterAreaCells(this, Collections.singletonList(getCurrentMainCellCoordinates() .jump(desiredOrientation.toVector()))))
@@ -161,12 +162,19 @@ public class SuperPacmanPlayer extends Player {
 
         other.acceptInteraction(handler);
 
-
     }
 
 
     private class SuperPacmanPlayerHandler implements SuperPacmanInteractionVisitor {
 
+        @Override
+        public void interactWith(Door door) {
+            setIsPassingADoor(door);
+        }
+
+       public void interactWith(Cherry cherry){
+            cherry.collect();
+        }
 
         public void interactWith(Diamond diamond){
             diamond.collect();

@@ -28,8 +28,8 @@ public class Level1 extends SuperPacmanArea {
        // registerActor(new Background(this));
         registerActor(new Door("superpacman/Level2", new DiscreteCoordinates(15,29), Logic.TRUE, this, Orientation.DOWN, new DiscreteCoordinates(14,0), new DiscreteCoordinates(15, 0)));
 
-     registerActor(new Gate(this, Orientation.RIGHT, this, new DiscreteCoordinates(14,13)));
-       registerActor(new Gate(this, Orientation.RIGHT, this, new DiscreteCoordinates(15,13)));
+       registerActor(new Gate(this, Orientation.RIGHT, this, new DiscreteCoordinates(14,3)));
+       registerActor(new Gate(this, Orientation.RIGHT, this, new DiscreteCoordinates(15,3)));
 
 
     }
