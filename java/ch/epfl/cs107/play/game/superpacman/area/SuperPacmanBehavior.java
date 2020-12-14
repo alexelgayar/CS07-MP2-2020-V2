@@ -91,9 +91,20 @@ public class SuperPacmanBehavior extends AreaBehavior {
                 }
 
                 if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.FREE_WITH_BLINKY) {
-                    System.out.println("Registering Blinky");
+                    System.out.println("Behaviour: Registering Blinky");
                     area.registerActor(new Blinky(area, Orientation.RIGHT, new DiscreteCoordinates(x, y)));
                 }
+
+                if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.FREE_WITH_INKY) {
+                    System.out.println("Behaviour: Registering Inky (for now we use Blinky)");
+                    area.registerActor(new Blinky(area, Orientation.RIGHT, new DiscreteCoordinates(x, y)));
+                }
+
+                if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.FREE_WITH_PINKY) {
+                    System.out.println("Behaviour: Registering Pinky (got now we use Blinky)");
+                    area.registerActor(new Blinky(area, Orientation.RIGHT, new DiscreteCoordinates(x, y)));
+                }
+
 
             }
        }

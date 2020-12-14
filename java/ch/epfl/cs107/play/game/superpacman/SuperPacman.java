@@ -16,11 +16,11 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Window;
 
 public class SuperPacman  extends RPG {
-    public final static float CAMERA_SCALE_FACTOR = 17.f;
+    public final static float CAMERA_SCALE_FACTOR = 40.f;//17.f;
     public final static float STEP = 0.05f;
 
     private DiscreteCoordinates PLAYER_SPAWN_POSITION;
-    private SuperPacmanPlayer player;
+    public SuperPacmanPlayer player;
 
     private final String[] areas = {"superpacman/Level0", "superpacman/Level1", "superpacman/Level2"}; //"superpacman/background.png"
     private final DiscreteCoordinates[] startingPositions = {
@@ -43,15 +43,12 @@ public class SuperPacman  extends RPG {
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
             createAreas();
-            areaIndex = 0; //Testing Ghost Spawning
+            areaIndex = 1; //Testing Ghost Spawning
 
             Area area = setCurrentArea(areas[areaIndex], true);
             //PLAYER_SPAWN_POSITION = startingPositions[areaIndex];
-            player= new SuperPacmanPlayer(area, Orientation.RIGHT, Level0.PLAYER_SPAWN_POSITION);
-
-
-
-          super.initPlayer(player);
+            player = new SuperPacmanPlayer(area, Orientation.RIGHT, Level0.PLAYER_SPAWN_POSITION);
+            super.initPlayer(player);
             return true;
         }
         return false;

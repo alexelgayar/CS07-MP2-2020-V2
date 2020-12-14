@@ -2,6 +2,7 @@ package ch.epfl.cs107.play.game.superpacman.area;
 
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.superpacman.SuperPacman;
+import ch.epfl.cs107.play.game.superpacman.actor.SuperPacmanPlayer;
 import ch.epfl.cs107.play.game.tutosSolution.Tuto2;
 import ch.epfl.cs107.play.game.tutosSolution.Tuto2Behavior;
 import ch.epfl.cs107.play.io.FileSystem;
@@ -12,7 +13,6 @@ import ch.epfl.cs107.play.window.Window;
 public abstract class SuperPacmanArea extends Area implements Logic {
 
     private SuperPacmanBehavior behavior;
-
     /**
      * Create the area by adding it all actors
      * called by begin method

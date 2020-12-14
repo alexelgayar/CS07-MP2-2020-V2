@@ -4,13 +4,12 @@ import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.actor.Animation;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
-import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RandomGenerator;
 import ch.epfl.cs107.play.window.Canvas;
 
-public class Blinky extends Ghost{
+public class Pinky extends Ghost{
 
 
     Sprite[][] sprites = RPGSprite.extractSprites("superpacman/ghost.blinky", 2, 1, 1,
@@ -29,7 +28,7 @@ public class Blinky extends Ghost{
      * @param orientation (Orientation): Initial orientation of the entity. Not null
      * @param position    (Coordinate): Initial position of the entity. Not null
      */
-    public Blinky(Area area, Orientation orientation, DiscreteCoordinates position) {
+    public Pinky(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
         //animations = new Animation(2, sprites);
     }
@@ -39,8 +38,8 @@ public class Blinky extends Ghost{
         super.update(deltaTime);
 
         if(!isAfraid()){
-                animation = animations[getOrientation().ordinal()];
-                animation.update(deltaTime);
+            animation = animations[getOrientation().ordinal()];
+            animation.update(deltaTime);
         }
         else{
             super.afraidAnimation.update(deltaTime);

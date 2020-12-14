@@ -21,16 +21,14 @@ public class Ghost extends MovableAreaEntity {
 
     DiscreteCoordinates spawnPoint;
 
-
-
     //Sprite[][] sprites = RPGSprite.extractSprites("superpacman/ghost.blinky", 2, 1, 1,
     //        this, 64, 64, new Orientation[] {Orientation.UP, Orientation.RIGHT, Orientation.DOWN, Orientation.LEFT});
 
 
     Sprite[] afraidSprites = RPGSprite.extractSprites("superpacman/ghost.afraid", 2, 1, 1,
-            this, 64, 64);
+            this, 16, 16);
 
-    Animation afraidAnimation;
+    Animation afraidAnimation = new Animation(2, afraidSprites);
 
     /**
      * Default MovableAreaEntity constructor
@@ -41,29 +39,11 @@ public class Ghost extends MovableAreaEntity {
      */
     public Ghost(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
-
-
-        if(isAfraid()) {
-            if(isDisplacementOccurs()) {
-                afraidAnimation = new Animation(2, afraidSprites);
-            }
-        }
-
-
-
     }
 
     @Override
     public void update(float deltaTime){
         super.update(deltaTime);
-
-
-
-        if(isAfraid()) {
-            if(isDisplacementOccurs()) {
-                afraidAnimation.update(deltaTime);
-            }
-        }
 
         getNextOrientation();
 
@@ -79,7 +59,9 @@ public class Ghost extends MovableAreaEntity {
     }
 
     public boolean isAfraid(){
-        return player.isInvincible();
+        return false;
+        // PLAYER IS NOT INITIALISED! How do we get the player?
+        // player.isInvincible();
     }
 
     public Orientation getNextOrientation(){

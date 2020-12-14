@@ -42,8 +42,6 @@ public class SuperPacmanPlayer extends Player {
 
     Animation animation = animations[3];
 
-
-
     public int getScore(){
         return this.score;
     }
@@ -127,7 +125,8 @@ public class SuperPacmanPlayer extends Player {
     }
 
     public boolean isInvincible(){
-        return invulnerabilityTimer > 0;
+        System.out.println("player is Invincible: " + (invulnerabilityTimer > 0.f));
+        return invulnerabilityTimer > 0.f;
     }
 
 
