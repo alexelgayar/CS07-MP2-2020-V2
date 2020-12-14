@@ -45,21 +45,22 @@ public class Ghost extends MovableAreaEntity {
     public void update(float deltaTime){
         super.update(deltaTime);
 
-        getNextOrientation();
+        //getNextOrientation();
 
-        if(!isDisplacementOccurs()){
-            if(getOwnerArea().canEnterAreaCells(this, Collections.singletonList(getCurrentMainCellCoordinates().jump(getNextOrientation().toVector()))))
+        if(!isDisplacementOccurs()){ //if displacememt not moving
+            //This condition always returns false
+            if(true)//getOwnerArea().canEnterAreaCells(this, Collections.singletonList(getCurrentMainCellCoordinates().jump(getNextOrientation().toVector()))))
             {
                 orientate(getNextOrientation());
             }
            move(18);
         }
-
-
+        else{ //if displacement is moving
+        }
     }
 
     public boolean isAfraid(){
-        return false;
+        return true;
         // PLAYER IS NOT INITIALISED! How do we get the player?
         // player.isInvincible();
     }
