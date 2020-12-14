@@ -30,4 +30,6 @@ public class Diamond extends CollectableAreaEntity {
     }
 
 
+
+
 }

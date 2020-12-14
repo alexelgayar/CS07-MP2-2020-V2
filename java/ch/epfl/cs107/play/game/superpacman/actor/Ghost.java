@@ -7,13 +7,21 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
+import ch.epfl.cs107.play.game.superpacman.SuperPacman;
 import ch.epfl.cs107.play.game.superpacman.handler.SuperPacmanInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Canvas;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Ghost extends MovableAreaEntity {
+
+    private SuperPacmanPlayer player;
+
+    DiscreteCoordinates spawnPoint;
+
+
 
     //Sprite[][] sprites = RPGSprite.extractSprites("superpacman/ghost.blinky", 2, 1, 1,
     //        this, 64, 64, new Orientation[] {Orientation.UP, Orientation.RIGHT, Orientation.DOWN, Orientation.LEFT});
@@ -34,28 +42,62 @@ public class Ghost extends MovableAreaEntity {
     public Ghost(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
 
-        afraidAnimation = new Animation(2, afraidSprites);
-    }
+
+        if(isAfraid()) {
+            if(isDisplacementOccurs()) {
+                afraidAnimation = new Animation(2, afraidSprites);
+            }
+        }
 
 
-    private void getNextOrientation(Orientation orientation){
-        //Get the next orientation for the ghost
-    }
 
-    @Override
-    public void draw(Canvas canvas) {
-        afraidAnimation.draw(canvas);
     }
 
     @Override
     public void update(float deltaTime){
         super.update(deltaTime);
-        afraidAnimation.update(deltaTime);
+
+
+
+        if(isAfraid()) {
+            if(isDisplacementOccurs()) {
+                afraidAnimation.update(deltaTime);
+            }
+        }
+
+        getNextOrientation();
+
+        if(!isDisplacementOccurs()){
+            if(getOwnerArea().canEnterAreaCells(this, Collections.singletonList(getCurrentMainCellCoordinates().jump(getNextOrientation().toVector()))))
+            {
+                orientate(getNextOrientation());
+            }
+           move(18);
+        }
+
+
+    }
+
+    public boolean isAfraid(){
+        return player.isInvincible();
+    }
+
+    public Orientation getNextOrientation(){
+        return null;
     }
 
     @Override
+    public void draw(Canvas canvas) {
+        if (isAfraid()) {
+            afraidAnimation.draw(canvas);
+        }
+    }
+
+
+
+    @Override
     public List<DiscreteCoordinates> getCurrentCells() {
-        return null;
+        return Collections.singletonList(getCurrentMainCellCoordinates());
     }
 
     @Override
@@ -90,6 +132,7 @@ public class Ghost extends MovableAreaEntity {
                 - Ghost spawns back at its spawn position
 
 
+
         if (invulnerabilityTimer > 0) {
         invulnerabilityTimer -= deltaTime;
     }
@@ -97,5 +140,7 @@ public class Ghost extends MovableAreaEntity {
         invulnerabilityTimer = 0;
     }
          */
+
+
 
 }

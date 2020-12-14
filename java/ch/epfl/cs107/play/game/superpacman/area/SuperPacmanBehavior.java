@@ -90,11 +90,10 @@ public class SuperPacmanBehavior extends AreaBehavior {
                     area.registerActor(new Bonus(area, Orientation.UP, new DiscreteCoordinates(x, y)));
                 }
 
-                //Causes error when I try to spawn in the ghost
-                /*if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.FREE_WITH_BLINKY) {
+                if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.FREE_WITH_BLINKY) {
                     System.out.println("Registering Blinky");
                     area.registerActor(new Blinky(area, Orientation.RIGHT, new DiscreteCoordinates(x, y)));
-                }*/
+                }
 
             }
        }

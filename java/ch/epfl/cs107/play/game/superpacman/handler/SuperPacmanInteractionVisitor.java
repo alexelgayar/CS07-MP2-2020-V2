@@ -29,4 +29,13 @@ public interface SuperPacmanInteractionVisitor extends RPGInteractionVisitor {
     default void interactWith(Key key){
 
     }
+
+    default void interactWith(Ghost ghost){
+
+    }
+
+    default void interactWith(Blinky blinky){
+
+    }
+
 }

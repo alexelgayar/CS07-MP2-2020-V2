@@ -18,6 +18,7 @@ import ch.epfl.cs107.play.window.Button;
 import ch.epfl.cs107.play.window.Canvas;
 import ch.epfl.cs107.play.window.Keyboard;
 
+import java.nio.channels.ClosedSelectorException;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
@@ -25,13 +26,15 @@ import java.util.logging.Level;
 public class SuperPacmanPlayer extends Player {
     private int hp;
     private int score;
-    private float invulnerabilityTimer;
+    private float invulnerabilityTimer = 0.f;
 
     private Sprite sprite;
     private SuperPacmanStatusGUI gui;
-    //Movement speed of player, duration in frame number
-    private final static int SPEED = 5;
+    private final static int SPEED = 5;     //Movement speed of player, duration in frame number
     private final float INVULNERABLE_TIME = 10.f;
+    private SuperPacmanPlayerHandler handler;
+    private final int GHOST_SCORE = 500;
+
     Sprite[][] sprites = RPGSprite.extractSprites("superpacman/pacman", 4, 1, 1,
             this, 64, 64, new Orientation[] {Orientation.DOWN, Orientation.LEFT, Orientation.UP, Orientation.RIGHT});
 
@@ -39,7 +42,7 @@ public class SuperPacmanPlayer extends Player {
 
     Animation animation = animations[3];
 
-    private SuperPacmanPlayerHandler handler;
+
 
     public int getScore(){
         return this.score;
@@ -87,6 +90,10 @@ public class SuperPacmanPlayer extends Player {
 
         Keyboard keyboard = getOwnerArea().getKeyboard();
 
+        if(invulnerabilityTimer > 0) {
+            invulnerabilityTimer -= deltaTime;
+        }
+
         getOrientation(keyboard.get(Keyboard.LEFT), Orientation.LEFT);
         getOrientation(keyboard.get(Keyboard.RIGHT), Orientation.RIGHT);
         getOrientation(keyboard.get(Keyboard.UP), Orientation.UP);
@@ -119,6 +126,9 @@ public class SuperPacmanPlayer extends Player {
         getOwnerArea().unregisterActor(this);
     }
 
+    public boolean isInvincible(){
+        return invulnerabilityTimer > 0;
+    }
 
 
 
@@ -193,6 +203,17 @@ public class SuperPacmanPlayer extends Player {
 
         public void interactWith(Bonus bonus){
             bonus.collect();
+            invulnerabilityTimer = INVULNERABLE_TIME;
+
+        }
+
+        public void interactWith(Ghost ghost){
+            if (ghost.isAfraid()){
+                getOwnerArea().leaveAreaCells(ghost, getEnteredCells());
+                getOwnerArea().enterAreaCells(ghost, getCurrentCells());
+
+                score += GHOST_SCORE;
+            }
 
         }
 
