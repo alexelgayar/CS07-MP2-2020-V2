@@ -43,7 +43,7 @@ public class SuperPacman  extends RPG {
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
             createAreas();
-            areaIndex = 1; //Testing Ghost Spawning
+            areaIndex = 2; //Testing Ghost Spawning
 
             Area area = setCurrentArea(areas[areaIndex], true);
             //PLAYER_SPAWN_POSITION = startingPositions[areaIndex];
@@ -64,10 +64,17 @@ public class SuperPacman  extends RPG {
         }
         else{
             getCurrentArea().unscareGhosts();
-            if (!player.getPacmanAlive()) {
-                //Reset the level here
-                player.respawnPacman();
-                //TODO: How do I set position of pacman to PLAYER_SPAWN_POSITION?
+            if (!(player.getHp() <= 0)) {
+                if (!player.getPacmanAlive()) {
+                    //Reset the level here
+                    player.respawnPacman();
+                    getCurrentArea().resetGhosts();
+                }
+            }
+            else{
+                //Game over screen
+                //TODO: Extension create a game-over screen
+                //getCurrentArea().unregisterActor(player);
             }
         }
 

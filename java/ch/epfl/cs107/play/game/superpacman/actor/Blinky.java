@@ -12,15 +12,16 @@ import ch.epfl.cs107.play.window.Canvas;
 
 public class Blinky extends Ghost{
 
+    private final int MAX = 4;
 
     Sprite[][] sprites = RPGSprite.extractSprites("superpacman/ghost.blinky", 2, 1, 1,
             this, 16, 16, new Orientation[]{Orientation.UP, Orientation.RIGHT, Orientation.DOWN, Orientation.LEFT});
 
     Animation[] animations = Animation.createAnimations(2, sprites);
     Animation animation = animations[1];
-    int randomInt = RandomGenerator.getInstance().nextInt(3);
 
 
+    int randomInt;
 
     /**
      * Default MovableAreaEntity constructor
@@ -50,6 +51,7 @@ public class Blinky extends Ghost{
 
     @Override
     public Orientation getNextOrientation() {
+        int randomInt = RandomGenerator.getInstance().nextInt(MAX);
         return Orientation.fromInt(randomInt);
     }
 

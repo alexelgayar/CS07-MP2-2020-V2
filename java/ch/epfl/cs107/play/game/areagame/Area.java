@@ -4,7 +4,6 @@ import ch.epfl.cs107.play.game.Playable;
 import ch.epfl.cs107.play.game.actor.Actor;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Interactor;
-import ch.epfl.cs107.play.game.superpacman.actor.Ghost;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Transform;
@@ -58,12 +57,16 @@ public abstract class Area implements Playable {
 		this.areaBehavior = ab;
 	}
 
-	public final void scareGhosts(){
+	public void scareGhosts(){
 		areaBehavior.scareGhosts();
 	}
 
-	public final void unscareGhosts(){
+	public void unscareGhosts(){
 		areaBehavior.unscareGhosts();
+	}
+
+	public void resetGhosts(){
+		areaBehavior.resetGhosts();
 	}
 
 	/**

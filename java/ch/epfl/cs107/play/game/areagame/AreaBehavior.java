@@ -7,6 +7,7 @@ import java.util.Set;
 
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Interactor;
+import ch.epfl.cs107.play.game.areagame.actor.Path;
 import ch.epfl.cs107.play.game.areagame.io.ResourcePath;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Image;
@@ -36,6 +37,14 @@ public abstract class AreaBehavior
         height = behaviorMap.getHeight();
         width = behaviorMap.getWidth();
         cells = new Cell[width][height];
+
+        //Create the AreaGraph here
+
+    }
+
+    //For any cell that is not a wall, add a node
+    protected void addNode(){
+
     }
 
     protected void scareGhosts(){
@@ -44,6 +53,10 @@ public abstract class AreaBehavior
 
     protected void unscareGhosts(){
         //Unscare the ghosts
+    }
+
+    protected void resetGhosts(){
+        //Reset all the ghosts if pacman is killed
     }
 
     protected void cellInteractionOf(Interactor interactor){

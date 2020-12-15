@@ -40,6 +40,7 @@ public class Ghost extends MovableAreaEntity {
      */
     public Ghost(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
+        spawnPoint = position;
         isAfraid = false;
     }
 
@@ -50,14 +51,15 @@ public class Ghost extends MovableAreaEntity {
         //getNextOrientation();
 
         if(!isDisplacementOccurs()){ //if displacememt not moving
-            //This condition always returns false
-            if(true)//getOwnerArea().canEnterAreaCells(this, Collections.singletonList(getCurrentMainCellCoordinates().jump(getNextOrientation().toVector()))))
+            //System.out.println("Orientation clear: " + getOwnerArea().canEnterAreaCells(this, Collections.singletonList(getCurrentMainCellCoordinates().jump(getNextOrientation().toVector()))));
+            if(getOwnerArea().canEnterAreaCells(this, Collections.singletonList(getCurrentMainCellCoordinates().jump(getNextOrientation().toVector()))))
             {
                 orientate(getNextOrientation());
             }
            move(18);
         }
         else{ //if displacement is moving
+
         }
     }
 
@@ -100,9 +102,13 @@ public class Ghost extends MovableAreaEntity {
         ((SuperPacmanInteractionVisitor)v).interactWith(this);
     }
 
+    //When ghost is eaten by pacman => Respawn the ghost in its spawn position
     public void eatGhost(){
-        getOwnerArea().unregisterActor(this);
-        //Code so that the ghost respawns inside it's behaviour cell area
+        getOwnerArea().leaveAreaCells(this, this.getEnteredCells());
+        setCurrentPosition(spawnPoint.toVector());
+
+        getOwnerArea().enterAreaCells(this, this.getCurrentCells());
+        resetMotion();
     }
 
     public boolean isAfraid(){
@@ -115,6 +121,17 @@ public class Ghost extends MovableAreaEntity {
 
     public void unscareGhosts(){
         isAfraid = false;
+    }
+
+    //Respawn all the ghosts into their spawn locations
+    public void resetGhosts(){
+        isAfraid = false;
+
+        getOwnerArea().leaveAreaCells(this, this.getEnteredCells());
+        setCurrentPosition(spawnPoint.toVector());
+
+        getOwnerArea().enterAreaCells(this, this.getCurrentCells());
+        resetMotion();
     }
 
 

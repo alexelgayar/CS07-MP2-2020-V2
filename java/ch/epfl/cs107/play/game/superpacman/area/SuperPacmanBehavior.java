@@ -139,6 +139,15 @@ public class SuperPacmanBehavior extends AreaBehavior {
         }
     }
 
+    @Override
+    protected void resetGhosts() {
+        super.resetGhosts();
+        for (Ghost ghost: registeredGhosts){
+            System.out.println("Resetting all ghosts");
+            ghost.resetGhosts();
+        }
+    }
+
     public class SuperPacmanCell extends AreaBehavior.Cell {
 
 
