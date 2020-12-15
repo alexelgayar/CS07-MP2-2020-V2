@@ -1,5 +1,6 @@
 package ch.epfl.cs107.play.game.superpacman.area;
 
+import ch.epfl.cs107.play.game.actor.Actor;
 import ch.epfl.cs107.play.game.areagame.Area;
 import ch.epfl.cs107.play.game.areagame.AreaBehavior;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
@@ -11,7 +12,13 @@ import ch.epfl.cs107.play.game.tutosSolution.Tuto2Behavior;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Window;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class SuperPacmanBehavior extends AreaBehavior {
+    //Create a ghost array?
+    //Ghost[] ghosts = {};
+    private List<Ghost> registeredGhosts;
 
     public enum SuperPacmanCellType {
 
@@ -46,6 +53,8 @@ public class SuperPacmanBehavior extends AreaBehavior {
 
     public SuperPacmanBehavior(Window window, String name) {
         super(window, name);
+        registeredGhosts = new LinkedList<>();
+
         int height = getHeight();
         int width = getWidth();
         for (int y = 0; y < height; y++) {
@@ -91,23 +100,43 @@ public class SuperPacmanBehavior extends AreaBehavior {
                 }
 
                 if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.FREE_WITH_BLINKY) {
-                    System.out.println("Behaviour: Registering Blinky");
-                    area.registerActor(new Blinky(area, Orientation.RIGHT, new DiscreteCoordinates(x, y)));
+                    System.out.println("Behaviour: Registering Blinky, Ghost count:" + registeredGhosts.size());
+                    Ghost Blinky = new Blinky(area, Orientation.RIGHT, new DiscreteCoordinates(x, y));
+                    registeredGhosts.add(Blinky);
+                    area.registerActor(Blinky);
                 }
 
                 if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.FREE_WITH_INKY) {
-                    System.out.println("Behaviour: Registering Inky (for now we use Blinky)");
-                    area.registerActor(new Blinky(area, Orientation.RIGHT, new DiscreteCoordinates(x, y)));
-                }
+                    System.out.println("Behaviour: Registering Inky, Ghost count:" + registeredGhosts.size());
+                    Ghost Inky = new Blinky(area, Orientation.RIGHT, new DiscreteCoordinates(x, y));
+                    registeredGhosts.add(Inky);
+                    area.registerActor(Inky);                }
 
                 if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.FREE_WITH_PINKY) {
-                    System.out.println("Behaviour: Registering Pinky (got now we use Blinky)");
-                    area.registerActor(new Blinky(area, Orientation.RIGHT, new DiscreteCoordinates(x, y)));
-                }
+                    System.out.println("Behaviour: Registering Pinky, Ghost count:" + registeredGhosts.size());
+                    Ghost Pinky = new Blinky(area, Orientation.RIGHT, new DiscreteCoordinates(x, y));
+                    registeredGhosts.add(Pinky);
+                    area.registerActor(Pinky);                }
 
 
             }
        }
+    }
+
+    @Override
+    protected void scareGhosts() {
+        super.scareGhosts();
+        for (Ghost ghost: registeredGhosts){
+            ghost.scareGhosts();
+        }
+    }
+
+    @Override
+    protected void unscareGhosts() {
+        super.unscareGhosts();
+        for (Ghost ghost: registeredGhosts){
+            ghost.unscareGhosts();
+        }
     }
 
     public class SuperPacmanCell extends AreaBehavior.Cell {

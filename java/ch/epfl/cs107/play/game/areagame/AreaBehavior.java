@@ -38,6 +38,13 @@ public abstract class AreaBehavior
         cells = new Cell[width][height];
     }
 
+    protected void scareGhosts(){
+        //Scare the ghosts
+    }
+
+    protected void unscareGhosts(){
+        //Unscare the ghosts
+    }
 
     protected void cellInteractionOf(Interactor interactor){
         for(DiscreteCoordinates dc : interactor.getCurrentCells()){

@@ -27,6 +27,7 @@ public class SuperPacmanPlayer extends Player {
     private int hp;
     private int score;
     private float invulnerabilityTimer = 0.f;
+    private boolean isPacmanAlive;
 
     private Sprite sprite;
     private SuperPacmanStatusGUI gui;
@@ -63,6 +64,7 @@ public class SuperPacmanPlayer extends Player {
     public SuperPacmanPlayer(Area area, Orientation orientation, DiscreteCoordinates coordinates){
         super(area, orientation, coordinates);
         handler = new SuperPacmanPlayerHandler();
+        isPacmanAlive = true;
         this.hp=3;
         this.score=0;
         gui = new SuperPacmanStatusGUI(this);
@@ -83,13 +85,33 @@ public class SuperPacmanPlayer extends Player {
         }
     }
 
+    public boolean getPacmanAlive(){
+        return isPacmanAlive;
+    }
+    public void setPacmanAlive(){
+        isPacmanAlive = true;
+    }
+
     @Override
     public void update(float deltaTime) {
 
         Keyboard keyboard = getOwnerArea().getKeyboard();
 
-        if(invulnerabilityTimer > 0) {
+
+        /*Here we will check for interactions between ghost and player
+            If player touches ghost and invulnerabilityTimer = 0 =>
+                - Player loses hp: hp -= 1;
+                - Reset map + ghosts
+                - Unregister Player and Re-register at spawn position
+            If player touches ghost and invulnerabilityTimer > 0 =>
+                - Player Score += GHOST_SCORE
+                - Ghost spawns back at its spawn position
+         */
+        if (invulnerabilityTimer > 0) {
             invulnerabilityTimer -= deltaTime;
+        }
+        if (invulnerabilityTimer < 0){
+            invulnerabilityTimer = 0;
         }
 
         getOrientation(keyboard.get(Keyboard.LEFT), Orientation.LEFT);
@@ -111,6 +133,9 @@ public class SuperPacmanPlayer extends Player {
             move(SPEED);
         }
 
+        if (!isPacmanAlive){
+            //respawnPacman();
+        }
 
         super.update(deltaTime);
 
@@ -124,12 +149,23 @@ public class SuperPacmanPlayer extends Player {
         getOwnerArea().unregisterActor(this);
     }
 
+    public void respawnPacman(){
+        isPacmanAlive = true;
+        this.hp -= 1;
+
+        getOwnerArea().unregisterActor(this);
+        //TODO: What does this do?
+        getOwnerArea().leaveAreaCells(this, this.getEnteredCells());
+        getOwnerArea().enterAreaCells(this, this.getCurrentCells());
+        //getOwnerArea().registerActor(this);
+        resetMotion();
+
+    }
+
     public boolean isInvincible(){
         System.out.println("player is Invincible: " + (invulnerabilityTimer > 0.f));
         return invulnerabilityTimer > 0.f;
     }
-
-
 
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
@@ -203,15 +239,21 @@ public class SuperPacmanPlayer extends Player {
         public void interactWith(Bonus bonus){
             bonus.collect();
             invulnerabilityTimer = INVULNERABLE_TIME;
-
+            //Set the ghosts to afraid here
+            //=> How do the ghosts check whether invulnerability time > 0?
         }
 
         public void interactWith(Ghost ghost){
             if (ghost.isAfraid()){
-                getOwnerArea().leaveAreaCells(ghost, getEnteredCells());
-                getOwnerArea().enterAreaCells(ghost, getCurrentCells());
+
+                ghost.eatGhost();
+                //getOwnerArea().leaveAreaCells(ghost, getEnteredCells());
+                //getOwnerArea().enterAreaCells(ghost, getCurrentCells());
 
                 score += GHOST_SCORE;
+            }
+            else{
+                isPacmanAlive = false;
             }
 
         }
@@ -219,7 +261,6 @@ public class SuperPacmanPlayer extends Player {
         public void interactWith(Key key){
             key.collect();
             key.isCollected = true;
-
         }
     }
 

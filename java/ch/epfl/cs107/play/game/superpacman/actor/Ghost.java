@@ -18,6 +18,7 @@ import java.util.List;
 public class Ghost extends MovableAreaEntity {
 
     private SuperPacmanPlayer player;
+    private boolean isAfraid;
 
     DiscreteCoordinates spawnPoint;
 
@@ -39,6 +40,7 @@ public class Ghost extends MovableAreaEntity {
      */
     public Ghost(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
+        isAfraid = false;
     }
 
     @Override
@@ -57,12 +59,6 @@ public class Ghost extends MovableAreaEntity {
         }
         else{ //if displacement is moving
         }
-    }
-
-    public boolean isAfraid(){
-        return true;
-        // PLAYER IS NOT INITIALISED! How do we get the player?
-        // player.isInvincible();
     }
 
     public Orientation getNextOrientation(){
@@ -104,25 +100,23 @@ public class Ghost extends MovableAreaEntity {
         ((SuperPacmanInteractionVisitor)v).interactWith(this);
     }
 
-
-        /*Here we will check for interactions between ghost and player
-            If player touches ghost and invulnerabilityTimer = 0 =>
-                - Player loses hp: hp -= 1;
-                - Reset map + ghosts
-                - Unregister Player and Re-register at spawn position
-            If player touches ghost and invulnerabilityTimer > 0 =>
-                - Player Score += GHOST_SCORE
-                - Ghost spawns back at its spawn position
-
-
-
-        if (invulnerabilityTimer > 0) {
-        invulnerabilityTimer -= deltaTime;
+    public void eatGhost(){
+        getOwnerArea().unregisterActor(this);
+        //Code so that the ghost respawns inside it's behaviour cell area
     }
-        if (invulnerabilityTimer < 0){
-        invulnerabilityTimer = 0;
+
+    public boolean isAfraid(){
+        return isAfraid;
     }
-         */
+
+    public void scareGhosts() {
+        isAfraid = true;
+    }
+
+    public void unscareGhosts(){
+        isAfraid = false;
+    }
+
 
 
 

@@ -47,7 +47,8 @@ public class SuperPacman  extends RPG {
 
             Area area = setCurrentArea(areas[areaIndex], true);
             //PLAYER_SPAWN_POSITION = startingPositions[areaIndex];
-            player = new SuperPacmanPlayer(area, Orientation.RIGHT, Level0.PLAYER_SPAWN_POSITION);
+            PLAYER_SPAWN_POSITION = startingPositions[areaIndex];
+            player = new SuperPacmanPlayer(area, Orientation.RIGHT, PLAYER_SPAWN_POSITION);//Level0.PLAYER_SPAWN_POSITION
             super.initPlayer(player);
             return true;
         }
@@ -57,6 +58,20 @@ public class SuperPacman  extends RPG {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
+        //Ghost interaction checker
+        if (player.isInvincible()){
+            getCurrentArea().scareGhosts();
+        }
+        else{
+            getCurrentArea().unscareGhosts();
+            if (!player.getPacmanAlive()) {
+                //Reset the level here
+                player.respawnPacman();
+                //TODO: How do I set position of pacman to PLAYER_SPAWN_POSITION?
+            }
+        }
+
+
     }
 
     @Override
