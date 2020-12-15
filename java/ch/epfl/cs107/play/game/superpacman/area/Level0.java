@@ -43,4 +43,10 @@ public final static DiscreteCoordinates PLAYER_SPAWN_POSITION = new DiscreteCoor
     public boolean begin(Window window, FileSystem fileSystem) {
         return super.begin(window, fileSystem);
     }
+
+    @Override
+    public DiscreteCoordinates getSpawnPoint() {
+        return PLAYER_SPAWN_POSITION;
+
+    }
 }

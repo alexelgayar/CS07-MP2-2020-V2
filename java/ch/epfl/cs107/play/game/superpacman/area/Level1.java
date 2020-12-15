@@ -14,6 +14,14 @@ import ch.epfl.cs107.play.window.Window;
 
 public class Level1 extends SuperPacmanArea {
 
+    public final static DiscreteCoordinates PLAYER_SPAWN_POSITION = new DiscreteCoordinates(15, 6);
+
+    @Override
+    public DiscreteCoordinates getSpawnPoint() {
+        return PLAYER_SPAWN_POSITION;
+
+    }
+
 
     @Override
     public boolean isOn() {

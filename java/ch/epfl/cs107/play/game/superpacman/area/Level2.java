@@ -14,6 +14,15 @@ import javax.print.attribute.standard.OrientationRequested;
 
 public class Level2 extends SuperPacmanArea {
 
+    public final static DiscreteCoordinates PLAYER_SPAWN_POSITION = new DiscreteCoordinates(15, 29);
+
+    @Override
+    public DiscreteCoordinates getSpawnPoint() {
+        return PLAYER_SPAWN_POSITION;
+
+    }
+
+
     @Override
     public boolean isOn() {
         return nbrDiamonds==394;

@@ -8,6 +8,7 @@ import ch.epfl.cs107.play.game.superpacman.actor.SuperPacmanPlayer;
 import ch.epfl.cs107.play.game.superpacman.area.Level0;
 import ch.epfl.cs107.play.game.superpacman.area.Level1;
 import ch.epfl.cs107.play.game.superpacman.area.Level2;
+import ch.epfl.cs107.play.game.superpacman.area.SuperPacmanArea;
 import ch.epfl.cs107.play.game.tutosSolution.actor.GhostPlayer;
 import ch.epfl.cs107.play.game.tutosSolution.area.tuto2.Ferme;
 import ch.epfl.cs107.play.game.tutosSolution.area.tuto2.Village;
@@ -19,14 +20,10 @@ public class SuperPacman  extends RPG {
     public final static float CAMERA_SCALE_FACTOR = 30.f;//17.f;
     public final static float STEP = 0.05f;
 
-    private DiscreteCoordinates PLAYER_SPAWN_POSITION;
     public SuperPacmanPlayer player;
 
     private final String[] areas = {"superpacman/Level0", "superpacman/Level1", "superpacman/Level2"}; //"superpacman/background.png"
-    private final DiscreteCoordinates[] startingPositions = {
-            new DiscreteCoordinates(10,1), //Level 0
-            new DiscreteCoordinates(15,6), //Level 1
-            new DiscreteCoordinates(15,29)}; //Level 2
+
 
     private int areaIndex;
 
@@ -43,12 +40,11 @@ public class SuperPacman  extends RPG {
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
             createAreas();
-            areaIndex = 2; //Testing Ghost Spawning
+            areaIndex = 0; //Testing Ghost Spawning
 
             Area area = setCurrentArea(areas[areaIndex], true);
             //PLAYER_SPAWN_POSITION = startingPositions[areaIndex];
-            PLAYER_SPAWN_POSITION = startingPositions[areaIndex];
-            player = new SuperPacmanPlayer(area, Orientation.RIGHT, PLAYER_SPAWN_POSITION);//Level0.PLAYER_SPAWN_POSITION
+            player = new SuperPacmanPlayer(area, Orientation.RIGHT, ((SuperPacmanArea)area).getSpawnPoint());//Level0.PLAYER_SPAWN_POSITION
             super.initPlayer(player);
             return true;
         }
@@ -68,7 +64,7 @@ public class SuperPacman  extends RPG {
                 if (!player.getPacmanAlive()) {
                     //Reset the level here
                     player.respawnPacman();
-                    getCurrentArea().resetGhosts();
+                  //  getCurrentArea().resetGhosts();
                 }
             }
             else{

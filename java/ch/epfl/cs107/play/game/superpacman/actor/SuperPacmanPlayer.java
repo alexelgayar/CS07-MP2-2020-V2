@@ -35,7 +35,6 @@ public class SuperPacmanPlayer extends Player {
     private final float INVULNERABLE_TIME = 10.f;
     private SuperPacmanPlayerHandler handler;
     private final int GHOST_SCORE = 500;
-    private DiscreteCoordinates spawnPoint;
 
     Sprite[][] sprites = RPGSprite.extractSprites("superpacman/pacman", 4, 1, 1,
             this, 64, 64, new Orientation[] {Orientation.DOWN, Orientation.LEFT, Orientation.UP, Orientation.RIGHT});
@@ -64,7 +63,6 @@ public class SuperPacmanPlayer extends Player {
 
     public SuperPacmanPlayer(Area area, Orientation orientation, DiscreteCoordinates coordinates){
         super(area, orientation, coordinates);
-        spawnPoint = coordinates;
         handler = new SuperPacmanPlayerHandler();
         isPacmanAlive = true;
         this.hp=3;
@@ -146,12 +144,15 @@ public class SuperPacmanPlayer extends Player {
         getOwnerArea().unregisterActor(this);
     }
 
+
+
     public void respawnPacman(){
         isPacmanAlive = true;
         this.hp -= 1;
 
+
         getOwnerArea().leaveAreaCells(this, this.getEnteredCells());
-        this.setCurrentPosition(spawnPoint.toVector());
+        this.setCurrentPosition((((SuperPacmanArea)getOwnerArea()).getSpawnPoint()).toVector());
         getOwnerArea().enterAreaCells(this, this.getCurrentCells());
         resetMotion();
     }

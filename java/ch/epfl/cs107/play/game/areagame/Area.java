@@ -23,6 +23,7 @@ import java.util.Map;
  */
 public abstract class Area implements Playable {
 
+
 	// Context objects
 	private Window window;
 	private FileSystem fileSystem;

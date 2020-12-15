@@ -31,7 +31,6 @@ public class Bonus extends CollectableAreaEntity {
     public void update(float deltaTime) {
         super.update(deltaTime);
        animation.update(deltaTime);
-
     }
 
     public void acceptInteraction(AreaInteractionVisitor v) {

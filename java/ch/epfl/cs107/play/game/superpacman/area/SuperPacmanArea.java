@@ -12,6 +12,12 @@ import ch.epfl.cs107.play.window.Window;
 
 public abstract class SuperPacmanArea extends Area implements Logic {
 
+    public static DiscreteCoordinates PLAYER_SPAWN_POSITION = new DiscreteCoordinates(0, 0);
+
+    public abstract DiscreteCoordinates getSpawnPoint();
+
+
+
     private SuperPacmanBehavior behavior;
     /**
      * Create the area by adding it all actors
