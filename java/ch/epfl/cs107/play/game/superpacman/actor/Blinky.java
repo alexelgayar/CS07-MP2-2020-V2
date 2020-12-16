@@ -40,7 +40,7 @@ public class Blinky extends Ghost{
             {
                 orientate(getNextOrientation());
             }
-            move(18);
+            move(SPEED);
         }
         else{ //if blinky is moving
 

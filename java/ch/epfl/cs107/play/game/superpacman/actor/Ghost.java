@@ -19,11 +19,11 @@ import java.util.List;
 public class Ghost extends MovableAreaEntity implements Interactor {
 
     private final static int MAX = 4;
-    protected final static int FIELD_OF_VIEW_RADIUS = 5;
-
+    protected final static int FIELD_OF_VIEW_RADIUS = 5; //5
     protected SuperPacmanPlayer player;
     private static boolean isAfraid;
     private GhostHandler handler;
+    protected final static int SPEED = 18;
     protected DiscreteCoordinates spawnPoint;
 
     //Sprite[][] sprites = RPGSprite.extractSprites("superpacman/ghost.blinky", 2, 1, 1,
@@ -46,9 +46,12 @@ public class Ghost extends MovableAreaEntity implements Interactor {
     public void update(float deltaTime){
         super.update(deltaTime);
 
-        //getNextOrientation();
-
-
+        if (player != null){
+            DiscreteCoordinates playerPosition = new DiscreteCoordinates((int)player.getPosition().x, (int)player.getPosition().y);
+            if (DiscreteCoordinates.distanceBetween(playerPosition, getCurrentMainCellCoordinates()) > FIELD_OF_VIEW_RADIUS){
+                forgetPlayer();
+            }
+        }
     }
 
     @Override
@@ -143,12 +146,12 @@ public class Ghost extends MovableAreaEntity implements Interactor {
 
     public void scareGhost() {
         isAfraid = true;
-        System.out.println("Running ScareGhost");
+        //System.out.println("Running ScareGhost");
     }
 
     public void unscareGhost(){
         isAfraid = false;
-        System.out.println("Running ScareGhost");
+        //System.out.println("Running ScareGhost");
     }
 
     //Respawn all the ghosts into their spawn locations
@@ -165,6 +168,10 @@ public class Ghost extends MovableAreaEntity implements Interactor {
 
     protected void memorisePlayer(SuperPacmanPlayer player){
         this.player = player;
+    }
+
+    protected void forgetPlayer(){
+        this.player = null;
     }
 
     private class GhostHandler implements GhostInteractionVisitor {

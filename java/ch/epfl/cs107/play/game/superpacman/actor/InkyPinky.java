@@ -16,6 +16,11 @@ public class InkyPinky extends Ghost{
     protected static AreaGraph areaGraph;
     protected DiscreteCoordinates targetPos;
     protected Queue<Orientation> targetPath;
+    protected boolean scareSignalActive1 = false;
+    protected boolean scareSignalActive2 = false;
+
+    protected int currentAreaWidth = getOwnerArea().getWidth();
+    protected int currentAreaHeight = getOwnerArea().getHeight();
 
     //Path path = new Path(this.getPosition(), new LinkedList<Orientation>());
     //Path graphicPath = new Path(this.getPosition(), new LinkedList<Orientation>(path));
@@ -32,14 +37,8 @@ public class InkyPinky extends Ghost{
         //super.resetGhosts();
     }
 
-    //Inky and Pinky cause an error when eating the ghosts
-    @Override
-    public void eatGhost() {
-        //super.eatGhost();
-    }
-
     //Method computes a new target
-    public void computeTargetPath() {
+    public void computeTargetPosition() {
         //Leave empty
     }
 
@@ -53,7 +52,7 @@ public class InkyPinky extends Ghost{
     }
 
     public Queue<Orientation> computeShortestPath(DiscreteCoordinates targetPosition){
-        targetPath = areaGraph.shortestPath(new DiscreteCoordinates((int) getPosition().x, (int)getPosition().y), targetPosition);
+        targetPath = areaGraph.shortestPath(getCurrentMainCellCoordinates(), targetPosition);
         return targetPath;
     }
 

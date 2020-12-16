@@ -12,12 +12,12 @@ import ch.epfl.cs107.play.math.RandomGenerator;
 import ch.epfl.cs107.play.window.Canvas;
 
 import java.util.LinkedList;
-import java.util.List;
 
 public class Inky extends InkyPinky{
 
     private final static int MAX_DISTANCE_WHEN_SCARED = 5;
     private final static int MAX_DISTANCE_WHEN_NOT_SCARED = 10;
+    private final static int SPEED_WHEN_SCARED = 9;
 
     private Sprite[][] sprites = RPGSprite.extractSprites("superpacman/ghost.inky", 2, 1, 1,
             this, 16, 16, new Orientation[]{Orientation.UP, Orientation.RIGHT, Orientation.DOWN, Orientation.LEFT});
@@ -45,19 +45,15 @@ public class Inky extends InkyPinky{
     public void update(float deltaTime) {
         super.update(deltaTime);
 
-        if (player == null && !firstPath){
-            firstPath = true;
-            computeTargetPath();
+        if(isAfraid()) {
+            scareGhostSignalActivated();
+            scareSignalActive1 = true;
+            scareSignalActive2 = false;
+        } else{
+            scareGhostSignalDeactivated();
+            scareSignalActive1 = false;
+            scareSignalActive2 = true;
         }
-
-        if (ghostHasReachedTarget()){
-            computeTargetPath();
-        }
-
-        if (player!= null && !(isAfraid())){
-            computeTargetPath();
-        }
-
         ghostMovement();
 
         startAnimation(deltaTime);
@@ -67,115 +63,83 @@ public class Inky extends InkyPinky{
         //No displacement occurs when ghost reaches target
         if(!isDisplacementOccurs()){
             orientate(getNextOrientation());
-            move(18);
+            if (!isAfraid()) {
+                move(SPEED);
+            }
+            else {
+                move(SPEED_WHEN_SCARED);
+            }
         }
     }
 
-
     @Override
     public Orientation getNextOrientation() {
+        if (player != null){
+            targetPos = new DiscreteCoordinates((int)player.getPosition().x, (int)player.getPosition().y);
+            targetPath = computeShortestPath(targetPos);
+        }
+        while(ghostHasReachedTarget() || targetPath == null){
+            computeTargetPosition();
+            targetPath = computeShortestPath(targetPos);
+        }
+
         return targetPath.poll();
-    }
-
-    //This won't run!! (Since Ghost class is the one that is run)
-    @Override
-    public void scareGhost() {
-        super.scareGhost();
-        System.out.println("Running ScareGhost");
-        computeTargetPath();
-    }
-
-    //This won't run!! (since Ghost class is the one that is run)
-    @Override
-    public void unscareGhost() {
-        super.unscareGhost();
-        System.out.println("Running unscareGhost");
-        computeTargetPath();
     }
 
     @Override
     protected void memorisePlayer(SuperPacmanPlayer player) {
         super.memorisePlayer(player);
+        computeTargetPosition();
+        targetPath = computeShortestPath(targetPos);
+    }
+
+    @Override
+    protected void forgetPlayer() {
+        super.forgetPlayer();
+        computeTargetPosition();
+        targetPath = computeShortestPath(targetPos);
+    }
+
+    //Signal occurs when the ghosts are activated
+    private void scareGhostSignalActivated(){
+        if (!scareSignalActive1){
+            computeTargetPosition();
+            targetPath = computeShortestPath(targetPos);
+        }
+    }
+
+    private void scareGhostSignalDeactivated(){
+        if (!scareSignalActive2){
+            computeTargetPosition();
+            targetPath = computeShortestPath(targetPos);
+        }
     }
 
     //Compute the next path
     @Override
-    public void computeTargetPath() {
-
-        if (!isAfraid()){
-            if (player!= null){
-                targetPos = new DiscreteCoordinates((int)player.getPosition().x, (int)player.getPosition().y);
-                targetPath = computeShortestPath(targetPos);
-                //System.out.println("Ghost is not Afraid + player != null -> targetPos:" + targetPos);
-            }
-            else{
-                //System.out.println("Here you must compute a random cell in spawnPoint + 10");
-                List<DiscreteCoordinates> notAfraidArea = new LinkedList<>();
-                for (int y = spawnPoint.y - MAX_DISTANCE_WHEN_NOT_SCARED; y <= spawnPoint.y + MAX_DISTANCE_WHEN_NOT_SCARED; ++y){
-                    for (int x = spawnPoint.x - MAX_DISTANCE_WHEN_NOT_SCARED; x <= spawnPoint.x + MAX_DISTANCE_WHEN_NOT_SCARED; ++x){
-                        notAfraidArea.add(new DiscreteCoordinates(x, y));
-                    }
-                }
-                int randomInt = RandomGenerator.getInstance().nextInt(notAfraidArea.size());
-                targetPos = new DiscreteCoordinates(notAfraidArea.get(randomInt).x, notAfraidArea.get(randomInt).y);
-                targetPath = computeShortestPath(targetPos);
-                //System.out.println("Distance between start & targetPos: " + DiscreteCoordinates.distanceBetween(spawnPoint, targetPos));
-            }
-        }
-        else{
-            //Go to any cell within spawnPoint + MAX_DISTANCE_WHEN_SCARED
-            List<DiscreteCoordinates> isAfraidArea = new LinkedList<>();
-            for (int y = spawnPoint.y - MAX_DISTANCE_WHEN_SCARED; y <= spawnPoint.y + MAX_DISTANCE_WHEN_SCARED; ++y){
-                for (int x = spawnPoint.x - MAX_DISTANCE_WHEN_SCARED; x <= spawnPoint.x + MAX_DISTANCE_WHEN_SCARED; ++x){
-                    isAfraidArea.add(new DiscreteCoordinates(x, y));
+    public void computeTargetPosition() {
+        if (!isAfraid()) {
+            if (player == null) {
+                {
+                    //Go to any cell within spawnPoint + MAX_DISTANCE_WHEN_NOT_SCARED (=10)
+                    do {
+                        int x = RandomGenerator.getInstance().nextInt(currentAreaWidth);
+                        int y = RandomGenerator.getInstance().nextInt(currentAreaHeight);
+                        targetPos = new DiscreteCoordinates(x, y);
+                    } while ((DiscreteCoordinates.distanceBetween(spawnPoint, targetPos) > MAX_DISTANCE_WHEN_NOT_SCARED) || (DiscreteCoordinates.distanceBetween(targetPos, getCurrentMainCellCoordinates()) == 0));
+                    //System.out.println(DiscreteCoordinates.distanceBetween(spawnPoint, targetPos));
                 }
             }
-            int randomInt = RandomGenerator.getInstance().nextInt(isAfraidArea.size());
-            targetPos = new DiscreteCoordinates(isAfraidArea.get(randomInt).x, isAfraidArea.get(randomInt).y);
-            targetPath = computeShortestPath(targetPos);
-            //System.out.println("Ghost is Afraid -> targetPos:" + targetPath);
         }
-
-        /*
-        //If Inky is scared
-        if (isAfraid()){
-            //Go to any cell within spawnPoint + MAX_DISTANCE_WHEN_SCARED
-            List<DiscreteCoordinates> isAfraidArea = new LinkedList<>();
-            for (int y = spawnPoint.y - MAX_DISTANCE_WHEN_SCARED; y <= spawnPoint.y + MAX_DISTANCE_WHEN_SCARED; ++y){
-                for (int x = spawnPoint.x - MAX_DISTANCE_WHEN_SCARED; x <= spawnPoint.x + MAX_DISTANCE_WHEN_SCARED; ++x){
-                    isAfraidArea.add(new DiscreteCoordinates(x, y));
-                }
-            }
-            int randomInt = RandomGenerator.getInstance().nextInt(isAfraidArea.size());
-            targetPos = new DiscreteCoordinates(isAfraidArea.get(randomInt).x, isAfraidArea.get(randomInt).y);
-            targetPath = computeShortestPath(targetPos);
-            System.out.println("Ghost is Afraid -> targetPos:" + targetPath);
+        else {
+            //Go to any cell within spawnPoint + MAX_DISTANCE_WHEN_SCARED (=5)
+            do {
+                int x = RandomGenerator.getInstance().nextInt(currentAreaWidth);
+                int y = RandomGenerator.getInstance().nextInt(currentAreaHeight);
+                targetPos = new DiscreteCoordinates(x, y);
+            } while ((DiscreteCoordinates.distanceBetween(spawnPoint, targetPos) > MAX_DISTANCE_WHEN_SCARED) || (DiscreteCoordinates.distanceBetween(targetPos, getCurrentMainCellCoordinates()) == 0));
+            //targetPath = computeShortestPath(targetPos);
         }
-
-        //If Inky not scared
-        else{
-            //If player unidentified
-            if (player==null){
-                List<DiscreteCoordinates> notAfraidArea = new LinkedList<>();
-                for (int y = spawnPoint.y - MAX_DISTANCE_WHEN_NOT_SCARED; y <= spawnPoint.y + MAX_DISTANCE_WHEN_NOT_SCARED; ++y){
-                    for (int x = spawnPoint.x - MAX_DISTANCE_WHEN_NOT_SCARED; x <= spawnPoint.x + MAX_DISTANCE_WHEN_NOT_SCARED; ++x){
-                        notAfraidArea.add(new DiscreteCoordinates(x, y));
-                    }
-                }
-                int randomInt = RandomGenerator.getInstance().nextInt(notAfraidArea.size());
-                targetPos = new DiscreteCoordinates(notAfraidArea.get(randomInt).x, notAfraidArea.get(randomInt).y);
-                targetPath = computeShortestPath(targetPos);
-                System.out.println("Ghost is not Afraid + player == null -> targetPos:" + targetPos);
-            }
-
-            //If player identified, targetPos = playerPosition
-            else{
-                targetPos = new DiscreteCoordinates((int)player.getPosition().x, (int)player.getPosition().y);
-                targetPath = computeShortestPath(targetPos);
-                System.out.println("Ghost is not Afraid + player != null -> targetPos:" + targetPos);
-            }
-        }
-         */
     }
 
     @Override
