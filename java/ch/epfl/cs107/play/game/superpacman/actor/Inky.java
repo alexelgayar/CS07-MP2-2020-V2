@@ -1,6 +1,7 @@
 package ch.epfl.cs107.play.game.superpacman.actor;
 
 import ch.epfl.cs107.play.game.areagame.Area;
+import ch.epfl.cs107.play.game.areagame.AreaGraph;
 import ch.epfl.cs107.play.game.areagame.actor.Animation;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
@@ -8,6 +9,8 @@ import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RandomGenerator;
 import ch.epfl.cs107.play.window.Canvas;
+
+import java.util.Collections;
 
 public class Inky extends InkyPinky{
 
@@ -29,16 +32,39 @@ public class Inky extends InkyPinky{
      * @param orientation (Orientation): Initial orientation of the entity. Not null
      * @param position    (Coordinate): Initial position of the entity. Not null
      */
-    public Inky(Area area, Orientation orientation, DiscreteCoordinates position) {
-        super(area, orientation, position);
-        //animations = new Animation(2, sprites);
+    public Inky(Area area, Orientation orientation, DiscreteCoordinates position, AreaGraph areaGraph) {
+        super(area, orientation, position, areaGraph);
+
+        //areaGraph.shortestPath(new DiscreteCoordinates((int) getPosition().x, (int)getPosition().y), new DiscreteCoordinates((int)player.getPosition().x, (int)player.getPosition().y));
     }
 
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
 
+        inkyMovement();
+        //orientate(getNextOrientation());
+        //move(18);
+
         startAnimation(deltaTime);
+    }
+
+    @Override
+    public Orientation getNextOrientation() {
+        if (player != null){
+            return areaGraph.shortestPath(new DiscreteCoordinates((int) getPosition().x, (int)getPosition().y),
+                    new DiscreteCoordinates((int)player.getPosition().x, (int)player.getPosition().y)).poll();
+        }
+        else{
+            return super.getNextOrientation();
+        }
+    }
+
+    public void inkyMovement(){
+        if(!isDisplacementOccurs()){
+            orientate(getNextOrientation());
+            move(18);
+        }
     }
 
     @Override

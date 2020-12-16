@@ -11,6 +11,7 @@ import ch.epfl.cs107.play.game.superpacman.SuperPacmanStatusGUI;
 import ch.epfl.cs107.play.game.superpacman.area.Level1;
 import ch.epfl.cs107.play.game.superpacman.area.SuperPacmanArea;
 import ch.epfl.cs107.play.game.superpacman.area.SuperPacmanBehavior;
+import ch.epfl.cs107.play.game.superpacman.handler.GhostInteractionVisitor;
 import ch.epfl.cs107.play.game.superpacman.handler.SuperPacmanInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.signal.logic.Logic;
@@ -184,7 +185,7 @@ public class SuperPacmanPlayer extends Player {
 
     @Override
     public void acceptInteraction(AreaInteractionVisitor v) {
-        ((SuperPacmanInteractionVisitor)v).interactWith(this);
+        ((GhostInteractionVisitor)v).interactWith(this);
     }
 
     @Override

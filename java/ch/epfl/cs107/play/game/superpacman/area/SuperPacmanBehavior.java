@@ -150,7 +150,7 @@ public class SuperPacmanBehavior extends AreaBehavior {
                 //Register Inky Cells
                 if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.FREE_WITH_INKY) {
                     System.out.println("Behaviour: Registering Inky, Ghost count:" + registeredGhosts.size() + 1);
-                    Ghost Inky = new Inky(area, Orientation.RIGHT, new DiscreteCoordinates(x, y));
+                    Ghost Inky = new Inky(area, Orientation.RIGHT, new DiscreteCoordinates(x, y), areaGraph);
                     registeredGhosts.add(Inky);
                     area.registerActor(Inky);
                 }
@@ -158,7 +158,7 @@ public class SuperPacmanBehavior extends AreaBehavior {
                 //Register Pinky Cells
                 if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.FREE_WITH_PINKY) {
                     System.out.println("Behaviour: Registering Pinky, Ghost count:" + registeredGhosts.size() + 1);
-                    Ghost Pinky = new Pinky(area, Orientation.RIGHT, new DiscreteCoordinates(x, y));
+                    Ghost Pinky = new Pinky(area, Orientation.RIGHT, new DiscreteCoordinates(x, y), areaGraph);
                     registeredGhosts.add(Pinky);
                     area.registerActor(Pinky);
                 }

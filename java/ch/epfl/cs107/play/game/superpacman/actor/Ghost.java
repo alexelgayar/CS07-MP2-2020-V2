@@ -1,6 +1,7 @@
 package ch.epfl.cs107.play.game.superpacman.actor;
 
 import ch.epfl.cs107.play.game.areagame.Area;
+import ch.epfl.cs107.play.game.areagame.AreaGraph;
 import ch.epfl.cs107.play.game.areagame.actor.*;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
@@ -12,11 +13,13 @@ import ch.epfl.cs107.play.math.RandomGenerator;
 import ch.epfl.cs107.play.window.Canvas;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Ghost extends MovableAreaEntity implements Interactor {
 
     private final static int MAX = 4;
+    protected final static int FIELD_OF_VIEW_RADIUS = 5;
 
     protected SuperPacmanPlayer player;
     private static boolean isAfraid;
@@ -55,16 +58,16 @@ public class Ghost extends MovableAreaEntity implements Interactor {
 
     }
 
-    public Orientation getNextOrientation(){
-        int randomInt = RandomGenerator.getInstance().nextInt(MAX);
-        return Orientation.fromInt(randomInt);
-    }
-
     @Override
     public void draw(Canvas canvas) {
         if (isAfraid()) {
             afraidAnimation.draw(canvas);
         }
+    }
+
+    public Orientation getNextOrientation(){
+        int randomInt = RandomGenerator.getInstance().nextInt(MAX);
+        return Orientation.fromInt(randomInt);
     }
 
     @Override
@@ -73,11 +76,20 @@ public class Ghost extends MovableAreaEntity implements Interactor {
     }
 
 
-    //Interactor methods
-    //Here, you will get the position of the pacman?
+    //Create the field of perception here
+    //Fixed radius, square field of view
     @Override
     public List<DiscreteCoordinates> getFieldOfViewCells() {
-        return null;
+        List<DiscreteCoordinates> fieldOfView = new LinkedList<>();
+
+        DiscreteCoordinates ghostPosition = new DiscreteCoordinates((int)getPosition().x, (int)getPosition().y);
+        for (int y = ghostPosition.y - FIELD_OF_VIEW_RADIUS; y <= ghostPosition.y + FIELD_OF_VIEW_RADIUS; ++y){
+            for (int x = ghostPosition.x - FIELD_OF_VIEW_RADIUS; x <= ghostPosition.x + FIELD_OF_VIEW_RADIUS; ++x){
+                fieldOfView.add(new DiscreteCoordinates(x, y));
+            }
+        }
+
+        return fieldOfView;
     }
 
     @Override
@@ -88,13 +100,13 @@ public class Ghost extends MovableAreaEntity implements Interactor {
     //This should return true?
     @Override
     public boolean wantsViewInteraction() {
-        return false;
+        return true; //TODO: Return field of view to get this to work
     }
 
     //Interactor methods
     @Override
     public void interactWith(Interactable other) {
-
+        other.acceptInteraction(handler); //We need this => This allows interaction
     }
 
     //MoveableAreaEntitiy methods
@@ -155,7 +167,7 @@ public class Ghost extends MovableAreaEntity implements Interactor {
         resetMotion();
     }
 
-    public void memorisePlayer(SuperPacmanPlayer player){
+    private void memorisePlayer(SuperPacmanPlayer player){
         this.player = player;
     }
 
@@ -164,6 +176,7 @@ public class Ghost extends MovableAreaEntity implements Interactor {
         //Make this interaction a fieldOfView interaction (not a contact interaction)
         public void interactWith(SuperPacmanPlayer player) {
             memorisePlayer(player);
+            //System.out.println("Player has entered Field Of View of Ghost: " + player);
         }
     }
 }
