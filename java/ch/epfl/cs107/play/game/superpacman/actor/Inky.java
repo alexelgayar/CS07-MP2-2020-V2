@@ -12,12 +12,11 @@ import ch.epfl.cs107.play.window.Canvas;
 public class Inky extends Ghost{
 
 
-    Sprite[][] sprites = RPGSprite.extractSprites("superpacman/ghost.blinky", 2, 1, 1,
+    Sprite[][] sprites = RPGSprite.extractSprites("superpacman/ghost.inky", 2, 1, 1,
             this, 16, 16, new Orientation[]{Orientation.UP, Orientation.RIGHT, Orientation.DOWN, Orientation.LEFT});
 
     Animation[] animations = Animation.createAnimations(2, sprites);
     Animation animation = animations[1];
-    int randomInt = RandomGenerator.getInstance().nextInt(3);
 
 
 
@@ -49,7 +48,7 @@ public class Inky extends Ghost{
 
     @Override
     public Orientation getNextOrientation() {
-        return Orientation.fromInt(randomInt);
+        return null;
     }
 
     @Override

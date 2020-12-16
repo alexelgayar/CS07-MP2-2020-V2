@@ -40,10 +40,13 @@ public class Blinky extends Ghost{
         super.update(deltaTime);
 
         if(!isAfraid()){
+            if(isDisplacementOccurs()) {
                 animation = animations[getOrientation().ordinal()];
                 animation.update(deltaTime);
+            }
         }
         else{
+            if(isDisplacementOccurs())
             super.afraidAnimation.update(deltaTime);
         }
 

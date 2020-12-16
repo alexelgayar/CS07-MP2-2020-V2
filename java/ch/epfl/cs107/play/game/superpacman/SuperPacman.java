@@ -43,8 +43,7 @@ public class SuperPacman  extends RPG {
             areaIndex = 0; //Testing Ghost Spawning
 
             Area area = setCurrentArea(areas[areaIndex], true);
-            //PLAYER_SPAWN_POSITION = startingPositions[areaIndex];
-            player = new SuperPacmanPlayer(area, Orientation.RIGHT, ((SuperPacmanArea)area).getSpawnPoint());//Level0.PLAYER_SPAWN_POSITION
+          player = new SuperPacmanPlayer(area, Orientation.RIGHT, ((SuperPacmanArea)area).getSpawnPoint());
             super.initPlayer(player);
             return true;
         }
@@ -64,14 +63,21 @@ public class SuperPacman  extends RPG {
                 if (!player.getPacmanAlive()) {
                     //Reset the level here
                     player.respawnPacman();
-                  //  getCurrentArea().resetGhosts();
+                    getCurrentArea().resetGhosts();
                 }
             }
-            else{
+
                 //Game over screen
                 //TODO: Extension create a game-over screen
                 //getCurrentArea().unregisterActor(player);
-            }
+
+        }
+
+        if(player.getHp()<= 0){
+            end();
+            super.begin(getWindow(),getFileSystem());
+
+
         }
 
 
