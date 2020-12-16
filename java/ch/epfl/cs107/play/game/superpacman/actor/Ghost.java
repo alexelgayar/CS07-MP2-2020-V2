@@ -18,7 +18,7 @@ import java.util.List;
 public class Ghost extends MovableAreaEntity {
 
     private SuperPacmanPlayer player;
-    private boolean isAfraid;
+    private static boolean isAfraid;
 
     DiscreteCoordinates spawnPoint;
 
@@ -74,8 +74,6 @@ public class Ghost extends MovableAreaEntity {
         }
     }
 
-
-
     @Override
     public List<DiscreteCoordinates> getCurrentCells() {
         return Collections.singletonList(getCurrentMainCellCoordinates());
@@ -111,15 +109,15 @@ public class Ghost extends MovableAreaEntity {
         resetMotion();
     }
 
-    public boolean isAfraid(){
+    public static boolean isAfraid(){
         return isAfraid;
     }
 
-    public void scareGhosts() {
+    public static void scareGhosts() {
         isAfraid = true;
     }
 
-    public void unscareGhosts(){
+    public static void unscareGhosts(){
         isAfraid = false;
     }
 
@@ -133,8 +131,6 @@ public class Ghost extends MovableAreaEntity {
         getOwnerArea().enterAreaCells(this, this.getCurrentCells());
         resetMotion();
     }
-
-
 
 
 }
