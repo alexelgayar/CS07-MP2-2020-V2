@@ -40,7 +40,7 @@ public class SuperPacman  extends RPG {
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
             createAreas();
-            areaIndex = 0; //Testing Ghost Spawning
+            areaIndex = 1; //Testing Ghost Spawning
 
             Area area = setCurrentArea(areas[areaIndex], true);
           player = new SuperPacmanPlayer(area, Orientation.RIGHT, ((SuperPacmanArea)area).getSpawnPoint());

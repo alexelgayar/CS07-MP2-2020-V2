@@ -1,35 +1,36 @@
 package ch.epfl.cs107.play.game.superpacman.actor;
 
 import ch.epfl.cs107.play.game.areagame.Area;
-import ch.epfl.cs107.play.game.areagame.actor.Animation;
-import ch.epfl.cs107.play.game.areagame.actor.MovableAreaEntity;
-import ch.epfl.cs107.play.game.areagame.actor.Orientation;
-import ch.epfl.cs107.play.game.areagame.actor.Sprite;
+import ch.epfl.cs107.play.game.areagame.actor.*;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.game.superpacman.SuperPacman;
+import ch.epfl.cs107.play.game.superpacman.handler.GhostInteractionVisitor;
 import ch.epfl.cs107.play.game.superpacman.handler.SuperPacmanInteractionVisitor;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.math.RandomGenerator;
 import ch.epfl.cs107.play.window.Canvas;
 
 import java.util.Collections;
 import java.util.List;
 
-public class Ghost extends MovableAreaEntity {
+public class Ghost extends MovableAreaEntity implements Interactor {
 
-    private SuperPacmanPlayer player;
+    private final static int MAX = 4;
+
+    protected SuperPacmanPlayer player;
     private static boolean isAfraid;
-
-    DiscreteCoordinates spawnPoint;
+    private GhostHandler handler;
+    private DiscreteCoordinates spawnPoint;
 
     //Sprite[][] sprites = RPGSprite.extractSprites("superpacman/ghost.blinky", 2, 1, 1,
     //        this, 64, 64, new Orientation[] {Orientation.UP, Orientation.RIGHT, Orientation.DOWN, Orientation.LEFT});
 
 
-    Sprite[] afraidSprites = RPGSprite.extractSprites("superpacman/ghost.afraid", 2, 1, 1,
+    private Sprite[] afraidSprites = RPGSprite.extractSprites("superpacman/ghost.afraid", 2, 1, 1,
             this, 16, 16);
 
-    Animation afraidAnimation = new Animation(2, afraidSprites);
+    protected Animation afraidAnimation = new Animation(2, afraidSprites);
 
     /**
      * Default MovableAreaEntity constructor
@@ -40,6 +41,7 @@ public class Ghost extends MovableAreaEntity {
      */
     public Ghost(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
+        handler = new GhostHandler();
         spawnPoint = position;
         isAfraid = false;
     }
@@ -50,21 +52,12 @@ public class Ghost extends MovableAreaEntity {
 
         //getNextOrientation();
 
-        if(!isDisplacementOccurs()){ //if displacememt not moving
-            //System.out.println("Orientation clear: " + getOwnerArea().canEnterAreaCells(this, Collections.singletonList(getCurrentMainCellCoordinates().jump(getNextOrientation().toVector()))));
-            if(getOwnerArea().canEnterAreaCells(this, Collections.singletonList(getCurrentMainCellCoordinates().jump(getNextOrientation().toVector()))))
-            {
-                orientate(getNextOrientation());
-            }
-           move(18);
-        }
-        else{ //if displacement is moving
 
-        }
     }
 
     public Orientation getNextOrientation(){
-        return null;
+        int randomInt = RandomGenerator.getInstance().nextInt(MAX);
+        return Orientation.fromInt(randomInt);
     }
 
     @Override
@@ -79,6 +72,32 @@ public class Ghost extends MovableAreaEntity {
         return Collections.singletonList(getCurrentMainCellCoordinates());
     }
 
+
+    //Interactor methods
+    //Here, you will get the position of the pacman?
+    @Override
+    public List<DiscreteCoordinates> getFieldOfViewCells() {
+        return null;
+    }
+
+    @Override
+    public boolean wantsCellInteraction() {
+        return false;
+    }
+
+    //This should return true?
+    @Override
+    public boolean wantsViewInteraction() {
+        return false;
+    }
+
+    //Interactor methods
+    @Override
+    public void interactWith(Interactable other) {
+
+    }
+
+    //MoveableAreaEntitiy methods
     @Override
     public boolean takeCellSpace() {
         return false;
@@ -98,6 +117,10 @@ public class Ghost extends MovableAreaEntity {
     @Override
     public void acceptInteraction(AreaInteractionVisitor v) {
         ((SuperPacmanInteractionVisitor)v).interactWith(this);
+    }
+
+    public void startAnimation(float deltaTime){
+        //Start the animation of the ghosts
     }
 
     //When ghost is eaten by pacman => Respawn the ghost in its spawn position
@@ -132,5 +155,15 @@ public class Ghost extends MovableAreaEntity {
         resetMotion();
     }
 
+    public void memorisePlayer(SuperPacmanPlayer player){
+        this.player = player;
+    }
 
+    private class GhostHandler implements GhostInteractionVisitor {
+
+        //Make this interaction a fieldOfView interaction (not a contact interaction)
+        public void interactWith(SuperPacmanPlayer player) {
+            memorisePlayer(player);
+        }
+    }
 }

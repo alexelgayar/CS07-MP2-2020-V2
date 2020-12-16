@@ -9,17 +9,14 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RandomGenerator;
 import ch.epfl.cs107.play.window.Canvas;
 
-public class Pinky extends Ghost{
+public class Pinky extends InkyPinky{
 
 
-    Sprite[][] sprites = RPGSprite.extractSprites("superpacman/ghost.blinky", 2, 1, 1,
+    private Sprite[][] sprites = RPGSprite.extractSprites("superpacman/ghost.pinky", 2, 1, 1,
             this, 16, 16, new Orientation[]{Orientation.UP, Orientation.RIGHT, Orientation.DOWN, Orientation.LEFT});
 
-    Animation[] animations = Animation.createAnimations(2, sprites);
-    Animation animation = animations[1];
-    int randomInt = RandomGenerator.getInstance().nextInt(3);
-
-
+    private Animation[] animations = Animation.createAnimations(2, sprites);
+    private Animation animation = animations[1];
 
     /**
      * Default MovableAreaEntity constructor
@@ -37,19 +34,23 @@ public class Pinky extends Ghost{
     public void update(float deltaTime) {
         super.update(deltaTime);
 
-        if(!isAfraid()){
-            animation = animations[getOrientation().ordinal()];
-            animation.update(deltaTime);
-        }
-        else{
-            super.afraidAnimation.update(deltaTime);
-        }
+        startAnimation(deltaTime);
 
     }
 
     @Override
-    public Orientation getNextOrientation() {
-        return Orientation.fromInt(randomInt);
+    public void startAnimation(float deltaTime) {
+        super.startAnimation(deltaTime);
+        if(!isAfraid()){
+            if(isDisplacementOccurs()) {
+                animation = animations[getOrientation().ordinal()];
+                animation.update(deltaTime);
+            }
+        }
+        else{
+            if(isDisplacementOccurs())
+                super.afraidAnimation.update(deltaTime);
+        }
     }
 
     @Override

@@ -10,18 +10,16 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RandomGenerator;
 import ch.epfl.cs107.play.window.Canvas;
 
+import java.util.Collections;
+
 public class Blinky extends Ghost{
 
-    private final int MAX = 4;
 
-    Sprite[][] sprites = RPGSprite.extractSprites("superpacman/ghost.blinky", 2, 1, 1,
+    private Sprite[][] sprites = RPGSprite.extractSprites("superpacman/ghost.blinky", 2, 1, 1,
             this, 16, 16, new Orientation[]{Orientation.UP, Orientation.RIGHT, Orientation.DOWN, Orientation.LEFT});
 
-    Animation[] animations = Animation.createAnimations(2, sprites);
-    Animation animation = animations[1];
-
-
-    int randomInt;
+    private Animation[] animations = Animation.createAnimations(2, sprites);
+    private Animation animation = animations[1];
 
     /**
      * Default MovableAreaEntity constructor
@@ -39,6 +37,26 @@ public class Blinky extends Ghost{
     public void update(float deltaTime) {
         super.update(deltaTime);
 
+        blinkyMovement();
+        startAnimation(deltaTime);
+    }
+
+    public void blinkyMovement(){
+        if(!isDisplacementOccurs()){
+            if(getOwnerArea().canEnterAreaCells(this, Collections.singletonList(getCurrentMainCellCoordinates().jump(getNextOrientation().toVector()))))
+            {
+                orientate(getNextOrientation());
+            }
+            move(18);
+        }
+        else{ //if blinky is moving
+
+        }
+    }
+
+    @Override
+    public void startAnimation(float deltaTime) {
+        super.startAnimation(deltaTime);
         if(!isAfraid()){
             if(isDisplacementOccurs()) {
                 animation = animations[getOrientation().ordinal()];
@@ -47,15 +65,8 @@ public class Blinky extends Ghost{
         }
         else{
             if(isDisplacementOccurs())
-            super.afraidAnimation.update(deltaTime);
+                super.afraidAnimation.update(deltaTime);
         }
-
-    }
-
-    @Override
-    public Orientation getNextOrientation() {
-        int randomInt = RandomGenerator.getInstance().nextInt(MAX);
-        return Orientation.fromInt(randomInt);
     }
 
     @Override
