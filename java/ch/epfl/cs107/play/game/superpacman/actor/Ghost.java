@@ -24,7 +24,7 @@ public class Ghost extends MovableAreaEntity implements Interactor {
     protected SuperPacmanPlayer player;
     private static boolean isAfraid;
     private GhostHandler handler;
-    private DiscreteCoordinates spawnPoint;
+    protected DiscreteCoordinates spawnPoint;
 
     //Sprite[][] sprites = RPGSprite.extractSprites("superpacman/ghost.blinky", 2, 1, 1,
     //        this, 64, 64, new Orientation[] {Orientation.UP, Orientation.RIGHT, Orientation.DOWN, Orientation.LEFT});
@@ -35,13 +35,6 @@ public class Ghost extends MovableAreaEntity implements Interactor {
 
     protected Animation afraidAnimation = new Animation(2, afraidSprites);
 
-    /**
-     * Default MovableAreaEntity constructor
-     *
-     * @param area        (Area): Owner area. Not null
-     * @param orientation (Orientation): Initial orientation of the entity. Not null
-     * @param position    (Coordinate): Initial position of the entity. Not null
-     */
     public Ghost(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
         handler = new GhostHandler();
@@ -148,17 +141,20 @@ public class Ghost extends MovableAreaEntity implements Interactor {
         return isAfraid;
     }
 
-    public static void scareGhosts() {
+    public void scareGhost() {
         isAfraid = true;
+        System.out.println("Running ScareGhost");
     }
 
-    public static void unscareGhosts(){
+    public void unscareGhost(){
         isAfraid = false;
+        System.out.println("Running ScareGhost");
     }
 
     //Respawn all the ghosts into their spawn locations
     public void resetGhosts(){
         isAfraid = false;
+        player = null; //reset the ghost memorisation of player
 
         getOwnerArea().leaveAreaCells(this, this.getEnteredCells());
         setCurrentPosition(spawnPoint.toVector());
@@ -167,7 +163,7 @@ public class Ghost extends MovableAreaEntity implements Interactor {
         resetMotion();
     }
 
-    private void memorisePlayer(SuperPacmanPlayer player){
+    protected void memorisePlayer(SuperPacmanPlayer player){
         this.player = player;
     }
 

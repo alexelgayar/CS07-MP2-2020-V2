@@ -172,7 +172,7 @@ public class SuperPacmanBehavior extends AreaBehavior {
     protected void scareGhosts() {
         super.scareGhosts();
         if(registeredGhosts.size() > 0) {
-            registeredGhosts.get(0).scareGhosts();
+            registeredGhosts.get(0).scareGhost();
         }
         else{
             //System.out.println("There are no ghosts");
@@ -183,7 +183,7 @@ public class SuperPacmanBehavior extends AreaBehavior {
     protected void unscareGhosts() {
         super.unscareGhosts();
         if(registeredGhosts.size() > 0) {
-            registeredGhosts.get(0).unscareGhosts();
+            registeredGhosts.get(0).unscareGhost();
         }
         else{
             //System.out.println("There are no ghosts");
