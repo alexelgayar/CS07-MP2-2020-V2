@@ -124,10 +124,12 @@ public class SuperPacmanBehavior extends AreaBehavior {
 
                 //Register Diamond Cells
                 if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.FREE_WITH_DIAMOND){
+
                     if(area.getTitle().equals("superpacman/Level1") && ((x == 1 && y ==1) || (x == 28 && y == 28) || (x == 1 && y == 28) || ( x== 28 && y == 1))){
                         area.registerActor(new Potion(area, Orientation.UP, new DiscreteCoordinates(x,y)));
 
                     }
+
                     else {
 
                         area.registerActor(new Diamond(area, Orientation.UP, new DiscreteCoordinates(x, y)));
