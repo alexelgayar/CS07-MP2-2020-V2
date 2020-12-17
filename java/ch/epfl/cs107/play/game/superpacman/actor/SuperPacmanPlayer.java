@@ -175,6 +175,7 @@ public class SuperPacmanPlayer extends Player {
      */
     public void leaveArea(){
         getOwnerArea().unregisterActor(this);
+        invulnerabilityTimer = 0;
     }
 
     /**
