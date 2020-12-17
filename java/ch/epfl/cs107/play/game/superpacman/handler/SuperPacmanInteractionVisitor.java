@@ -58,4 +58,8 @@ public interface SuperPacmanInteractionVisitor extends RPGInteractionVisitor {
     default void interactWith(Heart heart){
 
     }
+
+    default void interactWith(SawBlade sawBlade){
+
+    }
 }

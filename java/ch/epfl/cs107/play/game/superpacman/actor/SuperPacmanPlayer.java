@@ -282,6 +282,11 @@ public class SuperPacmanPlayer extends Player {
 
         }
 
+        @Override
+        public void interactWith(SawBlade sawBlade) {
+            isPacmanAlive = false;
+        }
+
         public void interactWith(Key key){
             key.collect();
             key.isCollected = true;
