@@ -17,7 +17,7 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Window;
 
 public class SuperPacman  extends RPG {
-    public final static float CAMERA_SCALE_FACTOR = 25.f;//17.f;
+    public final static float CAMERA_SCALE_FACTOR = 17.f;//17.f;
     public final static float STEP = 0.05f;
     private static boolean isGameEnd = false;
     public SuperPacmanPlayer player;
@@ -39,7 +39,7 @@ public class SuperPacman  extends RPG {
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
             createAreas();
-            areaIndex = 2; //Testing Ghost Spawning
+            areaIndex = 0;
 
             Area area = setCurrentArea(areas[areaIndex], true);
             player = new SuperPacmanPlayer(area, Orientation.RIGHT, ((SuperPacmanArea)area).getSpawnPoint());
