@@ -9,6 +9,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.handler.AreaInteractionVisitor;
 import ch.epfl.cs107.play.game.superpacman.SuperPacman;
 import ch.epfl.cs107.play.game.superpacman.actor.*;
+import ch.epfl.cs107.play.game.superpacman.handler.SuperPacmanInteractionVisitor;
 import ch.epfl.cs107.play.game.tutosSolution.Tuto2Behavior;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Window;
@@ -88,10 +89,10 @@ public class SuperPacmanBehavior extends AreaBehavior {
         return (x > 0 && (((SuperPacmanCell) getCell(x-1,y)).type != SuperPacmanCellType.WALL));
     }
     private boolean hasUpEdge(int x, int y){
-        return (y < getHeight() && (((SuperPacmanCell) getCell(x,y+1)).type != SuperPacmanCellType.WALL));
+        return (y < getHeight() - 1 && (((SuperPacmanCell) getCell(x,y+1)).type != SuperPacmanCellType.WALL));
     }
     private boolean hasRightEdge(int x, int y){
-        return (x < getWidth() && (((SuperPacmanCell) getCell(x+1,y)).type != SuperPacmanCellType.WALL));
+        return (x < getWidth() - 1 && (((SuperPacmanCell) getCell(x+1,y)).type != SuperPacmanCellType.WALL));
     }
     private boolean hasDownEdge(int x, int y){
         return (y > 0 && (((SuperPacmanCell) getCell(x,y-1)).type != SuperPacmanCellType.WALL));
@@ -120,11 +121,12 @@ public class SuperPacmanBehavior extends AreaBehavior {
 
                 //Register Diamond Cells
                 if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.FREE_WITH_DIAMOND){
-                    if(area.getTitle().equals("superpacman/Level1") && (x == 1 && y ==1)){
+                    if(area.getTitle().equals("superpacman/Level1") && (x == 1 && y ==1) || (x == 28 && y == 28) || (x == 1 && y == 28) || ( x== 28 && y == 1)){
                         area.registerActor(new Potion(area, Orientation.UP, new DiscreteCoordinates(x,y)));
 
                     }
                     else {
+
                         area.registerActor(new Diamond(area, Orientation.UP, new DiscreteCoordinates(x, y)));
 
                         if (area.getTitle().equals("superpacman/Level2")) {
