@@ -6,11 +6,13 @@ In this game, the player plays as a Pac-Man, a yellow blob who loves to eat. The
 # Start Game
 To start the game, run the Play.java file within the project.
 
-# Controls
+
+# Gameplay
+
+## Controls
 The only controls in the game are the four arrow keys on the keyboard, used to point the Pac-Man in the desired direction.
 
 ## Obstacles
-
 Some obstacles will try to prevent you from winning. The first consists of ghosts. They kill you if you are in the same cell with them. They come in several forms: Blinky, Inky and Pinky.
 
 **Blinky:** He is the red ghost, he is clumsy and stubborn as he moves randomly at each step of his motion.
@@ -43,7 +45,7 @@ Each diamond eaten adds 10 points to your score, each cherry eaten adds 200 poin
 ### Get Temporary Speed Boost
 **(Extension 5)** To obtain a temporary speed boost, you can eat the potions that are located in all four corners of Level 2 and 3.
 
-## End of Game
+# End of Game
 The game window will automatically close when:
 1. Pac-Man runs out of lives
 
