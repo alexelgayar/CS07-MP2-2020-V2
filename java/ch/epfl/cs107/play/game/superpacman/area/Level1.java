@@ -28,7 +28,7 @@ public class Level1 extends SuperPacmanArea {
         return nbrDiamonds==406;
     }
 
-    private int nbrDiamonds= 0;
+    private int nbrDiamonds= 0;                                                                                                                         
 
     public void countDiamonds(){
         nbrDiamonds ++;

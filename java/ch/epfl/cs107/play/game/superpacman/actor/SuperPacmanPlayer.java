@@ -32,10 +32,13 @@ public class SuperPacmanPlayer extends Player {
 
     private Sprite sprite;
     private SuperPacmanStatusGUI gui;
-    private final static int SPEED = 5;     //Movement speed of player, duration in frame number
+    private final static int SPEED = 6;     //Movement speed of player, duration in frame number
     private final float INVULNERABLE_TIME = 10.f;
     private SuperPacmanPlayerHandler handler;
     private final int GHOST_SCORE = 500;
+    private final float SPEED_TIME = 8.f;
+    private float speedTimer = 0.f;
+    private final static int SPEED_BOOST = 4;
 
     Sprite[][] sprites = RPGSprite.extractSprites("superpacman/pacman", 4, 1, 1,
             this, 64, 64, new Orientation[] {Orientation.DOWN, Orientation.LEFT, Orientation.UP, Orientation.RIGHT});
@@ -111,6 +114,15 @@ public class SuperPacmanPlayer extends Player {
         if (invulnerabilityTimer > 0) {
             invulnerabilityTimer -= deltaTime;
         }
+
+        if(speedTimer > 0){
+            speedTimer -= deltaTime;
+        }
+
+        if(speedTimer == 0){
+            speedTimer = 0;
+        }
+
         if (invulnerabilityTimer < 0){
             invulnerabilityTimer = 0;
         }
@@ -131,7 +143,12 @@ public class SuperPacmanPlayer extends Player {
             {
                 orientate(desiredOrientation);
             }
-            move(SPEED);
+               if(speedTimer > 0){
+                   move(SPEED_BOOST);
+               }
+               else {
+                   move(SPEED);
+               }
         }
 
         super.update(deltaTime);
@@ -229,6 +246,12 @@ public class SuperPacmanPlayer extends Player {
 
             ((SuperPacmanArea)getOwnerArea()).countDiamonds();
 
+        }
+
+        @Override
+        public void interactWith(Potion potion) {
+            potion.collect();
+            speedTimer = SPEED_TIME;
         }
 
         public void interactWith(Bonus bonus){
