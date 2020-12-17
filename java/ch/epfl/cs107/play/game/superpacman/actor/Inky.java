@@ -41,10 +41,15 @@ public class Inky extends InkyPinky{
             scareSignalActive2 = true;
         }
 
-        ghostMovement();
+        inkyMovement();
     }
 
-    private void ghostMovement() {
+
+    /**
+     * Method that applies the specific movement behaviour of Inky
+     * Note: Follow shortest path to player, else stay need refuge area
+     */
+    private void inkyMovement() {
         //No displacement occurs when ghost reaches target
         if(!isDisplacementOccurs()){
             orientate(getNextOrientation());
@@ -78,13 +83,15 @@ public class Inky extends InkyPinky{
         return targetPath.poll();
     }
 
+
+    /**
+     * Method to verify that chosen target has a valid path
+     */
     private void getTarget(){
         computeTargetPosition();
-        int counter = 0;
         while(ghostHasReachedTarget() || targetPath == null || targetPath.size() == 0 || targetPos == null){
             computeTargetPosition();
             targetPath = computeShortestPath(targetPos);
-            ++counter;
         }
     }
 
@@ -113,12 +120,21 @@ public class Inky extends InkyPinky{
     }
 
     //Signal occurs when the ghosts are activated
+
+    /**
+     * Method which allows to computeTargetPosition once, when ghosts transition to afraid state
+     */
     protected void scareGhostSignalActivated(){
         if (!scareSignalActive1){
             computeTargetPosition();
             targetPath = computeShortestPath(targetPos);
         }
     }
+
+
+    /**
+     * Method which allows to computeTargetPosition once, when ghosts transition to unafraid state
+     */
     protected void scareGhostSignalDeactivated(){
         if (!scareSignalActive2){
             computeTargetPosition();
@@ -126,7 +142,10 @@ public class Inky extends InkyPinky{
         }
     }
 
-    //Compute the next path
+
+    /**
+     * Method to compute a valid targetPosition which respects the behaviour of Inky's personality
+     */
     public void computeTargetPosition() {
         if (!isAfraid()) {
             if (player == null) { //This runs well

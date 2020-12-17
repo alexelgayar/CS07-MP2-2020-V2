@@ -14,9 +14,7 @@ public class Key extends CollectableAreaEntity implements Logic {
 
     Sprite sprite;
 
-    public boolean isCollected = false;
-
-
+    private boolean isCollected = false;
 
     public Key(Area area, Orientation orientation, DiscreteCoordinates coords) {
         super(area, orientation, coords);
@@ -25,6 +23,12 @@ public class Key extends CollectableAreaEntity implements Logic {
 
     }
 
+    /**
+     * Method which sets the key status as "collected" -> Initiates signal to open gates
+     */
+    public void setKeyCollected(){
+        isCollected = true;
+    }
 
 
     @Override

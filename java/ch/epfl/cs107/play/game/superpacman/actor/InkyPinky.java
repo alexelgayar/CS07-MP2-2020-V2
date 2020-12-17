@@ -23,11 +23,6 @@ public class InkyPinky extends Ghost{
     protected int currentAreaWidth = getOwnerArea().getWidth();
     protected int currentAreaHeight = getOwnerArea().getHeight();
 
-
-
-    //Path path = new Path(this.getPosition(), new LinkedList<Orientation>());
-    //Path graphicPath = new Path(this.getPosition(), new LinkedList<Orientation>(path));
-
     public InkyPinky(Area area, Orientation orientation, DiscreteCoordinates position, AreaGraph areaGraph) {
         super(area, orientation, position);
 
@@ -40,6 +35,11 @@ public class InkyPinky extends Ghost{
         startAnimation(deltaTime);
     }
 
+
+    /**
+     * Boolean method which returns true if position of ghost = target position of the areaGraph path
+     * @return (boolean): whether the ghost has reached target position of path or not
+     */
     public boolean ghostHasReachedTarget(){
         if (targetPos == null){
             return false;
@@ -49,6 +49,12 @@ public class InkyPinky extends Ghost{
         }
     }
 
+
+    /**
+     * Computes the shortest path from the ghost position to the position of the provided target coordinates
+     * @param targetPosition (DiscreteCoordinates): The position to which we must find shortest path
+     * @return (Queue<Orientation>): A smallest set of orientations that the Ghost must follow in order to reach target position
+     */
     public Queue<Orientation> computeShortestPath(DiscreteCoordinates targetPosition){
         targetPath = areaGraph.shortestPath(getCurrentMainCellCoordinates(), targetPosition);
         return targetPath;

@@ -45,6 +45,9 @@ public abstract class SuperPacmanArea extends Area implements Logic {
         return false;
     }
 
+    /**
+     * Method which computes the number of diamonds that are present in the level (Overrided in sub-classes)
+     */
   public void countDiamonds(){
 
    }

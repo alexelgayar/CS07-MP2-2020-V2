@@ -28,6 +28,7 @@ public class Level1 extends SuperPacmanArea {
 
     private int nbrDiamonds= 0;                                                                                                                         
 
+    @Override
     public void countDiamonds(){
         nbrDiamonds ++;
     }

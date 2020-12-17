@@ -45,6 +45,22 @@ Each diamond eaten adds 10 points to your score, each cherry eaten adds 200 poin
 ### Get Temporary Speed Boost
 **(Extension 5)** To obtain a temporary speed boost, you can eat the potions that are located in all four corners of Level 2 and 3.
 
+# Note on Extensions
+### Activating the extensions
+All extensions *(Extensions 1, 2, 3, 4 & 5) are **actively used** in Level 2 and Level 3 of the game, hence they are activated by default.
+
+Although Level 2 and 3 make up the basic levels of the Super-Pacman game, we found it was necessary to actively use our extensions in these base levels (rather than create a separate level or separate game) as they enhanced the gameplay without fundamentally altering the mechanics of the game. 
+
+Had our extensions fundamentally changed the mechanics of the game, we would have created a new level or prepared a different game configuration.
+
+To recap all extensions included:
+1.  **(New Actor) Sawblade:** Has the ability to move left & right, or up & down. If player hits sawblade head-on, player will be killed. (However we have programmed it such that if the player does not hit the sawblade head-on, he will not die (the concept is that the sawblade *crushes* Pac-Man)).
+2.  **(New Actor) Turret:** Occupies a cell-space positioned on a wall. The turret shoots deadly projectiles in the orientation it faces, which kill Pac-Man on impact.
+3.  **(New Actor) Projectile:** The projectile is an actor which kills the Pac-Man on impact. If the projectile does not hit pac-man, then it disintegrates on impact with a wall.
+4.  **(New Collectible Actor) HPBoost:** The Hp boost is a heart which can be collected by the Pac-Man. Upon collection, the Pac-Man gains an extra heart point.
+5.  **(New Collectible Actor) SpeedBoost:** The Speed boost is a potion which can be collected by the Pac-Man. Upon collection, the Pac-Man receives a temporary speed-boost which can allow Pac-Man to evade ghosts and quickly collect diamonds.
+
+
 # End of Game
 The game window will automatically close when:
 1. Pac-Man runs out of lives

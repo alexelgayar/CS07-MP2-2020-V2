@@ -31,6 +31,10 @@ public class SawBlade extends MovableAreaEntity {
         orientate(orientation);
     }
 
+    /**
+     * Method which computes the nextOrientation for the sawblade (constrained it to 1D motion)
+     * @return (Orientation): Returns the next orientation that the sawblade must do
+     */
     public Orientation getNextOrientation(){
 
         if(currentOrientation.equals(Orientation.UP)){

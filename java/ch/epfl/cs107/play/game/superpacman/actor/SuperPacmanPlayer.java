@@ -38,6 +38,7 @@ public class SuperPacmanPlayer extends Player {
     private final float SPEED_TIME = 8.f;
     private float speedTimer = 0.f;
     private final static int SPEED_BOOST = 2;
+    private Orientation desiredOrientation = Orientation.RIGHT;
 
     Sprite[][] sprites = RPGSprite.extractSprites("superpacman/pacman", 4, 1, 1,
             this, 64, 64, new Orientation[] {Orientation.DOWN, Orientation.LEFT, Orientation.UP, Orientation.RIGHT});
@@ -46,17 +47,21 @@ public class SuperPacmanPlayer extends Player {
 
     Animation animation = animations[3];
 
+    /**
+     * Returns the score obtained by the player
+     * @return (int): Returns the final score of the player
+     */
     public int getScore(){
         return this.score;
     }
 
+    /**
+     * Returns the HP of the Pac-Man player
+     * @return (int): Returns the hp of the Pac-Man player
+     */
     public int getHp(){
         return this.hp;
     }
-
-    public float getInvulnerabilityTimer(){ return this.invulnerabilityTimer; }
-
-    public void setInvulnerabilityTimer(){ this.invulnerabilityTimer = INVULNERABLE_TIME;}
 
     @Override
     public void draw(Canvas canvas) {
@@ -75,12 +80,11 @@ public class SuperPacmanPlayer extends Player {
        // resetMotion();
     }
 
-    public boolean isWeak(){return (hp <= 0); }
-
-    public void strengthen(){ hp = 3; }
-
-   private Orientation desiredOrientation = Orientation.RIGHT;
-
+    /**
+     * Gets the nextOrientation that Pac-Man must follow, based on the user keyboard input
+     * @param b (Button): The integer to input
+     * @param orientation (Orientation): Links the orientation to the keyboard key
+     */
     private void getOrientation(Button b, Orientation orientation){
 
         if(b.isDown()){
@@ -88,9 +92,17 @@ public class SuperPacmanPlayer extends Player {
         }
     }
 
+    /**
+     * Returns the isPacmanAlive boolean, which verifies whether or not Pacman was killed
+     * @return (boolean): Returns isPacmanAlive
+     */
     public boolean getPacmanAlive(){
         return isPacmanAlive;
     }
+
+    /**
+     * Sets the isPacmanAlive boolean to true (which indicates that pacman was successfully respawned)
+     */
     public void setPacmanAlive(){
         isPacmanAlive = true;
     }
@@ -159,16 +171,17 @@ public class SuperPacmanPlayer extends Player {
 
 
     /**
-     * Leave an area by unregister this player
+     * Leave an area by unregistering this player
      */
     public void leaveArea(){
         getOwnerArea().unregisterActor(this);
     }
 
-
-
+    /**
+     * Method which resets and respawns pacman to his spawn position if he is killed
+     */
     public void respawnPacman(){
-        isPacmanAlive = true;
+        setPacmanAlive();
         this.hp -= 1;
 
 
@@ -178,6 +191,10 @@ public class SuperPacmanPlayer extends Player {
         resetMotion();
     }
 
+    /**
+     * Methods checks whether Pac-Man has an active invulnerability timer, in which case he is invincible
+     * @return (boolean): Returns whether Pac-Man is invincible against ghosts or not
+     */
     public boolean isInvincible(){
         return invulnerabilityTimer > 0.f;
     }
@@ -230,7 +247,9 @@ public class SuperPacmanPlayer extends Player {
 
     }
 
-
+    /**
+     * Handler class for SuperPacmanPlayer, which deals with specific (non-default) interactions between player and interactable objects
+     */
     private class SuperPacmanPlayerHandler implements SuperPacmanInteractionVisitor {
 
         @Override
@@ -238,11 +257,17 @@ public class SuperPacmanPlayer extends Player {
             setIsPassingADoor(door);
         }
 
+        /**
+         * If Pacman interacts with a Cherry, unregister cherry and increase score
+         */
        public void interactWith(Cherry cherry){
             cherry.collect();
             score += 200;
         }
 
+        /**
+         * If Pacman interacts with a diamond, unregister diamond and increase score
+         */
         public void interactWith(Diamond diamond){
             diamond.collect();
             score += 10;
@@ -251,24 +276,36 @@ public class SuperPacmanPlayer extends Player {
 
         }
 
+        /**
+         * If Pacman interacts with a Cherry, unregister potion and set pacMan speedboost timer
+         */
         @Override
         public void interactWith(Potion potion) {
             potion.collect();
             speedTimer = SPEED_TIME;
         }
 
+        /**
+         * If Pacman interacts with a Heart, unregister heart and increase hp by 1
+         */
         @Override
         public void interactWith(Heart heart) {
             heart.collect();
              hp += 1;
         }
 
+        /**
+         * If Pacman touches a projectile, unregister projectile and kill pacman
+         */
         @Override
         public void interactWith(Projectile projectile) {
             projectile.unregisterProjectile();
             isPacmanAlive = false;
         }
 
+        /**
+         * If Pacman interacts with a Bonus, unregister bonus and set a pacman invincibilityTimer
+         */
         public void interactWith(Bonus bonus){
             bonus.collect();
             invulnerabilityTimer = INVULNERABLE_TIME;
@@ -276,10 +313,13 @@ public class SuperPacmanPlayer extends Player {
             //=> How do the ghosts check whether invulnerability time > 0?
         }
 
+        /**
+         * Method which, upon contact of player and ghost, either eats ghost (if pacman invincible) or kills player (if not invincible)
+         * @param ghost (Ghost): The ghost which has accepted interaction of player
+         */
         public void interactWith(Ghost ghost){
             if (ghost.isAfraid()){
                 ghost.eatGhost();
-                //TODO: Bug -> Ghost score is added multiple times if pacman eats ghost once
                 score += GHOST_SCORE;
             }
             else{
@@ -287,14 +327,20 @@ public class SuperPacmanPlayer extends Player {
             }
         }
 
+        /**
+         * If Pacman collides head-on with a sawblade, then kill pacman
+         */
         @Override
         public void interactWith(SawBlade sawBlade) {
             isPacmanAlive = false;
         }
 
+        /**
+         * If Pacman collects a key, collect the key and initiate signal for gates (using isCollected).
+         */
         public void interactWith(Key key){
             key.collect();
-            key.isCollected = true;
+            key.setKeyCollected();
         }
     }
 

@@ -40,10 +40,15 @@ public class Pinky extends InkyPinky{
             scareSignalActive1 = false;
             scareSignalActive2 = true;
         }
-        ghostMovement();
+        pinkyMovement();
     }
 
-    private void ghostMovement(){
+
+    /**
+     * Method that applies the specific movement behaviour of Pinky
+     * Note: Follow shortest path to player, else go to any random available cell in grid
+     */
+    private void pinkyMovement(){
         if(!isDisplacementOccurs()){
             orientate(getNextOrientation());
             //System.out.println("INKY: targetPos (goal): " + targetPos + " | ghostPos (start): " + this.getCurrentMainCellCoordinates() + " | targetPath: " + targetPath);
@@ -72,6 +77,9 @@ public class Pinky extends InkyPinky{
         return targetPath.poll();
     }
 
+    /**
+     * Method to verify that chosen target has a valid path
+     */
     private void getTarget(){
         computeTargetPosition();
         while(ghostHasReachedTarget() || targetPath == null || targetPath.size() == 0 || targetPos == null){
@@ -80,6 +88,10 @@ public class Pinky extends InkyPinky{
         }
     }
     //Compute the next path
+
+    /**
+     * Method to compute a valid targetPosition which respects the behaviour of Pinky's personality
+     */
     public void computeTargetPosition() {
         if (!isAfraid()) {
             if (player == null) {
@@ -142,6 +154,9 @@ public class Pinky extends InkyPinky{
         }
     }
 
+    /**
+     * Method which allows to computeTargetPosition once, when ghosts transition to afraid state
+     */
     //Signal occurs when the ghosts are activated
     protected void scareGhostSignalActivated(){
         if (!scareSignalActive1){
@@ -150,6 +165,10 @@ public class Pinky extends InkyPinky{
         }
     }
 
+
+    /**
+     * Method which allows to computeTargetPosition once, when ghosts transition to unafraid state
+     */
     protected void scareGhostSignalDeactivated(){
         if (!scareSignalActive2){
             computeTargetPosition();

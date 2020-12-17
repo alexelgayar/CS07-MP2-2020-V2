@@ -17,22 +17,21 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Window;
 
 public class SuperPacman  extends RPG {
-    public final static float CAMERA_SCALE_FACTOR = 17.f;//17.f;
+    public final static float CAMERA_SCALE_FACTOR = 17.f;
     public final static float STEP = 0.05f;
     private static boolean isGameEnd = false;
     public SuperPacmanPlayer player;
 
-    private final String[] areas = {"superpacman/Level0", "superpacman/Level1", "superpacman/Level2"}; //"superpacman/background.png"
-
+    private final String[] areas = {"superpacman/Level0", "superpacman/Level1", "superpacman/Level2"};
     private int areaIndex;
 
     /**
      * Add all the areas
      */
     private void createAreas(){
-        addArea(new Level0()); //new Level => This area always returns null
-        addArea(new Level1()); //new Level => This area always returns null
-        addArea(new Level2()); //new Level => This area always returns null
+        addArea(new Level0());
+        addArea(new Level1());
+        addArea(new Level2());
     }
 
     @Override
@@ -56,6 +55,7 @@ public class SuperPacman  extends RPG {
         if(player.getHp()<= 0){
             if (!isGameEnd) {
                 System.out.println("Game over, Pacman ran out of lives");
+                System.out.println("Your final score was: " + player.getScore());
                 System.exit(0);
             }
         }

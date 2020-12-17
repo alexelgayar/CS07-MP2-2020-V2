@@ -21,6 +21,9 @@ public class SuperPacmanBehavior extends AreaBehavior {
     private List<Ghost> registeredGhosts;
     private AreaGraph areaGraph;
 
+    /**
+     * enum method which converts RGB values into cell type identifiers
+     */
     public enum SuperPacmanCellType {
 
         NONE(0),
@@ -83,27 +86,55 @@ public class SuperPacmanBehavior extends AreaBehavior {
             }
         }
 
-        System.out.println("AreaGraph in BehaviourMap: " + areaGraph.toString());
+        //System.out.println("AreaGraph in BehaviourMap: " + areaGraph.toString());
     }
 
+    /**
+     * Determines whether the current cell at position(x,y) has a left edge
+     * @param x (int): The x-coordinate of the cell
+     * @param y (int): The y-coordinate of the cell
+     * @return (boolean): Returns either true (if exists) or false (if does not exist)
+     */
     private boolean hasLeftEdge(int x, int y){
         return (x > 0 && (((SuperPacmanCell) getCell(x-1,y)).type != SuperPacmanCellType.WALL));
     }
+
+    /**
+     * Determines whether the current cell at position(x,y) has an up edge
+     * @param x (int): The x-coordinate of the cell
+     * @param y (int): The y-coordinate of the cell
+     * @return (boolean): Returns either true (if exists) or false (if does not exist)
+     */
     private boolean hasUpEdge(int x, int y){
         return (y < getHeight() - 1 && (((SuperPacmanCell) getCell(x,y+1)).type != SuperPacmanCellType.WALL));
     }
+
+    /**
+     * Determines whether the current cell at position(x,y) has a right edge
+     * @param x (int): The x-coordinate of the cell
+     * @param y (int): The y-coordinate of the cell
+     * @return (boolean): Returns either true (if exists) or false (if does not exist)
+     */
     private boolean hasRightEdge(int x, int y){
         return (x < getWidth() - 1 && (((SuperPacmanCell) getCell(x+1,y)).type != SuperPacmanCellType.WALL));
     }
+
+    /**
+     * Determines whether the current cell at position(x,y) has a down edge
+     * @param x (int): The x-coordinate of the cell
+     * @param y (int): The y-coordinate of the cell
+     * @return (boolean): Returns either true (if exists) or false (if does not exist)
+     */
     private boolean hasDownEdge(int x, int y){
         return (y > 0 && (((SuperPacmanCell) getCell(x,y-1)).type != SuperPacmanCellType.WALL));
     }
 
+    //private  int diamondCounter= 0;
 
-    private Wall wall;
-    private  int diamondCounter= 0;
-
-
+    /**
+     * Registers all the actors into their corresponding cells
+     * @param area (Area): Gets the current Area
+     */
     protected void registerActors(Area area){
         for(int y = 0; y< getHeight(); y++){
             for(int x = 0; x< getWidth(); x++){
@@ -140,7 +171,7 @@ public class SuperPacmanBehavior extends AreaBehavior {
                         area.registerActor(new Diamond(area, Orientation.UP, new DiscreteCoordinates(x, y)));
 
                         if (area.getTitle().equals("superpacman/Level2")) {
-                            diamondCounter += 1;
+                            //diamondCounter += 1;
                             //System.out.println(diamondCounter);
                         }
                     }

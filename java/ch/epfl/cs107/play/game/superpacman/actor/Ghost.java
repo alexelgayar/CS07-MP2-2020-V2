@@ -69,6 +69,10 @@ public class Ghost extends MovableAreaEntity implements Interactor {
         }
     }
 
+    /**
+     * Generates the next orientation for the ghost
+     * @return (Orientation): returns the next orientation that the ghost should switch to
+     */
     public Orientation getNextOrientation(){
         int randomInt = RandomGenerator.getInstance().nextInt(MAX);
         return Orientation.fromInt(randomInt);
@@ -135,6 +139,12 @@ public class Ghost extends MovableAreaEntity implements Interactor {
         ((SuperPacmanInteractionVisitor)v).interactWith(this);
     }
 
+
+    /**
+     * Starts the animation for the Ghost. If ghosts are NOT afraid => use corresponding ghost sprite (defined in sub-class) animation.
+     * Else: If ghosts are afraid => use Ghost afraid sprite animation.
+     * @param deltaTime (float): Updates the animation with time
+     */
     public void startAnimation(float deltaTime){
         //Start the animation of the ghosts
         if(!isAfraid()){
@@ -151,6 +161,11 @@ public class Ghost extends MovableAreaEntity implements Interactor {
     }
 
     //When ghost is eaten by pacman => Respawn the ghost in its spawn position
+
+    /**
+     * When a ghost is eaten by pacman, respawn the ghost in its spawn position.
+     * Method called by Interaction from SuperPacManPlayer
+     */
     public void eatGhost(){
         player = null;
 
@@ -161,21 +176,36 @@ public class Ghost extends MovableAreaEntity implements Interactor {
         resetMotion();
     }
 
+
+    /**
+     * Returns the boolean whether or not the ghost is afraid
+     * @return (boolean): whether or not the ghost is afraid
+     */
     public static boolean isAfraid(){
         return isAfraid;
     }
 
+
+    /**
+     * Method to scare the ghosts if Pac-Man eats a bonus, sets isAfraid to true
+     */
     public void scareGhost() {
         isAfraid = true;
         //System.out.println("Running ScareGhost");
     }
 
+
+    /**
+     * When the invincibility timer on Pac-Man runs out, then set isAfraid to false (to unscare Ghosts)
+     */
     public void unscareGhost(){
         isAfraid = false;
         //System.out.println("Running ScareGhost");
     }
 
-    //Respawn all the ghosts into their spawn locations
+    /**
+     * Respawn all the ghosts into their spawn locations, when Pac-Man is killed
+     */
     public void resetGhosts(){
         isAfraid = false;
         player = null; //reset the ghost memorisation of player
@@ -187,20 +217,33 @@ public class Ghost extends MovableAreaEntity implements Interactor {
         resetMotion();
     }
 
+
+    /**
+     * Memorise the player, once the player enters the field of view of the ghost
+     * @param player (SuperPacmanPlayer): The Pac-Man player (retrieved when Pac-Man enters fieldOfView of Ghost)
+     */
     protected void memorisePlayer(SuperPacmanPlayer player){
         this.player = player;
     }
 
+
+    /**
+     * Forget the player, as soon as Pac-Man exits the fieldOfView of the ghost
+     * -> Removes reference to player by setting player attribute to false
+     */
     protected void forgetPlayer(){
         this.player = null;
     }
 
     private class GhostHandler implements GhostInteractionVisitor {
 
-        //Make this interaction a fieldOfView interaction (not a contact interaction)
+        /**
+         * Interaction that occurs when Pac-Man enters the field of view of the Ghost
+         * Calls memorisePlayer from within here
+         * @param player (SuperPacmanPlayer): The Pac-Man player
+         */
         public void interactWith(SuperPacmanPlayer player) {
             memorisePlayer(player);
-            //System.out.println("Player has entered Field Of View of Ghost: " + player);
         }
     }
 }

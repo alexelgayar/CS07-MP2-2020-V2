@@ -20,17 +20,17 @@ public class Turret extends AreaEntity {
     private int projectileXOffset = 0;
     private int projectileYOffset = 0;
 
-    /**
-     * Turret Constructor
-     *
-     * @param area        (Area): Owner area. Not null
-     * @param orientation (Orientation): Initial orientation of the entity. Not null
-     * @param position    (Coordinate): Initial position of the entity. Not null
-     */
     public Turret(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
         projectileDirection = orientation;
+        computeProjectileOffset();
+        sprite = new Sprite("superpacman/Turret_2", 1.f, 1.f , this);
+    }
 
+    /**
+     * Computes the required offset to spawn the projectile in an empty neighbour cell (and not inside a wall)
+     */
+    private void computeProjectileOffset(){
         if (projectileDirection == Orientation.RIGHT){
             projectileXOffset = 1;
         }
@@ -43,9 +43,7 @@ public class Turret extends AreaEntity {
         if (projectileDirection == Orientation.DOWN) {
             projectileYOffset = -1;
         }
-        sprite = new Sprite("superpacman/Turret_2", 1.f, 1.f , this);
     }
-
     @Override
     public void draw(Canvas canvas) {
         sprite.draw(canvas);
@@ -54,8 +52,6 @@ public class Turret extends AreaEntity {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-
-
 
         //Spawn a projectile that fires
         if (shootCooldownTimer <= 0){

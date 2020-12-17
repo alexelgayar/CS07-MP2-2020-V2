@@ -60,14 +60,23 @@ public abstract class Area implements Playable {
 		this.areaBehavior = ab;
 	}
 
+	/**
+	 * Method which allows Area to scareGhost actors that are "memorised" in areaBehaviour
+	 */
 	public void scareGhosts(){
 		areaBehavior.scareGhosts();
 	}
 
+	/**
+	 * Method which allows Area to unscareGhost actors that are "memorised" in areaBehaviour
+	 */
 	public void unscareGhosts(){
 		areaBehavior.unscareGhosts();
 	}
 
+	/**
+	 * Method which allows Area to resetGhosts that belong to AreaBehaviour
+	 */
 	public void resetGhosts(){
 		areaBehavior.resetGhosts();
 	}

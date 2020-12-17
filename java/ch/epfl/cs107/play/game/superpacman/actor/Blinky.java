@@ -32,6 +32,11 @@ public class Blinky extends Ghost{
         startAnimation(deltaTime);
     }
 
+
+    /**
+     * Method that applies the specific behaviour of the Blinky Ghost
+     * Note: Get randomOrientation at each step of simulation
+     */
     public void blinkyMovement(){
         if(!isDisplacementOccurs()){
             if(getOwnerArea().canEnterAreaCells(this, Collections.singletonList(getCurrentMainCellCoordinates().jump(getNextOrientation().toVector()))))
@@ -39,9 +44,6 @@ public class Blinky extends Ghost{
                 orientate(getNextOrientation());
             }
             move(SPEED);
-        }
-        else{ //if blinky is moving
-
         }
     }
 

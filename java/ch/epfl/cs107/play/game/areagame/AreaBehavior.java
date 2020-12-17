@@ -37,28 +37,32 @@ public abstract class AreaBehavior
         height = behaviorMap.getHeight();
         width = behaviorMap.getWidth();
         cells = new Cell[width][height];
-
-        //Create the AreaGraph here
-
     }
 
-    //For any cell that is not a wall, add a node
-    protected void addNode(){
-
-    }
-
+    /**
+     * Method which allows AreaBehaviour super-class to scareGhost actors that are "memorised" in SuperPacmanBehaviour sub-class (override in sub-class)
+     */
     protected void scareGhosts(){
         //Scare the ghosts
     }
 
+    /**
+     * Method which allows AreaBehaviour super-class to unscareGhost actors that are "memorised" in SuperPacmanBehaviour sub-class (override in sub-class)
+     */
     protected void unscareGhosts(){
         //Unscare the ghosts
     }
 
+    /**
+     * Method which allows AreaBehaviour to resetGhost actors that are "memorised" in areaBehaviour, if pacman killed
+     */
     protected void resetGhosts(){
         //Reset all the ghosts if pacman is killed
     }
 
+    /**
+     * Method which allows to get AreaGraph of a map (necessary for gate logic & Inky/Pinky path obstacle calculation)
+     */
     protected AreaGraph getAreaGraph(){
         //Redefine in SuperPacmanBehaviour
         return null;
