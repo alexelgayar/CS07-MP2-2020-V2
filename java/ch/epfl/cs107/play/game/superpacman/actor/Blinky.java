@@ -15,15 +15,13 @@ import java.util.Collections;
 
 public class Blinky extends Ghost{
 
-
-    private Sprite[][] sprites = RPGSprite.extractSprites("superpacman/ghost.blinky", 2, 1, 1,
-            this, 16, 16, new Orientation[]{Orientation.UP, Orientation.RIGHT, Orientation.DOWN, Orientation.LEFT});
-
-    private Animation[] animations = Animation.createAnimations(2, sprites);
-    private Animation animation = animations[1];
-
     public Blinky(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
+
+        sprites = RPGSprite.extractSprites("superpacman/ghost.blinky", 2, 1, 1,
+                this, 16, 16, new Orientation[]{Orientation.UP, Orientation.RIGHT, Orientation.DOWN, Orientation.LEFT});
+        animations = Animation.createAnimations(2, sprites);
+        animation = animations[1];
     }
 
     @Override
@@ -59,16 +57,6 @@ public class Blinky extends Ghost{
         else{
             if(isDisplacementOccurs())
                 super.afraidAnimation.update(deltaTime);
-        }
-    }
-
-    @Override
-    public void draw(Canvas canvas) {
-        if (!isAfraid()) {
-            animation.draw(canvas);
-        }
-        else{
-            afraidAnimation.draw(canvas);
         }
     }
 }

@@ -88,10 +88,10 @@ public class SuperPacmanBehavior extends AreaBehavior {
         return (x > 0 && (((SuperPacmanCell) getCell(x-1,y)).type != SuperPacmanCellType.WALL));
     }
     private boolean hasUpEdge(int x, int y){
-        return (y < getHeight() && (((SuperPacmanCell) getCell(x,y+1)).type != SuperPacmanCellType.WALL));
+        return (y < getHeight()-1 && (((SuperPacmanCell) getCell(x,y+1)).type != SuperPacmanCellType.WALL));
     }
     private boolean hasRightEdge(int x, int y){
-        return (x < getWidth() && (((SuperPacmanCell) getCell(x+1,y)).type != SuperPacmanCellType.WALL));
+        return (x < getWidth()-1 && (((SuperPacmanCell) getCell(x+1,y)).type != SuperPacmanCellType.WALL));
     }
     private boolean hasDownEdge(int x, int y){
         return (y > 0 && (((SuperPacmanCell) getCell(x,y-1)).type != SuperPacmanCellType.WALL));
@@ -199,7 +199,7 @@ public class SuperPacmanBehavior extends AreaBehavior {
     protected void resetGhosts() {
         super.resetGhosts();
         for (Ghost ghost: registeredGhosts){
-            System.out.println("Resetting all ghosts");
+            //System.out.println("Resetting all ghosts");
             ghost.resetGhosts();
         }
     }
