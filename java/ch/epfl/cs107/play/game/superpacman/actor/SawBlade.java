@@ -29,8 +29,6 @@ public class SawBlade extends MovableAreaEntity {
         super(area, orientation, position);
         currentOrientation = orientation;
         orientate(orientation);
-
-
     }
 
     public Orientation getNextOrientation(){
@@ -61,17 +59,12 @@ public class SawBlade extends MovableAreaEntity {
 
         move(12);
 
-
             if(!isDisplacementOccurs())
             {
                 currentOrientation = getNextOrientation();
                orientate(currentOrientation);
                move(12);
             }
-
-
-
-
     }
 
     @Override

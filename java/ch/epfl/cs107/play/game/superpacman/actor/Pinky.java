@@ -9,6 +9,7 @@ import ch.epfl.cs107.play.game.areagame.actor.Sprite;
 import ch.epfl.cs107.play.game.rpg.actor.RPGSprite;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.RandomGenerator;
+import ch.epfl.cs107.play.signal.logic.Logic;
 import ch.epfl.cs107.play.window.Canvas;
 
 import java.util.LinkedList;
@@ -42,10 +43,10 @@ public class Pinky extends InkyPinky{
         ghostMovement();
     }
 
-    protected void ghostMovement(){
+    private void ghostMovement(){
         if(!isDisplacementOccurs()){
             orientate(getNextOrientation());
-            System.out.println("INKY: targetPos (goal): " + targetPos + " | ghostPos (start): " + this.getCurrentMainCellCoordinates() + " | targetPath: " + targetPath);
+            //System.out.println("INKY: targetPos (goal): " + targetPos + " | ghostPos (start): " + this.getCurrentMainCellCoordinates() + " | targetPath: " + targetPath);
             move(SPEED);
         }
     }
@@ -56,7 +57,13 @@ public class Pinky extends InkyPinky{
         if (!isAfraid()) {
             if (player != null) {
                 targetPos = new DiscreteCoordinates((int) player.getPosition().x, (int) player.getPosition().y);
-                targetPath = computeShortestPath(targetPos);
+                if (computeShortestPath(targetPos)!= null) {
+                    targetPath = computeShortestPath(targetPos);
+                }
+                else{
+                    player = null;
+                    getTarget();
+                }
             }
         }
 
@@ -115,14 +122,24 @@ public class Pinky extends InkyPinky{
     protected void memorisePlayer(SuperPacmanPlayer player) {
         super.memorisePlayer(player);
         computeTargetPosition();
-        targetPath = computeShortestPath(targetPos);
+        if (computeShortestPath(targetPos)!= null) {
+            targetPath = computeShortestPath(targetPos);
+        }
+        else{
+            //System.out.println("Error with player path: memorisePlayerInky");
+        }
     }
 
     @Override
     protected void forgetPlayer() {
         super.forgetPlayer();
         computeTargetPosition();
-        targetPath = computeShortestPath(targetPos);
+        if (computeShortestPath(targetPos)!= null) {
+            targetPath = computeShortestPath(targetPos);
+        }
+        else{
+            //System.out.println("Error with player path: forgetPlayerPinky");
+        }
     }
 
     //Signal occurs when the ghosts are activated
@@ -130,14 +147,12 @@ public class Pinky extends InkyPinky{
         if (!scareSignalActive1){
             computeTargetPosition();
             targetPath = computeShortestPath(targetPos);
-            targetPath = computeShortestPath(targetPos);
         }
     }
 
     protected void scareGhostSignalDeactivated(){
         if (!scareSignalActive2){
             computeTargetPosition();
-            targetPath = computeShortestPath(targetPos);
             targetPath = computeShortestPath(targetPos);
         }
     }

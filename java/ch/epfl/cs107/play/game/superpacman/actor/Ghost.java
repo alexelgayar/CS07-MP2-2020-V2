@@ -19,7 +19,7 @@ import java.util.List;
 public class Ghost extends MovableAreaEntity implements Interactor {
 
     private final static int MAX = 4;
-    protected final static int FIELD_OF_VIEW_RADIUS = 10; //5
+    protected final static int FIELD_OF_VIEW_RADIUS = 5;
     protected SuperPacmanPlayer player;
     private static boolean isAfraid;
     private GhostHandler handler;
@@ -152,6 +152,8 @@ public class Ghost extends MovableAreaEntity implements Interactor {
 
     //When ghost is eaten by pacman => Respawn the ghost in its spawn position
     public void eatGhost(){
+        player = null;
+
         getOwnerArea().leaveAreaCells(this, this.getEnteredCells());
         setCurrentPosition(spawnPoint.toVector());
 

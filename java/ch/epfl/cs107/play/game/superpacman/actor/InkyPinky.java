@@ -57,9 +57,9 @@ public class InkyPinky extends Ghost{
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        if (targetPath != null) {
+        /*if (targetPath != null) {
             Path graphicPath = new Path(this.getPosition(), new LinkedList<Orientation>(targetPath));
             graphicPath.draw(canvas);
-        }
+        }*/
     }
 }

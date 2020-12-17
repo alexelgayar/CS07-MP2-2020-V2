@@ -59,6 +59,11 @@ public abstract class AreaBehavior
         //Reset all the ghosts if pacman is killed
     }
 
+    protected AreaGraph getAreaGraph(){
+        //Redefine in SuperPacmanBehaviour
+        return null;
+    }
+
     protected void cellInteractionOf(Interactor interactor){
         for(DiscreteCoordinates dc : interactor.getCurrentCells()){
             if(dc.x < 0 || dc.y < 0 || dc.x >= width || dc.y >= height)

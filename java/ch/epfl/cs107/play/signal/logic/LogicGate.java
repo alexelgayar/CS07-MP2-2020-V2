@@ -18,7 +18,6 @@ public abstract class LogicGate implements Logic {
 
 
     /// LogicGate implements Logic
-
     @Override
     public final float getIntensity(float t) {
         return getIntensity();

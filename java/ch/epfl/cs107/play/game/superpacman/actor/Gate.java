@@ -1,6 +1,7 @@
 package ch.epfl.cs107.play.game.superpacman.actor;
 
 import ch.epfl.cs107.play.game.areagame.Area;
+import ch.epfl.cs107.play.game.areagame.AreaGraph;
 import ch.epfl.cs107.play.game.areagame.actor.AreaEntity;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Sprite;
@@ -18,7 +19,8 @@ import java.util.List;
 
 public class Gate extends AreaEntity {
 
-private Logic signal;
+    private Logic signal;
+    private AreaGraph areaGraph;
 
     Sprite sprite;
 
@@ -38,12 +40,9 @@ private Logic signal;
 
         if(orientation.equals(Orientation.RIGHT)){
             sprite = new Sprite("superpacman/gate", 1.f, 1.f, this, new RegionOfInterest(0, 64, 64, 64));
-
         }
 
         this.signal = signal;
-
-
     }
 
     @Override
@@ -51,6 +50,8 @@ private Logic signal;
         if(signal.isOn()){
             getOwnerArea().unregisterActor(this);
         }
+
+        getOwnerArea().activateNodes(getCurrentMainCellCoordinates(), signal);
     }
 
 

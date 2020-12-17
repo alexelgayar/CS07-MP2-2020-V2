@@ -263,6 +263,12 @@ public class SuperPacmanPlayer extends Player {
              hp += 1;
         }
 
+        @Override
+        public void interactWith(Projectile projectile) {
+            projectile.unregisterProjectile();
+            isPacmanAlive = false;
+        }
+
         public void interactWith(Bonus bonus){
             bonus.collect();
             invulnerabilityTimer = INVULNERABLE_TIME;
@@ -279,7 +285,6 @@ public class SuperPacmanPlayer extends Player {
             else{
                 isPacmanAlive = false;
             }
-
         }
 
         @Override

@@ -19,11 +19,10 @@ import ch.epfl.cs107.play.window.Window;
 public class SuperPacman  extends RPG {
     public final static float CAMERA_SCALE_FACTOR = 25.f;//17.f;
     public final static float STEP = 0.05f;
-
+    private static boolean isGameEnd = false;
     public SuperPacmanPlayer player;
 
     private final String[] areas = {"superpacman/Level0", "superpacman/Level1", "superpacman/Level2"}; //"superpacman/background.png"
-
 
     private int areaIndex;
 
@@ -40,10 +39,10 @@ public class SuperPacman  extends RPG {
     public boolean begin(Window window, FileSystem fileSystem) {
         if (super.begin(window, fileSystem)) {
             createAreas();
-            areaIndex = 1; //Testing Ghost Spawning
+            areaIndex = 2; //Testing Ghost Spawning
 
             Area area = setCurrentArea(areas[areaIndex], true);
-          player = new SuperPacmanPlayer(area, Orientation.RIGHT, ((SuperPacmanArea)area).getSpawnPoint());
+            player = new SuperPacmanPlayer(area, Orientation.RIGHT, ((SuperPacmanArea)area).getSpawnPoint());
             super.initPlayer(player);
             return true;
         }
@@ -53,34 +52,26 @@ public class SuperPacman  extends RPG {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        //Ghost interaction checker
-        if (player.isInvincible()){
-            getCurrentArea().scareGhosts();
+
+        if(player.getHp()<= 0){
+            if (!isGameEnd) {
+                System.out.println("Game over, Pacman ran out of lives");
+                System.exit(0);
+            }
         }
-        else{
+        //Ghost interaction checker
+        if (player.isInvincible()) {
+            getCurrentArea().scareGhosts();
+        } else {
             getCurrentArea().unscareGhosts();
-            if (!(player.getHp() <= 0)) {
+            //if (!(player.getHp() <= 0)) {
                 if (!player.getPacmanAlive()) {
                     //Reset the level here
                     player.respawnPacman();
                     getCurrentArea().resetGhosts();
                 }
-            }
-
-                //Game over screen
-                //TODO: Extension create a game-over screen
-                //getCurrentArea().unregisterActor(player);
-
+            //}
         }
-
-        if(player.getHp()<= 0){
-            end();
-            super.begin(getWindow(),getFileSystem());
-
-
-        }
-
-
     }
 
     @Override

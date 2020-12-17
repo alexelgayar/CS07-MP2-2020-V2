@@ -44,12 +44,12 @@ public class Inky extends InkyPinky{
         ghostMovement();
     }
 
-    protected void ghostMovement() {
+    private void ghostMovement() {
         //No displacement occurs when ghost reaches target
         if(!isDisplacementOccurs()){
             orientate(getNextOrientation());
             if (!isAfraid()) {
-                System.out.println("INKY: targetPos (goal): " + targetPos + " | ghostPos (start): " + this.getCurrentMainCellCoordinates());
+                //System.out.println("INKY: targetPos (goal): " + targetPos + " | ghostPos (start): " + this.getCurrentMainCellCoordinates());
                 move(SPEED);
             }
             else {
@@ -64,7 +64,13 @@ public class Inky extends InkyPinky{
         if (!isAfraid()) {
             if (player != null) {
                 targetPos = new DiscreteCoordinates((int) player.getPosition().x, (int) player.getPosition().y);
-                targetPath = computeShortestPath(targetPos);
+                if (computeShortestPath(targetPos)!= null) {
+                    targetPath = computeShortestPath(targetPos);
+                }
+                else{
+                    player = null;
+                    getTarget();
+                }
             }
         }
         //This only runs if any of the following conditions are true
@@ -79,7 +85,6 @@ public class Inky extends InkyPinky{
             computeTargetPosition();
             targetPath = computeShortestPath(targetPos);
             ++counter;
-            System.out.print(counter + " ");
         }
     }
 
@@ -87,14 +92,24 @@ public class Inky extends InkyPinky{
     protected void memorisePlayer(SuperPacmanPlayer player) {
         super.memorisePlayer(player);
         computeTargetPosition();
-        targetPath = computeShortestPath(targetPos);
+        if (computeShortestPath(targetPos)!= null) {
+            targetPath = computeShortestPath(targetPos);
+        }
+        else{
+            //System.out.println("Error with player path: MemorisePlayerInky");
+        }
     }
 
     @Override
     protected void forgetPlayer() {
         super.forgetPlayer();
         computeTargetPosition();
-        targetPath = computeShortestPath(targetPos);
+        if (computeShortestPath(targetPos)!= null) {
+            targetPath = computeShortestPath(targetPos);
+        }
+        else{
+            //System.out.println("Error with player path: ForgetPlayerInky");
+        }
     }
 
     //Signal occurs when the ghosts are activated

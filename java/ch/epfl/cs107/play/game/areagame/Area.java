@@ -4,10 +4,12 @@ import ch.epfl.cs107.play.game.Playable;
 import ch.epfl.cs107.play.game.actor.Actor;
 import ch.epfl.cs107.play.game.areagame.actor.Interactable;
 import ch.epfl.cs107.play.game.areagame.actor.Interactor;
+import ch.epfl.cs107.play.game.superpacman.area.SuperPacmanBehavior;
 import ch.epfl.cs107.play.io.FileSystem;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.math.Transform;
 import ch.epfl.cs107.play.math.Vector;
+import ch.epfl.cs107.play.signal.logic.Logic;
 import ch.epfl.cs107.play.window.Keyboard;
 import ch.epfl.cs107.play.window.Mouse;
 import ch.epfl.cs107.play.window.Window;
@@ -70,6 +72,11 @@ public abstract class Area implements Playable {
 		areaBehavior.resetGhosts();
 	}
 
+	public void activateNodes(DiscreteCoordinates gatePosition, Logic signal){
+		AreaGraph areaGraph = areaBehavior.getAreaGraph();
+		areaGraph.setSignal(gatePosition, signal);
+	}
+
 	/**
 	 * Setter for the view Candidate
 	 * @param a (Actor), not null
@@ -77,7 +84,6 @@ public abstract class Area implements Playable {
 	public final void setViewCandidate(Actor a){
 		this.viewCandidate = a;
 	}
-
 
 	/**
 	 * Add an actor to the actors list

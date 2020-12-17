@@ -18,8 +18,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class SuperPacmanBehavior extends AreaBehavior {
-    //Create a ghost array?
-    //Ghost[] ghosts = {};
     private List<Ghost> registeredGhosts;
     private AreaGraph areaGraph;
 
@@ -53,6 +51,11 @@ public class SuperPacmanBehavior extends AreaBehavior {
 
     }
 
+    @Override
+    public AreaGraph getAreaGraph() {
+        return areaGraph;
+    }
+
     //SuperPacmanBehavior Constructor class
     public SuperPacmanBehavior(Window window, String name) {
         super(window, name);
@@ -68,8 +71,6 @@ public class SuperPacmanBehavior extends AreaBehavior {
                 //Set the cells
                 SuperPacmanCellType color = SuperPacmanCellType.toType(getRGB(height - 1 - y, x));
                 setCell(x, y, new SuperPacmanCell(x, y, color));
-
-
             }
         }
 
@@ -78,14 +79,11 @@ public class SuperPacmanBehavior extends AreaBehavior {
             for (int x = 0; x < getWidth(); x++) {
                 if (((SuperPacmanCell) getCell(x, y)).type != SuperPacmanCellType.WALL) {
                     areaGraph.addNode(new DiscreteCoordinates(x,y), hasLeftEdge(x,y), hasUpEdge(x,y), hasRightEdge(x,y), hasDownEdge(x,y));
-                    System.out.println("x: " + x + " y: " + y + "   hasLeftEdge:" + hasLeftEdge(x,y) +
-                            "   hasUpEdge: " + hasUpEdge(x,y) + "   hasRightEdge: " + hasRightEdge(x, y) +
-                            "   hasDownEdge: " + hasDownEdge(x,y));
                 }
             }
         }
 
-        System.out.println("AreaGraph: " + areaGraph.toString());
+        System.out.println("AreaGraph in BehaviourMap: " + areaGraph.toString());
     }
 
     private boolean hasLeftEdge(int x, int y){
@@ -100,6 +98,7 @@ public class SuperPacmanBehavior extends AreaBehavior {
     private boolean hasDownEdge(int x, int y){
         return (y > 0 && (((SuperPacmanCell) getCell(x,y-1)).type != SuperPacmanCellType.WALL));
     }
+
 
     private Wall wall;
     private  int diamondCounter= 0;
@@ -133,14 +132,16 @@ public class SuperPacmanBehavior extends AreaBehavior {
                         area.registerActor(new Potion(area, Orientation.UP, new DiscreteCoordinates(x,y)));
 
                     }
-
+                    else if(area.getTitle().equals("superpacman/Level1") && ((x == 0 && y ==1))){
+                        //area.registerActor(new Turret(area, Orientation.UP, new DiscreteCoordinates(x,y)));
+                    }
                     else {
 
                         area.registerActor(new Diamond(area, Orientation.UP, new DiscreteCoordinates(x, y)));
 
                         if (area.getTitle().equals("superpacman/Level2")) {
                             diamondCounter += 1;
-                            System.out.println(diamondCounter);
+                            //System.out.println(diamondCounter);
                         }
                     }
                 }
@@ -157,7 +158,7 @@ public class SuperPacmanBehavior extends AreaBehavior {
 
                 //Register Blinky Cells
                 if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.FREE_WITH_BLINKY) {
-                    System.out.println("Behaviour: Registering Blinky, Ghost count:" + registeredGhosts.size() + 1);
+                    //System.out.println("Behaviour: Registering Blinky, Ghost count:" + registeredGhosts.size() + 1);
                     Ghost blinky = new Blinky(area, Orientation.RIGHT, new DiscreteCoordinates(x, y));
                     registeredGhosts.add(blinky);
                     area.registerActor(blinky);
@@ -165,7 +166,7 @@ public class SuperPacmanBehavior extends AreaBehavior {
 
                 //Register Inky Cells
                 if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.FREE_WITH_INKY) {
-                    System.out.println("Behaviour: Registering Inky, Ghost count:" + registeredGhosts.size() + 1);
+                    //System.out.println("Behaviour: Registering Inky, Ghost count:" + registeredGhosts.size() + 1);
                     Ghost Inky = new Inky(area, Orientation.RIGHT, new DiscreteCoordinates(x, y), areaGraph);
                     registeredGhosts.add(Inky);
                     area.registerActor(Inky);
@@ -173,7 +174,7 @@ public class SuperPacmanBehavior extends AreaBehavior {
 
                 //Register Pinky Cells
                 if(((SuperPacmanCell)getCell(x,y)).type == SuperPacmanCellType.FREE_WITH_PINKY) {
-                    System.out.println("Behaviour: Registering Pinky, Ghost count:" + registeredGhosts.size() + 1);
+                    //System.out.println("Behaviour: Registering Pinky, Ghost count:" + registeredGhosts.size() + 1);
                     Ghost Pinky = new Pinky(area, Orientation.RIGHT, new DiscreteCoordinates(x, y), areaGraph);
                     registeredGhosts.add(Pinky);
                     area.registerActor(Pinky);
@@ -210,7 +211,7 @@ public class SuperPacmanBehavior extends AreaBehavior {
     protected void resetGhosts() {
         super.resetGhosts();
         for (Ghost ghost: registeredGhosts){
-            System.out.println("Resetting all ghosts");
+            //System.out.println("Resetting all ghosts");
             ghost.resetGhosts();
         }
     }

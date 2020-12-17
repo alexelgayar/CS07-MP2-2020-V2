@@ -41,16 +41,25 @@ public class Level1 extends SuperPacmanArea {
     @Override
     protected void createArea() {
         super.createArea();
-       // registerActor(new Background(this));
         registerActor(new Door("superpacman/Level2", new DiscreteCoordinates(15,29), Logic.TRUE, this, Orientation.DOWN, new DiscreteCoordinates(14,0), new DiscreteCoordinates(15, 0)));
 
-      //registerActor(new Gate(this, Orientation.RIGHT, this, new DiscreteCoordinates(14,3)));
-       registerActor(new Gate(this, Orientation.RIGHT, this, new DiscreteCoordinates(15,3)));
-       registerActor(new Heart(this, Orientation.UP, new DiscreteCoordinates(14,13)));
-       registerActor(new SawBlade(this, Orientation.UP, new DiscreteCoordinates(28, 1)));
+        //Spawning in the Gates for the level 1
+        registerActor(new Gate(this, Orientation.RIGHT, this, new DiscreteCoordinates(14,3)));
+        registerActor(new Gate(this, Orientation.RIGHT, this, new DiscreteCoordinates(15,3)));
+
+        //Spawning in the Heart for the level 1
+        registerActor(new Heart(this, Orientation.UP, new DiscreteCoordinates(14,13)));
+
+        //Spawning in the SawBlades for the Level 1
+        registerActor(new SawBlade(this, Orientation.UP, new DiscreteCoordinates(28, 1)));
         registerActor(new SawBlade(this, Orientation.UP, new DiscreteCoordinates(1, 1)));
         registerActor(new SawBlade(this, Orientation.RIGHT, new DiscreteCoordinates( 13, 28)));
 
+        //Spawning in the turrets for the level 1
+        registerActor(new Turret(this, Orientation.RIGHT, new DiscreteCoordinates(0,1)));
+        registerActor(new Turret(this, Orientation.LEFT, new DiscreteCoordinates(29,1)));
+        registerActor(new Turret(this, Orientation.RIGHT, new DiscreteCoordinates(0,28)));
+        registerActor(new Turret(this, Orientation.LEFT, new DiscreteCoordinates(29,28)));
 
 
     }

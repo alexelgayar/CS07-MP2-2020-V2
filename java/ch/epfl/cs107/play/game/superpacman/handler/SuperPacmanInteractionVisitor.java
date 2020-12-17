@@ -62,4 +62,12 @@ public interface SuperPacmanInteractionVisitor extends RPGInteractionVisitor {
     default void interactWith(SawBlade sawBlade){
 
     }
+
+    default void interactWith(Projectile projectile){
+
+    }
+
+    default void interactWith(Turret turret){
+
+    }
 }
