@@ -30,6 +30,7 @@ public class Inky extends InkyPinky{
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
+
         if(isAfraid()) {
             scareGhostSignalActivated();
             scareSignalActive1 = true;
@@ -39,15 +40,16 @@ public class Inky extends InkyPinky{
             scareSignalActive1 = false;
             scareSignalActive2 = true;
         }
+
         ghostMovement();
     }
 
-    @Override
     protected void ghostMovement() {
         //No displacement occurs when ghost reaches target
         if(!isDisplacementOccurs()){
             orientate(getNextOrientation());
             if (!isAfraid()) {
+                System.out.println("INKY: targetPos (goal): " + targetPos + " | ghostPos (start): " + this.getCurrentMainCellCoordinates());
                 move(SPEED);
             }
             else {
@@ -59,16 +61,26 @@ public class Inky extends InkyPinky{
     //Choose the orientation that enables Inky and Pinky to reach their target position
     @Override
     public Orientation getNextOrientation() {
-        if (player != null){
-            targetPos = new DiscreteCoordinates((int)player.getPosition().x, (int)player.getPosition().y);
-            targetPath = computeShortestPath(targetPos);
+        if (!isAfraid()) {
+            if (player != null) {
+                targetPos = new DiscreteCoordinates((int) player.getPosition().x, (int) player.getPosition().y);
+                targetPath = computeShortestPath(targetPos);
+            }
         }
-        while(ghostHasReachedTarget() || targetPath == null){
+        //This only runs if any of the following conditions are true
+        getTarget();
+        return targetPath.poll();
+    }
+
+    private void getTarget(){
+        computeTargetPosition();
+        int counter = 0;
+        while(ghostHasReachedTarget() || targetPath == null || targetPath.size() == 0 || targetPos == null){
             computeTargetPosition();
             targetPath = computeShortestPath(targetPos);
+            ++counter;
+            System.out.print(counter + " ");
         }
-
-        return targetPath.poll();
     }
 
     @Override
@@ -86,14 +98,12 @@ public class Inky extends InkyPinky{
     }
 
     //Signal occurs when the ghosts are activated
-    @Override
     protected void scareGhostSignalActivated(){
         if (!scareSignalActive1){
             computeTargetPosition();
             targetPath = computeShortestPath(targetPos);
         }
     }
-    @Override
     protected void scareGhostSignalDeactivated(){
         if (!scareSignalActive2){
             computeTargetPosition();
@@ -102,28 +112,27 @@ public class Inky extends InkyPinky{
     }
 
     //Compute the next path
-    @Override
     public void computeTargetPosition() {
         if (!isAfraid()) {
-            if (player == null) {
+            if (player == null) { //This runs well
                 {
                     //Go to any cell within spawnPoint + MAX_DISTANCE_WHEN_NOT_SCARED (=10)
                     do {
                         int x = RandomGenerator.getInstance().nextInt(currentAreaWidth);
                         int y = RandomGenerator.getInstance().nextInt(currentAreaHeight);
                         targetPos = new DiscreteCoordinates(x, y);
-                    } while ((DiscreteCoordinates.distanceBetween(spawnPoint, targetPos) > MAX_DISTANCE_WHEN_NOT_SCARED) || (DiscreteCoordinates.distanceBetween(targetPos, getCurrentMainCellCoordinates()) == 0));
+                    } while ((DiscreteCoordinates.distanceBetween(spawnPoint, targetPos) > MAX_DISTANCE_WHEN_NOT_SCARED) || (DiscreteCoordinates.distanceBetween(targetPos, getCurrentMainCellCoordinates()) == 0) || (targetPos == getCurrentMainCellCoordinates()));
                     //System.out.println(DiscreteCoordinates.distanceBetween(spawnPoint, targetPos));
                 }
             }
         }
-        else {
+        else { //Here, path goes haywire
             //Go to any cell within spawnPoint + MAX_DISTANCE_WHEN_SCARED (=5)
             do {
                 int x = RandomGenerator.getInstance().nextInt(currentAreaWidth);
                 int y = RandomGenerator.getInstance().nextInt(currentAreaHeight);
                 targetPos = new DiscreteCoordinates(x, y);
-            } while ((DiscreteCoordinates.distanceBetween(spawnPoint, targetPos) > MAX_DISTANCE_WHEN_SCARED) || (DiscreteCoordinates.distanceBetween(targetPos, getCurrentMainCellCoordinates()) == 0));
+            } while ((DiscreteCoordinates.distanceBetween(spawnPoint, targetPos) > MAX_DISTANCE_WHEN_SCARED) || (DiscreteCoordinates.distanceBetween(targetPos, getCurrentMainCellCoordinates()) == 0) || (targetPos == getCurrentMainCellCoordinates()));
             //targetPath = computeShortestPath(targetPos);
         }
     }

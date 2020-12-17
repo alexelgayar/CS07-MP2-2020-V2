@@ -40,45 +40,18 @@ public class InkyPinky extends Ghost{
         startAnimation(deltaTime);
     }
 
-    protected void scareGhostSignalActivated(){
-        if (!scareSignalActive1){
-            computeTargetPosition();
-            targetPath = computeShortestPath(targetPos);
-        }
-    }
-
-    protected void scareGhostSignalDeactivated(){
-        if (!scareSignalActive2){
-            computeTargetPosition();
-            targetPath = computeShortestPath(targetPos);
-        }
-    }
-
-
-    //Method computes a new target
-    public void computeTargetPosition() {
-        //Leave empty
-    }
-
     public boolean ghostHasReachedTarget(){
         if (targetPos == null){
             return false;
         }
         else {
-            return ((targetPos.x == (int) this.getPosition().x) && (targetPos.y == (int) this.getPosition().y));
+            return (targetPos == this.getCurrentMainCellCoordinates());
         }
     }
 
     public Queue<Orientation> computeShortestPath(DiscreteCoordinates targetPosition){
         targetPath = areaGraph.shortestPath(getCurrentMainCellCoordinates(), targetPosition);
         return targetPath;
-    }
-
-    protected void ghostMovement(){
-        if(!isDisplacementOccurs()){
-            orientate(getNextOrientation());
-            move(SPEED);
-        }
     }
 
     @Override

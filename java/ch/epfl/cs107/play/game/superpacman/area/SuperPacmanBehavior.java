@@ -78,6 +78,9 @@ public class SuperPacmanBehavior extends AreaBehavior {
             for (int x = 0; x < getWidth(); x++) {
                 if (((SuperPacmanCell) getCell(x, y)).type != SuperPacmanCellType.WALL) {
                     areaGraph.addNode(new DiscreteCoordinates(x,y), hasLeftEdge(x,y), hasUpEdge(x,y), hasRightEdge(x,y), hasDownEdge(x,y));
+                    System.out.println("x: " + x + " y: " + y + "   hasLeftEdge:" + hasLeftEdge(x,y) +
+                            "   hasUpEdge: " + hasUpEdge(x,y) + "   hasRightEdge: " + hasRightEdge(x, y) +
+                            "   hasDownEdge: " + hasDownEdge(x,y));
                 }
             }
         }

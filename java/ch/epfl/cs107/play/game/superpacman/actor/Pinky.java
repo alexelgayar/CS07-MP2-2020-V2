@@ -29,6 +29,7 @@ public class Pinky extends InkyPinky{
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
+
         if(isAfraid()) {
             scareGhostSignalActivated();
             scareSignalActive1 = true;
@@ -41,23 +42,37 @@ public class Pinky extends InkyPinky{
         ghostMovement();
     }
 
+    protected void ghostMovement(){
+        if(!isDisplacementOccurs()){
+            orientate(getNextOrientation());
+            System.out.println("INKY: targetPos (goal): " + targetPos + " | ghostPos (start): " + this.getCurrentMainCellCoordinates() + " | targetPath: " + targetPath);
+            move(SPEED);
+        }
+    }
+
     //Choose the orientation that enables Inky and Pinky to reach their target position
     @Override
     public Orientation getNextOrientation() {
-        if (player != null){
-            targetPos = new DiscreteCoordinates((int)player.getPosition().x, (int)player.getPosition().y);
-            targetPath = computeShortestPath(targetPos);
+        if (!isAfraid()) {
+            if (player != null) {
+                targetPos = new DiscreteCoordinates((int) player.getPosition().x, (int) player.getPosition().y);
+                targetPath = computeShortestPath(targetPos);
+            }
         }
-        while(ghostHasReachedTarget() || targetPath == null){
-            computeTargetPosition();
-            targetPath = computeShortestPath(targetPos);
-        }
+
+        getTarget();
 
         return targetPath.poll();
     }
 
+    private void getTarget(){
+        computeTargetPosition();
+        while(ghostHasReachedTarget() || targetPath == null || targetPath.size() == 0 || targetPos == null){
+            computeTargetPosition();
+            targetPath = computeShortestPath(targetPos);
+        }
+    }
     //Compute the next path
-    @Override
     public void computeTargetPosition() {
         if (!isAfraid()) {
             if (player == null) {
@@ -67,7 +82,7 @@ public class Pinky extends InkyPinky{
                         int x = RandomGenerator.getInstance().nextInt(currentAreaWidth);
                         int y = RandomGenerator.getInstance().nextInt(currentAreaHeight);
                         targetPos = new DiscreteCoordinates(x, y);
-                    } while ((DiscreteCoordinates.distanceBetween(targetPos, getCurrentMainCellCoordinates()) == 0));
+                    } while ((DiscreteCoordinates.distanceBetween(targetPos, getCurrentMainCellCoordinates()) == 0) || (targetPos == getCurrentMainCellCoordinates()));
                 }
             }
         }
@@ -81,7 +96,7 @@ public class Pinky extends InkyPinky{
                     int y = RandomGenerator.getInstance().nextInt(currentAreaHeight);
                     targetPos = new DiscreteCoordinates(x, y);
                     ++attemptCounter;
-                } while ((DiscreteCoordinates.distanceBetween(playerPosition, targetPos) < MIN_AFRAID_DISTANCE || (DiscreteCoordinates.distanceBetween(targetPos, getCurrentMainCellCoordinates()) == 0) || attemptCounter >= MAX_RANDOM_ATTEMPT));
+                } while ((DiscreteCoordinates.distanceBetween(playerPosition, targetPos) < MIN_AFRAID_DISTANCE || (DiscreteCoordinates.distanceBetween(targetPos, getCurrentMainCellCoordinates()) == 0)|| (targetPos == getCurrentMainCellCoordinates()) || attemptCounter <= MAX_RANDOM_ATTEMPT));
 
             }
             else {
@@ -90,7 +105,7 @@ public class Pinky extends InkyPinky{
                     int x = RandomGenerator.getInstance().nextInt(currentAreaWidth);
                     int y = RandomGenerator.getInstance().nextInt(currentAreaHeight);
                     targetPos = new DiscreteCoordinates(x, y);
-                } while ((DiscreteCoordinates.distanceBetween(targetPos, getCurrentMainCellCoordinates()) == 0));
+                } while ((DiscreteCoordinates.distanceBetween(targetPos, getCurrentMainCellCoordinates()) == 0)|| (targetPos == getCurrentMainCellCoordinates()));
                 //targetPath = computeShortestPath(targetPos);
             }
         }
@@ -111,18 +126,18 @@ public class Pinky extends InkyPinky{
     }
 
     //Signal occurs when the ghosts are activated
-    @Override
     protected void scareGhostSignalActivated(){
         if (!scareSignalActive1){
-            System.out.println("Scare signal activated for Pinky");
             computeTargetPosition();
+            targetPath = computeShortestPath(targetPos);
             targetPath = computeShortestPath(targetPos);
         }
     }
-    @Override
+
     protected void scareGhostSignalDeactivated(){
         if (!scareSignalActive2){
             computeTargetPosition();
+            targetPath = computeShortestPath(targetPos);
             targetPath = computeShortestPath(targetPos);
         }
     }
