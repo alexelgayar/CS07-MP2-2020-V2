@@ -129,6 +129,10 @@ public class SuperPacmanBehavior extends AreaBehavior {
                         area.registerActor(new Potion(area, Orientation.UP, new DiscreteCoordinates(x,y)));
 
                     }
+                    else if(area.getTitle().equals("superpacman/Level2") && ((x == 1 && y == 28) || (x == 28 && y == 28))){
+                        area.registerActor(new Potion(area, Orientation.UP, new DiscreteCoordinates(x,y)));
+
+                    }
 
                     else {
 

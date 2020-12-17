@@ -28,7 +28,6 @@ public class SawBlade extends MovableAreaEntity {
     public SawBlade(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
         currentOrientation = orientation;
-
         orientate(orientation);
 
 

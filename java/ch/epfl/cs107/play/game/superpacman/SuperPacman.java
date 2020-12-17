@@ -17,7 +17,7 @@ import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.window.Window;
 
 public class SuperPacman  extends RPG {
-    public final static float CAMERA_SCALE_FACTOR = 45.f;//17.f;
+    public final static float CAMERA_SCALE_FACTOR = 25.f;//17.f;
     public final static float STEP = 0.05f;
 
     public SuperPacmanPlayer player;

@@ -49,6 +49,8 @@ public class Level1 extends SuperPacmanArea {
        registerActor(new Heart(this, Orientation.UP, new DiscreteCoordinates(14,13)));
        registerActor(new SawBlade(this, Orientation.UP, new DiscreteCoordinates(28, 1)));
         registerActor(new SawBlade(this, Orientation.UP, new DiscreteCoordinates(1, 1)));
+        registerActor(new SawBlade(this, Orientation.RIGHT, new DiscreteCoordinates( 13, 28)));
+
 
 
     }

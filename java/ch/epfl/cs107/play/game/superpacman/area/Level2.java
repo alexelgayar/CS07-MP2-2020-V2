@@ -4,11 +4,14 @@ import ch.epfl.cs107.play.game.areagame.actor.Background;
 import ch.epfl.cs107.play.game.areagame.actor.Foreground;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.superpacman.actor.Gate;
+import ch.epfl.cs107.play.game.superpacman.actor.Heart;
 import ch.epfl.cs107.play.game.superpacman.actor.Key;
+import ch.epfl.cs107.play.game.superpacman.actor.SawBlade;
 import ch.epfl.cs107.play.game.tutosSolution.area.Tuto2Area;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
 import ch.epfl.cs107.play.signal.logic.And;
 import ch.epfl.cs107.play.signal.logic.Logic;
+import ch.epfl.cs107.play.signal.logic.Or;
 
 import javax.print.attribute.standard.OrientationRequested;
 
@@ -82,7 +85,10 @@ public class Level2 extends SuperPacmanArea {
 
 
 
-
+        registerActor(new Heart(this, Orientation.UP, new DiscreteCoordinates(21,11)));
+        registerActor(new SawBlade(this, Orientation.RIGHT, new DiscreteCoordinates(5,9)));
+        registerActor(new SawBlade(this, Orientation.DOWN, new DiscreteCoordinates(9,28)));
+        registerActor(new SawBlade(this, Orientation.DOWN, new DiscreteCoordinates(20,28)));
 
 
 
