@@ -19,7 +19,7 @@ import java.util.List;
 public class Ghost extends MovableAreaEntity implements Interactor {
 
     private final static int MAX = 4;
-    protected final static int FIELD_OF_VIEW_RADIUS = 5; //5
+    protected final static int FIELD_OF_VIEW_RADIUS = 10; //5
     protected SuperPacmanPlayer player;
     private static boolean isAfraid;
     private GhostHandler handler;
@@ -34,6 +34,11 @@ public class Ghost extends MovableAreaEntity implements Interactor {
             this, 16, 16);
 
     protected Animation afraidAnimation = new Animation(2, afraidSprites);
+
+    protected Sprite[][] sprites;
+
+    protected Animation[] animations;
+    protected Animation animation;
 
     public Ghost(Area area, Orientation orientation, DiscreteCoordinates position) {
         super(area, orientation, position);
@@ -56,7 +61,10 @@ public class Ghost extends MovableAreaEntity implements Interactor {
 
     @Override
     public void draw(Canvas canvas) {
-        if (isAfraid()) {
+        if (!isAfraid()) {
+            animation.draw(canvas);
+        }
+        else{
             afraidAnimation.draw(canvas);
         }
     }
@@ -129,6 +137,17 @@ public class Ghost extends MovableAreaEntity implements Interactor {
 
     public void startAnimation(float deltaTime){
         //Start the animation of the ghosts
+        if(!isAfraid()){
+            if(isDisplacementOccurs()) {
+                animation = animations[getOrientation().ordinal()];
+                animation.update(deltaTime);
+            }
+        }
+        else{
+            if(isDisplacementOccurs()) {
+                afraidAnimation.update(deltaTime);
+            }
+        }
     }
 
     //When ghost is eaten by pacman => Respawn the ghost in its spawn position

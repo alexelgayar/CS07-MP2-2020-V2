@@ -19,32 +19,17 @@ public class Inky extends InkyPinky{
     private final static int MAX_DISTANCE_WHEN_NOT_SCARED = 10;
     private final static int SPEED_WHEN_SCARED = 9;
 
-    private Sprite[][] sprites = RPGSprite.extractSprites("superpacman/ghost.inky", 2, 1, 1,
-            this, 16, 16, new Orientation[]{Orientation.UP, Orientation.RIGHT, Orientation.DOWN, Orientation.LEFT});
-
-    private Animation[] animations = Animation.createAnimations(2, sprites);
-    private Animation animation = animations[1];
-    private boolean firstPath = false;
-
-
-    /**
-     * Default MovableAreaEntity constructor
-     *
-     * @param area        (Area): Owner area. Not null
-     * @param orientation (Orientation): Initial orientation of the entity. Not null
-     * @param position    (Coordinate): Initial position of the entity. Not null
-     */
     public Inky(Area area, Orientation orientation, DiscreteCoordinates position, AreaGraph areaGraph) {
         super(area, orientation, position, areaGraph);
-
-        System.out.println("Ghost spawnpoint: " + spawnPoint);
-        //areaGraph.shortestPath(new DiscreteCoordinates((int) getPosition().x, (int)getPosition().y), new DiscreteCoordinates((int)player.getPosition().x, (int)player.getPosition().y));
+        sprites = RPGSprite.extractSprites("superpacman/ghost.inky", 2, 1, 1,
+                this, 16, 16, new Orientation[]{Orientation.UP, Orientation.RIGHT, Orientation.DOWN, Orientation.LEFT});
+        animations = Animation.createAnimations(2, sprites);
+        animation = animations[1];
     }
 
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-
         if(isAfraid()) {
             scareGhostSignalActivated();
             scareSignalActive1 = true;
@@ -55,11 +40,10 @@ public class Inky extends InkyPinky{
             scareSignalActive2 = true;
         }
         ghostMovement();
-
-        startAnimation(deltaTime);
     }
 
-    public void ghostMovement(){
+    @Override
+    protected void ghostMovement() {
         //No displacement occurs when ghost reaches target
         if(!isDisplacementOccurs()){
             orientate(getNextOrientation());
@@ -72,6 +56,7 @@ public class Inky extends InkyPinky{
         }
     }
 
+    //Choose the orientation that enables Inky and Pinky to reach their target position
     @Override
     public Orientation getNextOrientation() {
         if (player != null){
@@ -101,14 +86,15 @@ public class Inky extends InkyPinky{
     }
 
     //Signal occurs when the ghosts are activated
-    private void scareGhostSignalActivated(){
+    @Override
+    protected void scareGhostSignalActivated(){
         if (!scareSignalActive1){
             computeTargetPosition();
             targetPath = computeShortestPath(targetPos);
         }
     }
-
-    private void scareGhostSignalDeactivated(){
+    @Override
+    protected void scareGhostSignalDeactivated(){
         if (!scareSignalActive2){
             computeTargetPosition();
             targetPath = computeShortestPath(targetPos);
@@ -139,35 +125,6 @@ public class Inky extends InkyPinky{
                 targetPos = new DiscreteCoordinates(x, y);
             } while ((DiscreteCoordinates.distanceBetween(spawnPoint, targetPos) > MAX_DISTANCE_WHEN_SCARED) || (DiscreteCoordinates.distanceBetween(targetPos, getCurrentMainCellCoordinates()) == 0));
             //targetPath = computeShortestPath(targetPos);
-        }
-    }
-
-    @Override
-    public void startAnimation(float deltaTime) {
-        super.startAnimation(deltaTime);
-        if(!isAfraid()){
-            if(isDisplacementOccurs()) {
-                animation = animations[getOrientation().ordinal()];
-                animation.update(deltaTime);
-            }
-        }
-        else{
-            if(isDisplacementOccurs())
-                super.afraidAnimation.update(deltaTime);
-        }
-    }
-
-    @Override
-    public void draw(Canvas canvas) {
-        if (targetPath != null) {
-            Path graphicPath = new Path(this.getPosition(), new LinkedList<Orientation>(targetPath));
-            graphicPath.draw(canvas);
-        }
-        if (!isAfraid()) {
-            animation.draw(canvas);
-        }
-        else{
-            afraidAnimation.draw(canvas);
         }
     }
 }

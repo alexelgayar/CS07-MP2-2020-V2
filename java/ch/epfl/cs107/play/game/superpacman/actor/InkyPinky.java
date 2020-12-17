@@ -5,6 +5,7 @@ import ch.epfl.cs107.play.game.areagame.AreaGraph;
 import ch.epfl.cs107.play.game.areagame.actor.Orientation;
 import ch.epfl.cs107.play.game.areagame.actor.Path;
 import ch.epfl.cs107.play.math.DiscreteCoordinates;
+import ch.epfl.cs107.play.window.Canvas;
 
 import javax.print.attribute.standard.OrientationRequested;
 import javax.xml.xpath.XPath;
@@ -22,6 +23,8 @@ public class InkyPinky extends Ghost{
     protected int currentAreaWidth = getOwnerArea().getWidth();
     protected int currentAreaHeight = getOwnerArea().getHeight();
 
+
+
     //Path path = new Path(this.getPosition(), new LinkedList<Orientation>());
     //Path graphicPath = new Path(this.getPosition(), new LinkedList<Orientation>(path));
 
@@ -31,11 +34,26 @@ public class InkyPinky extends Ghost{
         this.areaGraph = areaGraph;
     }
 
-    //Inky and Pinky cause an error when resetting the ghosts
     @Override
-    public void resetGhosts() {
-        //super.resetGhosts();
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+        startAnimation(deltaTime);
     }
+
+    protected void scareGhostSignalActivated(){
+        if (!scareSignalActive1){
+            computeTargetPosition();
+            targetPath = computeShortestPath(targetPos);
+        }
+    }
+
+    protected void scareGhostSignalDeactivated(){
+        if (!scareSignalActive2){
+            computeTargetPosition();
+            targetPath = computeShortestPath(targetPos);
+        }
+    }
+
 
     //Method computes a new target
     public void computeTargetPosition() {
@@ -56,9 +74,19 @@ public class InkyPinky extends Ghost{
         return targetPath;
     }
 
+    protected void ghostMovement(){
+        if(!isDisplacementOccurs()){
+            orientate(getNextOrientation());
+            move(SPEED);
+        }
+    }
+
     @Override
-    public Orientation getNextOrientation() {
-        return super.getNextOrientation();
-        //Choose the orientation that enables Inky and Pinky to reach their target position
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+        if (targetPath != null) {
+            Path graphicPath = new Path(this.getPosition(), new LinkedList<Orientation>(targetPath));
+            graphicPath.draw(canvas);
+        }
     }
 }
