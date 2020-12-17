@@ -23,7 +23,7 @@ public class Level1 extends SuperPacmanArea {
 
     @Override
     public boolean isOn() {
-        return nbrDiamonds==406;
+        return nbrDiamonds==402; //There are 402 diamonds in level1
     }
 
     private int nbrDiamonds= 0;                                                                                                                         

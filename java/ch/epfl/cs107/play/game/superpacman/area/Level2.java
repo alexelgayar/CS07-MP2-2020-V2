@@ -24,8 +24,8 @@ public class Level2 extends SuperPacmanArea {
 
     @Override
     public boolean isOn() {
-        return nbrDiamonds==394;
-    }
+        return nbrDiamonds==392;
+    } //There are 392 diamonds in level 2
 
     private int nbrDiamonds= 0;
 

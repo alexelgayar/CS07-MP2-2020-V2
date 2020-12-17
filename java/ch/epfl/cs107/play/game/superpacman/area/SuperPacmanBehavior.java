@@ -129,7 +129,8 @@ public class SuperPacmanBehavior extends AreaBehavior {
         return (y > 0 && (((SuperPacmanCell) getCell(x,y-1)).type != SuperPacmanCellType.WALL));
     }
 
-    //private  int diamondCounter= 0;
+    private  int diamondCounter= 0;
+
 
     /**
      * Registers all the actors into their corresponding cells
@@ -171,8 +172,8 @@ public class SuperPacmanBehavior extends AreaBehavior {
                         area.registerActor(new Diamond(area, Orientation.UP, new DiscreteCoordinates(x, y)));
 
                         if (area.getTitle().equals("superpacman/Level2")) {
-                            //diamondCounter += 1;
-                            //System.out.println(diamondCounter);
+                            diamondCounter += 1;
+                            System.out.println(diamondCounter);
                         }
                     }
                 }

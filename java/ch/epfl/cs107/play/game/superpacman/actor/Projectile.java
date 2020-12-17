@@ -82,7 +82,7 @@ public class Projectile extends MovableAreaEntity {
 
     @Override
     public boolean takeCellSpace() {
-        return false;
+        return true;
     }
 
     @Override
