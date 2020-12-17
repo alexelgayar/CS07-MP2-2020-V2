@@ -29,7 +29,6 @@ public class SuperPacmanPlayer extends Player {
     private int score;
     private float invulnerabilityTimer = 0.f;
     private boolean isPacmanAlive;
-
     private Sprite sprite;
     private SuperPacmanStatusGUI gui;
     private final static int SPEED = 6;     //Movement speed of player, duration in frame number
@@ -38,7 +37,7 @@ public class SuperPacmanPlayer extends Player {
     private final int GHOST_SCORE = 500;
     private final float SPEED_TIME = 8.f;
     private float speedTimer = 0.f;
-    private final static int SPEED_BOOST = 4;
+    private final static int SPEED_BOOST = 2;
 
     Sprite[][] sprites = RPGSprite.extractSprites("superpacman/pacman", 4, 1, 1,
             this, 64, 64, new Orientation[] {Orientation.DOWN, Orientation.LEFT, Orientation.UP, Orientation.RIGHT});
@@ -117,6 +116,10 @@ public class SuperPacmanPlayer extends Player {
 
         if(speedTimer > 0){
             speedTimer -= deltaTime;
+        }
+
+        if(hp > 5){
+            hp = 5;
         }
 
         if(speedTimer == 0){
@@ -252,6 +255,12 @@ public class SuperPacmanPlayer extends Player {
         public void interactWith(Potion potion) {
             potion.collect();
             speedTimer = SPEED_TIME;
+        }
+
+        @Override
+        public void interactWith(Heart heart) {
+            heart.collect();
+             hp += 1;
         }
 
         public void interactWith(Bonus bonus){

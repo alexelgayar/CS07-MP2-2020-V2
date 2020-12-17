@@ -54,4 +54,8 @@ public interface SuperPacmanInteractionVisitor extends RPGInteractionVisitor {
     default void interactWith(Potion potion) {
 
     }
+
+    default void interactWith(Heart heart){
+
+    }
 }
